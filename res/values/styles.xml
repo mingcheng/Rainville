@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SeekBar" parent="android:Widget.Holo.SeekBar">
+        <item name="android:thumbOffset">0dp</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+    </style>
+
+    <style name="Button" parent="android:Widget.Holo.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@drawable/button_text</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+</resources>

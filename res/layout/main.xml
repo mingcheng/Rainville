@@ -3,14 +3,18 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:background="#ff0000"
         >
-
 
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/play"
+
             android:text="Play"
+
+            style="@style/Button"
+
             />
 
     <Button
@@ -18,23 +22,33 @@
             android:layout_height="wrap_content"
             android:id="@+id/stop"
             android:text="Stop"
+            style="@style/Button"
             />
+
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/reset"
             android:text="Reset"
+            style="@style/Button"
             />
 
-    <LinearLayout
+    <FrameLayout
             android:layout_marginTop="5dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             android:id="@+id/mixer"
             >
 
-    </LinearLayout>
+        <SeekBar
+                style="@style/SeekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:progress="50"
+                android:max="100"
+                />
+    </FrameLayout>
 
 
 </LinearLayout>
