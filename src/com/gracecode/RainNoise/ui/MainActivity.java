@@ -104,7 +104,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 reSetMixer();
                 break;
             case R.id.btn:
-                if (mSimplePanel.isOpened()) {
+                if (!mSimplePanel.isOpened()) {
                     mSimplePanel.open();
                 } else {
                     mSimplePanel.close();

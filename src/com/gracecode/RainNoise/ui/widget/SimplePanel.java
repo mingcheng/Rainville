@@ -1,5 +1,8 @@
 package com.gracecode.RainNoise.ui.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -21,6 +24,13 @@ public class SimplePanel extends FrameLayout {
     private float mLastEventY = 0;
     private float mFirstEventY = 0;
 
+    private ValueAnimator mOpenAnimator;
+    private ObjectAnimator mFadeOutAnimator;
+    private AnimatorSet mAnimatorOpenSet;
+
+    private ValueAnimator mCloseAnimator;
+    private AnimatorSet mAnimatorCloseSet;
+    private ObjectAnimator mFadeInAnimator;
 
     public SimplePanel(Context context) {
         super(context);
@@ -52,6 +62,7 @@ public class SimplePanel extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         final int action = event.getAction();
         final float eventY = event.getY();
+
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_MOVE:
@@ -104,34 +115,89 @@ public class SimplePanel extends FrameLayout {
     }
 
     public void open() {
-        ValueAnimator animator = ValueAnimator.ofInt(getScrollY(), (int) (getHeight() - getSlideBound()));
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.setDuration(DEFAULT_OPEN_DURATION);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int height = (Integer) valueAnimator.getAnimatedValue();
-                scrollTo(0, height);
-            }
-        });
-        animator.start();
-        isOpened = true;
+        setAnimatorOpenSet().start();
     }
 
-
     public void close() {
-        ValueAnimator animator = ValueAnimator.ofInt(getScrollY(), SCROLL_TOP);
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.setDuration(DEFAULT_CLOSE_DURATION);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        setAnimatorCloseSet().start();
+    }
+
+    private AnimatorSet setAnimatorOpenSet() {
+        mOpenAnimator = ValueAnimator.ofInt(getScrollY(),
+                (int) (getHeight() - getSlideBound()));
+
+        mOpenAnimator.setInterpolator(new OvershootInterpolator());
+        mOpenAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int height = (Integer) valueAnimator.getAnimatedValue();
                 scrollTo(0, height);
             }
         });
-        animator.start();
-        isOpened = false;
+
+        mFadeOutAnimator = ObjectAnimator.ofFloat(this, "alpha", getAlpha(), 0.85f);
+
+        mAnimatorOpenSet = new AnimatorSet();
+        mAnimatorOpenSet.setDuration(DEFAULT_OPEN_DURATION);
+        mAnimatorOpenSet.play(mOpenAnimator).with(mFadeOutAnimator);
+        mAnimatorOpenSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                isOpened = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+        return mAnimatorOpenSet;
+    }
+
+    private AnimatorSet setAnimatorCloseSet() {
+        mCloseAnimator = ValueAnimator.ofInt(getScrollY(), SCROLL_TOP);
+        mCloseAnimator.setInterpolator(new OvershootInterpolator());
+        mCloseAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int height = (Integer) valueAnimator.getAnimatedValue();
+                scrollTo(0, height);
+            }
+        });
+
+        mFadeInAnimator = ObjectAnimator.ofFloat(this, "alpha", getAlpha(), 1f);
+
+        mAnimatorCloseSet = new AnimatorSet();
+        mAnimatorCloseSet.setDuration(DEFAULT_CLOSE_DURATION);
+        mAnimatorCloseSet.play(mCloseAnimator).with(mFadeInAnimator);
+        mAnimatorCloseSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                isOpened = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+
+        return mAnimatorCloseSet;
     }
 
     public boolean isOpened() {
