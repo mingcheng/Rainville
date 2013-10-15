@@ -31,6 +31,7 @@ public class SimplePanel extends FrameLayout {
     private ValueAnimator mCloseAnimator;
     private AnimatorSet mAnimatorCloseSet;
     private ObjectAnimator mFadeInAnimator;
+    private SimplePanelListener mSimplePanelListener;
 
     public SimplePanel(Context context) {
         super(context);
@@ -74,6 +75,7 @@ public class SimplePanel extends FrameLayout {
                     float offset = 0;
                     if (mLastEventY != 0) offset = mLastEventY - eventY;
 
+                    setDrawingCacheEnabled(true);
                     scrollTo(0, (int) (getScrollY() + offset));
                     mLastEventY = eventY;
                 } else {
@@ -112,13 +114,16 @@ public class SimplePanel extends FrameLayout {
         mLastEventY = 0;
         mFirstEventY = 0;
         isDragging = false;
+        setDrawingCacheEnabled(false);
     }
 
     public void open() {
+        setAnimationCacheEnabled(true);
         setAnimatorOpenSet().start();
     }
 
     public void close() {
+        setAnimationCacheEnabled(true);
         setAnimatorCloseSet().start();
     }
 
@@ -147,6 +152,9 @@ public class SimplePanel extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                if (mSimplePanelListener != null) {
+                    mSimplePanelListener.onOpened();
+                }
                 isOpened = true;
             }
 
@@ -185,6 +193,9 @@ public class SimplePanel extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                if (mSimplePanelListener != null) {
+                    mSimplePanelListener.onClosed();
+                }
                 isOpened = false;
             }
 
@@ -206,5 +217,15 @@ public class SimplePanel extends FrameLayout {
 
     public void setSlideRatio(float r) {
         this.ratio = r;
+    }
+
+    public void addSimplePanelListener(SimplePanelListener listener) {
+        mSimplePanelListener = listener;
+    }
+
+    public interface SimplePanelListener {
+        abstract public void onOpened();
+
+        abstract public void onClosed();
     }
 }

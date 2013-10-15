@@ -9,13 +9,14 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#cccccc"
+            android:background="@color/dark_blue"
             >
 
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/blew"
+                android:layout_alignParentBottom="true"
                 android:text="Blew"
                 />
 
@@ -35,42 +36,38 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#fff0ff"
-                android:padding="10dip"
+                android:background="@drawable/panel_background"
                 >
 
-
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn"
+            <ToggleButton
+                    style="@style/ToggleButton"
+                    android:id="@+id/toggle_panel"
                     android:layout_alignParentBottom="true"
-                    android:text="Toggle"
                     android:layout_centerHorizontal="true"
                     />
 
             <TextView
-                    android:text="O"
+                    android:text="@string/icon_rain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="100sp"
                     android:gravity="center"
-                    android:lines="1"
-                    android:maxEms="1"
                     android:layout_marginBottom="30dp"
                     android:id="@+id/icon"
                     android:layout_centerInParent="true"
                     android:layout_margin="20dp"
+                    style="@style/TitleShadow"
                     />
-
 
             <Button
                     android:layout_below="@id/icon"
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Play"
+                    android:text="@string/play"
+                    android:width="100dip"
                     android:layout_centerHorizontal="true"
+                    android:id="@+id/play2"
                     />
 
             <LinearLayout
@@ -88,15 +85,12 @@
                         android:textSize="36sp"
                         android:id="@+id/title"
                         android:gravity="center"
-                        android:shadowColor="#cccccc"
-                        android:shadowDx="1"
-                        android:shadowDy="2"
-                        android:shadowRadius="0.5"
+                        style="@style/TitleShadow"
                         android:layout_marginTop="10dip"
                         />
 
                 <TextView
-                        android:text="The Sound of Rain, without the wet feet."
+                        android:text="@string/app_desp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
@@ -104,17 +98,16 @@
                         android:layout_marginTop="5dip"
                         android:lines="1"
                         android:id="@+id/desp"
+                        android:textColor="@color/berry_blue"
                         />
 
                 <ImageView
                         android:layout_width="150dp"
                         android:layout_height="1dp"
-                        android:background="#999999"
+                        android:background="@color/sufu"
                         android:layout_marginTop="20dp"
-                        android:alpha="0.75"
-                        />
-
-
+                        android:alpha="0.9"
+                        android:contentDescription="--"/>
             </LinearLayout>
 
         </RelativeLayout>

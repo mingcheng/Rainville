@@ -8,10 +8,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.serivce.PlayerService;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
@@ -45,7 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 //        initMixer();
 
-        Typeface face = Typeface.createFromAsset(getAssets(), "regular.otf");
+        Typeface face = Typeface.createFromAsset(getAssets(), "musket2.otf");
 
         TextView t = (TextView) findViewById(R.id.title);
         t.setTypeface(face);
@@ -55,12 +52,32 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         TextView icon = (TextView) findViewById(R.id.icon);
         icon.setTypeface(Typeface.createFromAsset(getAssets(), "weather.ttf"));
-        icon.setText("\uf019");
 
         mSimplePanel = (SimplePanel) findViewById(R.id.mask);
 
-        findViewById(R.id.btn).setOnClickListener(this);
+        final ToggleButton toggleBtn = (ToggleButton) findViewById(R.id.toggle_panel);
+
+
+        toggleBtn.setTypeface(Typeface.createFromAsset(getAssets(), "elegant.ttf"));
+
+        toggleBtn.setOnClickListener(this);
+
         findViewById(R.id.blew).setOnClickListener(this);
+
+        Button ab = (Button) findViewById(R.id.play2);
+        ab.setTypeface(face);
+
+        mSimplePanel.addSimplePanelListener(new SimplePanel.SimplePanelListener() {
+            @Override
+            public void onOpened() {
+                toggleBtn.setChecked(true);
+            }
+
+            @Override
+            public void onClosed() {
+                toggleBtn.setChecked(false);
+            }
+        });
     }
 
     private void initMixer() {
@@ -110,7 +127,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.reset:
                 reSetMixer();
                 break;
-            case R.id.btn:
+            case R.id.toggle_panel:
                 if (!mSimplePanel.isOpened()) {
                     mSimplePanel.open();
                 } else {

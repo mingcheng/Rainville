@@ -10,6 +10,29 @@
     <style name="Button" parent="android:Widget.Holo.Button">
         <item name="android:background">@drawable/button_background</item>
         <item name="android:textColor">@drawable/button_text</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:minWidth">50dip</item>
+    </style>
+
+    <style name="ToggleButton" parent="android:Widget.Holo.Button.Toggle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:checked">false</item>
+        <item name="android:textOff">\u0036</item>
+        <item name="android:textOn">\u0037</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:alpha">0.75</item>
+        <item name="android:textColor">@color/sufu</item>
+    </style>
+
+    <style name="TitleShadow" parent="android:Widget.Holo.TextView">
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">0.5</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:lines">1</item>
     </style>
 </resources>
