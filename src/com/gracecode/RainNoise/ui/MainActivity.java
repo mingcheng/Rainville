@@ -49,6 +49,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         TextView t = (TextView) findViewById(R.id.title);
         t.setTypeface(face);
+        TextView a = (TextView) findViewById(R.id.desp);
+        a.setTypeface(face);
+
+
+        TextView icon = (TextView) findViewById(R.id.icon);
+        icon.setTypeface(Typeface.createFromAsset(getAssets(), "weather.ttf"));
+        icon.setText("\uf019");
 
         mSimplePanel = (SimplePanel) findViewById(R.id.mask);
 

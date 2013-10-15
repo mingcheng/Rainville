@@ -35,30 +35,87 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#fff0ff">
-
-
-            <TextView
-                    android:text="@string/app_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="50dp"
-                    android:id="@+id/title"
-                    android:gravity="center"
-                    android:shadowColor="#ff0000"
-                    android:shadowDx="1"
-                    android:shadowDy="2"
-                    android:shadowRadius="0.5"
-                    />
+                android:background="#fff0ff"
+                android:padding="10dip"
+                >
 
 
             <Button
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn"
                     android:layout_alignParentBottom="true"
                     android:text="Toggle"
+                    android:layout_centerHorizontal="true"
                     />
+
+            <TextView
+                    android:text="O"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="100sp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxEms="1"
+                    android:layout_marginBottom="30dp"
+                    android:id="@+id/icon"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="20dp"
+                    />
+
+
+            <Button
+                    android:layout_below="@id/icon"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            <LinearLayout
+                    android:layout_above="@id/icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+
+                <TextView
+                        android:text="@string/app_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="36sp"
+                        android:id="@+id/title"
+                        android:gravity="center"
+                        android:shadowColor="#cccccc"
+                        android:shadowDx="1"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.5"
+                        android:layout_marginTop="10dip"
+                        />
+
+                <TextView
+                        android:text="The Sound of Rain, without the wet feet."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:layout_marginTop="5dip"
+                        android:lines="1"
+                        android:id="@+id/desp"
+                        />
+
+                <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="1dp"
+                        android:background="#999999"
+                        android:layout_marginTop="20dp"
+                        android:alpha="0.75"
+                        />
+
+
+            </LinearLayout>
 
         </RelativeLayout>
     </com.gracecode.RainNoise.ui.widget.SimplePanel>
