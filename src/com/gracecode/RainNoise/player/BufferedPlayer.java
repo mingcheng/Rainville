@@ -1,4 +1,4 @@
-package com.gracecode.RainNoise;
+package com.gracecode.RainNoise.player;
 
 import android.content.Context;
 import android.media.AudioFormat;

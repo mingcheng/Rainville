@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+
+        >
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#cccccc"
+            >
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/blew"
+                android:text="Blew"
+                />
+    </RelativeLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mask"
+            >
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff0ff">
+
+
+            <TextView
+                    android:text="@string/app_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="50dp"
+                    android:id="@+id/title"
+                    android:gravity="center"
+                    android:shadowColor="#ff0000"
+                    android:shadowDx="1"
+                    android:shadowDy="2"
+                    android:shadowRadius="0.5"
+                    />
+
+
+            <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn"
+                    android:layout_alignParentBottom="true"
+                    android:text="Toggle"
+                    />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</FrameLayout>

@@ -1,8 +1,10 @@
-package com.gracecode.RainNoise;
+package com.gracecode.RainNoise.player;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.util.Log;
+import com.gracecode.RainNoise.BuildConfig;
+import com.gracecode.RainNoise.R;
 
 public final class PlayersManager {
     private static final String TAG = PlayersManager.class.getName();
