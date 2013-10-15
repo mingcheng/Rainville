@@ -20,7 +20,7 @@
                 />
     </RelativeLayout>
 
-    <FrameLayout
+    <com.gracecode.RainNoise.ui.widget.SimplePanel
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mask"
@@ -55,7 +55,7 @@
                     />
 
         </RelativeLayout>
-    </FrameLayout>
+    </com.gracecode.RainNoise.ui.widget.SimplePanel>
 
 
 </FrameLayout>
