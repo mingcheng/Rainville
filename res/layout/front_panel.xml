@@ -26,15 +26,16 @@
             style="@style/TitleShadow"
             />
 
-    <Button
+    <ToggleButton
             android:layout_below="@id/icon"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/play"
+            android:textOn="@string/stop"
+            android:textOff="@string/play"
             android:width="100dip"
             android:layout_centerHorizontal="true"
-            android:id="@+id/play2"
+            android:id="@+id/play"
             />
 
     <LinearLayout

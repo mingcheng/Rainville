@@ -1,83 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal"
-              android:paddingTop="15dp"
-              android:id="@+id/mixer"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="15dp"
+                android:id="@+id/mixer"
         >
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:progress="30"
-            android:max="100"
-            style="@style/SeekBar"
-            />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/trackers"
+            >
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="30"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="40"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="50"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="30"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="40"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="50"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="30"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="40"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="50"
+                android:max="100"
+                style="@style/SeekBar"
+                />
+    </LinearLayout>
+
+    <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:progress="40"
-            android:max="100"
-            style="@style/SeekBar"
-            />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/trackers"
+            android:orientation="vertical"
+            >
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="50"
-            android:max="100"
-            style="@style/SeekBar"
-            />
+        <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="\ue00a"
+                android:textOff="\ue00a"
+                android:id="@+id/animate"
+                style="@style/Button"
+                android:checked="false"
+                android:layout_alignParentTop="true"
+                />
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="30"
-            android:max="100"
-            style="@style/SeekBar"
-            />
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0061"
+                android:layout_below="@id/animate"
+                android:id="@+id/reset"
+                style="@style/Button"
+                />
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="40"
-            android:max="100"
-            style="@style/SeekBar"
-            />
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="50"
-            android:max="100"
-            style="@style/SeekBar"
-            />
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0043"
+                android:id="@+id/down"
+                style="@style/Button"
+                android:layout_alignParentBottom="true"
+                />
 
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="30"
-            android:max="100"
-            style="@style/SeekBar"
-            />
-
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="40"
-            android:max="100"
-            style="@style/SeekBar"
-            />
-
-    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:progress="50"
-            android:max="100"
-            style="@style/SeekBar"
-            />
-
-</LinearLayout>
+        <Button
+                android:layout_above="@id/down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0042"
+                android:id="@+id/up"
+                style="@style/Button"
+                />
+    </RelativeLayout>
+</RelativeLayout>

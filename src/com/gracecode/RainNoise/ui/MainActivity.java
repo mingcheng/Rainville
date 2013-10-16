@@ -7,12 +7,12 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.serivce.PlayerService;
 import com.gracecode.RainNoise.ui.fragment.FrontPanelFragment;
+import com.gracecode.RainNoise.ui.fragment.MixerFragment;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
     private List<SeekBar> seekBars = new ArrayList<SeekBar>();
     private SimplePanel mFrontPanel;
     private AudioManager mAudioManager;
-    private LinearLayout mMixer;
+    private MixerFragment mMixer;
     private int mScreenHeight;
     private FrontPanelFragment mFrontPanelFragmentFragment;
 
@@ -49,17 +49,18 @@ public class MainActivity extends Activity {
 
         mFrontPanel = (SimplePanel) findViewById(R.id.front_panel);
         mFrontPanelFragmentFragment = new FrontPanelFragment();
+        mMixer = new MixerFragment();
 
-        mMixer = (LinearLayout) findViewById(R.id.mixer);
         mFrontPanelFragmentFragment.setFrontPanel(mFrontPanel);
         mFrontPanel.addSimplePanelListener(mFrontPanelFragmentFragment);
 
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.front_panel, mFrontPanelFragmentFragment)
+                .replace(R.id.front_panel, mFrontPanelFragmentFragment)
+                .replace(R.id.control_center, mMixer)
                 .commit();
-    }
 
+    }
 
 
     @Override
@@ -73,7 +74,8 @@ public class MainActivity extends Activity {
 
         float v = mScreenHeight * (1 - mFrontPanel.getSlideRatio());
 
-        mMixer.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) v));
+        mMixer.getView()
+                .setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) v));
     }
 
     @Override

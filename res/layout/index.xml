@@ -11,23 +11,12 @@
             android:background="@color/dark_blue"
             >
 
-
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-            <include
-                    layout="@layout/mixer"/>
-        </RelativeLayout>
-
-
-        <!--<ViewPager-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/control_center"/>-->
+                android:layout_alignParentBottom="true"
+                android:id="@+id/control_center"
+                />
     </RelativeLayout>
 
     <com.gracecode.RainNoise.ui.widget.SimplePanel
