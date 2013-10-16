@@ -11,6 +11,7 @@
             android:id="@+id/toggle_panel"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:checked="false"
             />
 
     <TextView
@@ -35,7 +36,8 @@
             android:textOff="@string/play"
             android:width="100dip"
             android:layout_centerHorizontal="true"
-            android:id="@+id/play"
+            android:id="@+id/toggle_play"
+            android:checked="false"
             />
 
     <LinearLayout

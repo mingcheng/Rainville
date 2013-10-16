@@ -14,7 +14,7 @@ import java.io.InputStream;
 
 public final class BufferedPlayer implements DecodeFeed, Runnable {
     public static final String TAG = BufferedPlayer.class.getName();
-    public static final float DEFAULT_VOLUME = (float) 0.35;
+    public static final float DEFAULT_VOLUME_PERCENT = (float) 0.35;
 
     private static AudioManager mAudioManager;
 
@@ -23,8 +23,8 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
     private final Context mContext;
     private InputStream mInputStream;
 
-    private float leftVolume = DEFAULT_VOLUME;
-    private float rightVolume = DEFAULT_VOLUME;
+    private float leftVolume = DEFAULT_VOLUME_PERCENT;
+    private float rightVolume = DEFAULT_VOLUME_PERCENT;
 
     private AudioTrack mAudioTrack;
 

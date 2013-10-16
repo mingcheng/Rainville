@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
+import com.gracecode.RainNoise.player.PlayerManager;
 
 public class MixerFragment extends Fragment {
 
+    private PlayerManager mPlayerManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.mixer, null);
+        return inflater.inflate(R.layout.fragment_mixer, null);
     }
 
     @Override
@@ -22,6 +25,14 @@ public class MixerFragment extends Fragment {
 
         TypefaceHelper.setAllTypeface((ViewGroup) getView(),
                 Typeface.createFromAsset(getActivity().getAssets(), "elegant.ttf"));
+
+    }
+
+    public void setPlayerManager(PlayerManager manager) {
+        this.mPlayerManager = manager;
+    }
+
+    public void refresh() {
 
     }
 }
