@@ -34,7 +34,6 @@ public class VerticalSeekBar extends SeekBar {
     protected void onDraw(Canvas c) {
         c.rotate(-90);
         c.translate(-getHeight(), 0);
-
         super.onDraw(c);
     }
 
@@ -56,6 +55,7 @@ public class VerticalSeekBar extends SeekBar {
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
+
         return true;
     }
 

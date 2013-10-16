@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public final class PlayerManager {
     private static final String TAG = PlayerManager.class.getName();
-    private static final long VOLUME_CHANGE_DURATION = 800;
+    private static final long VOLUME_CHANGE_DURATION = 1600;
 
     private final Context mContext;
     private final AudioManager mAudioManager;
@@ -24,7 +24,7 @@ public final class PlayerManager {
     };
     public static final int MAX_TRACKS_NUM = mTrackers.length;
     private static BufferedPlayer[] mPlayers = new BufferedPlayer[MAX_TRACKS_NUM];
-    private static float[] mTrackerVolumesPercent = new float[MAX_TRACKS_NUM];
+    private static int[] mTrackerVolumes = new int[MAX_TRACKS_NUM];
 
     /**
      * Singleton Mode
@@ -55,7 +55,6 @@ public final class PlayerManager {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             mPlayers[i] = new BufferedPlayer(mContext, mTrackers[i]);
             mPlayers[i].setLooping(true);
-            setVolume(i, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         }
     }
 
@@ -66,7 +65,7 @@ public final class PlayerManager {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setVolume(track, (Integer) valueAnimator.getAnimatedValue());
+                setVolume(track, (Integer) valueAnimator.getAnimatedValue(), true);
             }
         });
 
@@ -120,8 +119,10 @@ public final class PlayerManager {
 
         initPlayers();
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            if (BuildConfig.DEBUG) Log.i(TAG, "Start playing track " + i);
+            if (BuildConfig.DEBUG)
+                Log.v(TAG, "Start playing track " + i + ".");
             mPlayers[i].play();
+            setVolume(i, getVolume(i));
         }
 
         playing = true;
@@ -133,14 +134,12 @@ public final class PlayerManager {
 
 
     public int getVolume(int track) {
-        float percent = BufferedPlayer.DEFAULT_VOLUME_PERCENT;
-        try {
-            percent = mTrackerVolumesPercent[track];
-        } catch (IndexOutOfBoundsException e) {
-            Log.e(TAG, e.getMessage());
-        }
+        return mTrackerVolumes[track];
+    }
 
-        return (int) (percent * getMaxVolume());
+
+    public int getDefaultVolume() {
+        return (int) (BufferedPlayer.DEFAULT_VOLUME_PERCENT * getMaxVolume());
     }
 
 
@@ -164,14 +163,22 @@ public final class PlayerManager {
 
 
     public void setVolume(int track, int volume) {
+        setVolume(track, volume, false);
+    }
+
+
+    public void setVolume(int track, int volume, boolean temporary) {
         try {
             if (BuildConfig.DEBUG)
                 Log.v(TAG, "Set layout [" + track + "]'s volume " + volume + " / " + getMaxVolume());
 
-            float offset = volume / (float) getMaxVolume();
+            float percent = volume / (float) getMaxVolume();
+            if (mPlayers[track] != null) {
+                mPlayers[track].setStereoVolume(percent, percent);
+            }
 
-            mPlayers[track].setStereoVolume(offset, offset);
-            mTrackerVolumesPercent[track] = offset;
+            if (!temporary)
+                mTrackerVolumes[track] = volume;
         } catch (IndexOutOfBoundsException e) {
             Log.e(TAG, e.getMessage());
         }
