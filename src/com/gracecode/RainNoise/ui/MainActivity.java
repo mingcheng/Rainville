@@ -6,21 +6,26 @@ import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.View;
+import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.serivce.PlayerService;
+import com.gracecode.RainNoise.ui.fragment.FrontPanelFragment;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity {
 
     private List<SeekBar> seekBars = new ArrayList<SeekBar>();
-    private SimplePanel mSimplePanel;
+    private SimplePanel mFrontPanel;
     private AudioManager mAudioManager;
+    private LinearLayout mMixer;
+    private int mScreenHeight;
+    private FrontPanelFragment mFrontPanelFragmentFragment;
 
 
     /**
@@ -42,86 +47,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 //        initMixer();
 
+        mFrontPanel = (SimplePanel) findViewById(R.id.front_panel);
+        mFrontPanelFragmentFragment = new FrontPanelFragment();
 
-    }
+        mMixer = (LinearLayout) findViewById(R.id.mixer);
+        mFrontPanelFragmentFragment.setFrontPanel(mFrontPanel);
+        mFrontPanel.addSimplePanelListener(mFrontPanelFragmentFragment);
 
-    private void initMixer() {
-        LinearLayout box = (LinearLayout) findViewById(R.id.mixer);
-
-        for (int i = 0; i < 10; i++) {
-            SeekBar tmp = new SeekBar(this);
-
-            tmp.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-            final int layout = i;
-            tmp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int volume, boolean b) {
-                    if (mBinder != null) {
-                        mBinder.getPlayer().setVolume(layout, volume);
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
-            });
-            tmp.setMax(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-
-            seekBars.add(i, tmp);
-            box.addView(tmp);
-        }
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.play:
-                mBinder.getPlayer().play();
-                break;
-            case R.id.stop:
-                mBinder.getPlayer().stop();
-                break;
-            case R.id.reset:
-                reSetMixer();
-                break;
-            case R.id.toggle_panel:
-                if (!mSimplePanel.isOpened()) {
-                    mSimplePanel.open();
-                } else {
-                    mSimplePanel.close();
-                }
-                break;
-//            case R.id.blew:
-//                Toast.makeText(this, "Blow!!!", Toast.LENGTH_SHORT).show();
-//                break;
-
-        }
-
+        getFragmentManager()
+                .beginTransaction()
+                .add(R.id.front_panel, mFrontPanelFragmentFragment)
+                .commit();
     }
 
 
-    private void reSetMixer() {
-        int volume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        for (int i = 0; i < 10; i++) {
-            seekBars.get(i).setProgress(volume / 2);
-            if (mBinder != null && mBinder.getPlayer().isPlaying()) {
-                mBinder.getPlayer().setVolume(i, volume);
-            }
-        }
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
 //        bindService(new Intent(this, PlayerService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        mScreenHeight = displaymetrics.heightPixels;
+
+        float v = mScreenHeight * (1 - mFrontPanel.getSlideRatio());
+
+        mMixer.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) v));
     }
 
     @Override
@@ -134,7 +86,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //        Log.e(TAG, "Screen size is " + width + ", " + height);
 //        mMask.setLayoutParams(new FrameLayout.LayoutParams(width, height));
 
-//        mMask.setOnTouchListener(this);
+
     }
 
     @Override

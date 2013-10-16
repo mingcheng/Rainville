@@ -219,6 +219,10 @@ public class SimplePanel extends FrameLayout {
         this.ratio = r;
     }
 
+    public float getSlideRatio() {
+        return ratio;
+    }
+
     public void addSimplePanelListener(SimplePanelListener listener) {
         mSimplePanelListener = listener;
     }

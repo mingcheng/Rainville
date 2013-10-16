@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:paddingTop="15dp"
+              android:id="@+id/mixer"
+        >
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="30"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="40"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="50"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="30"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="40"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="50"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="30"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="40"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+    <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:progress="50"
+            android:max="100"
+            style="@style/SeekBar"
+            />
+
+</LinearLayout>
