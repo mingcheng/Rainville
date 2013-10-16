@@ -57,10 +57,10 @@ public class FrontPanelFragment extends Fragment implements SimplePanel.SimplePa
             View v = view.getChildAt(i);
             if (v instanceof ViewGroup) {
                 setCustomFonts((ViewGroup) v);
-            } else if (view.getId() == R.id.icon) {
-                ((TextView) v).setTypeface(mTypefaceWeather);
             } else if (v instanceof ToggleButton) {
                 ((ToggleButton) v).setTypeface(mTypefaceElegant);
+            } else if (v.getId() == R.id.icon) {
+                ((TextView) v).setTypeface(mTypefaceWeather);
             } else if (v instanceof TextView) {
                 ((TextView) v).setTypeface(mTypefaceMusket2);
             }
