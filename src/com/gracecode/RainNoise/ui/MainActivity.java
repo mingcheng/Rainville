@@ -3,12 +3,12 @@ package com.gracecode.RainNoise.ui;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.serivce.PlayerService;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
@@ -42,42 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 //        initMixer();
 
-        Typeface face = Typeface.createFromAsset(getAssets(), "musket2.otf");
 
-        TextView t = (TextView) findViewById(R.id.title);
-        t.setTypeface(face);
-        TextView a = (TextView) findViewById(R.id.desp);
-        a.setTypeface(face);
-
-
-        TextView icon = (TextView) findViewById(R.id.icon);
-        icon.setTypeface(Typeface.createFromAsset(getAssets(), "weather.ttf"));
-
-        mSimplePanel = (SimplePanel) findViewById(R.id.mask);
-
-        final ToggleButton toggleBtn = (ToggleButton) findViewById(R.id.toggle_panel);
-
-
-        toggleBtn.setTypeface(Typeface.createFromAsset(getAssets(), "elegant.ttf"));
-
-        toggleBtn.setOnClickListener(this);
-
-        findViewById(R.id.blew).setOnClickListener(this);
-
-        Button ab = (Button) findViewById(R.id.play2);
-        ab.setTypeface(face);
-
-        mSimplePanel.addSimplePanelListener(new SimplePanel.SimplePanelListener() {
-            @Override
-            public void onOpened() {
-                toggleBtn.setChecked(true);
-            }
-
-            @Override
-            public void onClosed() {
-                toggleBtn.setChecked(false);
-            }
-        });
     }
 
     private void initMixer() {
@@ -134,9 +99,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     mSimplePanel.close();
                 }
                 break;
-            case R.id.blew:
-                Toast.makeText(this, "Blow!!!", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.blew:
+//                Toast.makeText(this, "Blow!!!", Toast.LENGTH_SHORT).show();
+//                break;
 
         }
 

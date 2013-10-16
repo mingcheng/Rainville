@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 public class SimplePanel extends FrameLayout {
     private static final int SCROLL_TOP = 0;
     private static final float DEFAULT_SLIDE_DISTANCE = 200;
-    private float ratio = (float) 0.6;
+    private float ratio = (float) 0.618;
     private static int DEFAULT_CLOSE_DURATION = 250;
     private static int DEFAULT_OPEN_DURATION = 300;
 

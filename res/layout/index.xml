@@ -13,17 +13,19 @@
             >
 
         <Button
+                style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/blew"
+                android:text="Hello, world!"
                 android:layout_alignParentBottom="true"
-                android:text="Blew"
                 />
 
         <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+
+                android:layout_centerInParent="true"
+                style="@style/SeekBar"
                 />
     </RelativeLayout>
 
@@ -31,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mask"
+            android:visibility="gone"
             >
 
         <RelativeLayout

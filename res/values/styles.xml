@@ -5,6 +5,8 @@
         <item name="android:thumbOffset">0dp</item>
         <item name="android:progressDrawable">@drawable/seekbar_progress</item>
         <item name="android:thumb">@drawable/seekbar_thumb</item>
+        <item name="android:maxHeight">5dip</item>
+        <item name="android:minHeight">5dip</item>
     </style>
 
     <style name="Button" parent="android:Widget.Holo.Button">
@@ -22,16 +24,16 @@
         <item name="android:textOff">\u0036</item>
         <item name="android:textOn">\u0037</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:alpha">0.75</item>
-        <item name="android:textColor">@color/sufu</item>
+        <item name="android:alpha">0.35</item>
+        <item name="android:textColor">@color/berry_blue</item>
     </style>
 
     <style name="TitleShadow" parent="android:Widget.Holo.TextView">
         <item name="android:textColor">@color/dark_blue</item>
-        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowColor">@color/berry_blue</item>
         <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">0.5</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
         <item name="android:textColor">@color/dark_blue</item>
         <item name="android:lines">1</item>
     </style>
