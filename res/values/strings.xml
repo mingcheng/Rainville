@@ -5,4 +5,8 @@
     <string name="play">Play</string>
     <string name="icon_rain">\uf019</string>
     <string name="stop">Stop</string>
+    <string name="rain_poem">Rain, Rain, Rain, \ncome again and again. \n\nIn the winter, in the summer and in
+        spring.\n \nCome with joy, \nfall with happiness and go with sorrow.\n\nRain, Rain, Rain,\ncome again and
+        again\n…
+    </string>
 </resources>

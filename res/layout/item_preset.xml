@@ -7,5 +7,5 @@
           android:background="@drawable/item_background"
           android:padding="15dip"
           android:textSize="18sp"
-          android:textColor="@drawable/button_text"
+          android:textColor="@drawable/item_text"
         />

@@ -11,8 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.ControlCenterAdapter;
+import com.gracecode.RainNoise.helper.TypefaceHelper;
 import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.serivce.PlayerService;
 import com.gracecode.RainNoise.ui.fragment.FrontPanelFragment;
@@ -77,6 +79,10 @@ public class MainActivity extends Activity {
 
         mFrontPanelFragment.setFrontPanel(mFrontPanel);
         mFrontPanel.addSimplePanelListener(mFrontPanelFragment);
+
+        // Rain rain rain...
+        ((TextView) findViewById(R.id.poem))
+                .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
     }
 
 
@@ -97,7 +103,7 @@ public class MainActivity extends Activity {
     private int getControlCenterHeight() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        return (int) (displaymetrics.heightPixels * (1 - mFrontPanel.getSlideRatio() * 1.03));
+        return (int) (displaymetrics.heightPixels * (1 - mFrontPanel.getSlideRatio() * 1.024));
     }
 
 
