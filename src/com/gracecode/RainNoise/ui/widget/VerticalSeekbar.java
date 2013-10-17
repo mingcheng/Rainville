@@ -21,8 +21,15 @@ public class VerticalSeekBar extends SeekBar {
         super(context, attrs);
     }
 
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(h, w, oldh, oldw);
+    }
+
+    @Override
+    public synchronized void setProgress(int progress) {
+        super.setProgress(progress);
+        onSizeChanged(getWidth(), getHeight(), 0, 0);
     }
 
     @Override
@@ -58,5 +65,4 @@ public class VerticalSeekBar extends SeekBar {
 
         return true;
     }
-
 }
