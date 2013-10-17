@@ -2,7 +2,6 @@ package com.gracecode.RainNoise.ui.fragment;
 
 import android.animation.Animator;
 import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +12,12 @@ import android.widget.ToggleButton;
 import com.gracecode.RainNoise.BuildConfig;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
+import com.gracecode.RainNoise.player.PlayerBinder;
 import com.gracecode.RainNoise.player.PlayerManager;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
-public class FrontPanelFragment extends Fragment implements SimplePanel.SimplePanelListener, View.OnClickListener {
+public class FrontPanelFragment extends Fragment
+        implements PlayerBinder, SimplePanel.SimplePanelListener, View.OnClickListener {
     private static final String TAG = FrontPanelFragment.class.getName();
 
     private ToggleButton mToggleButton;
@@ -27,18 +28,15 @@ public class FrontPanelFragment extends Fragment implements SimplePanel.SimplePa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     private void setCustomFonts() {
-        Typeface typefaceMusket2 = Typeface.createFromAsset(getActivity().getAssets(), "musket2.otf");
-        Typeface typefaceWeather = Typeface.createFromAsset(getActivity().getAssets(), "weather.ttf");
-        Typeface typefaceElegant = Typeface.createFromAsset(getActivity().getAssets(), "elegant.ttf");
+        TypefaceHelper.setAllTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
+        ((TextView) getView().findViewById(R.id.icon))
+                .setTypeface(TypefaceHelper.getTypefaceWeather(getActivity()));
 
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(), typefaceMusket2);
-        ((TextView) getView().findViewById(R.id.icon)).setTypeface(typefaceWeather);
         if (mToggleButton != null) {
-            mToggleButton.setTypeface(typefaceElegant);
+            mToggleButton.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
         }
     }
 
@@ -110,10 +108,17 @@ public class FrontPanelFragment extends Fragment implements SimplePanel.SimplePa
         this.mFrontPanel = panel;
     }
 
-    public void setPlayerManager(PlayerManager manager) {
+    @Override
+    public void bindPlayerManager(PlayerManager manager) {
         this.mPlayerManager = manager;
     }
 
+    @Override
+    public void unbindPlayerManager() {
+        this.mPlayerManager = null;
+    }
+
+    @Override
     public void refresh() {
         if (mPlayerManager != null && mPlayerManager.isPlaying()) {
             mPlayButton.setChecked(true);
@@ -144,4 +149,5 @@ public class FrontPanelFragment extends Fragment implements SimplePanel.SimplePa
                 break;
         }
     }
+
 }

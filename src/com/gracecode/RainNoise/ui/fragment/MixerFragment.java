@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
+import com.gracecode.RainNoise.player.PlayerBinder;
 import com.gracecode.RainNoise.player.PlayerManager;
 import com.gracecode.RainNoise.ui.widget.VerticalSeekBar;
 
-public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class MixerFragment extends Fragment
+        implements SeekBar.OnSeekBarChangeListener, View.OnClickListener, PlayerBinder {
     private PlayerManager mPlayerManager;
     private VerticalSeekBar[] mSeekBars = new VerticalSeekBar[PlayerManager.MAX_TRACKS_NUM];
     private int[] mVolumes = new int[PlayerManager.MAX_TRACKS_NUM];
@@ -27,7 +29,6 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mixer, null);
         findSeekBars((ViewGroup) view);
-
         return view;
     }
 
@@ -74,6 +75,7 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
 
 
     private void syncVolume() {
+        if (mPlayerManager == null) return;
         for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
             int volume = (mVolumes[i] != 0) ? mVolumes[i] : mPlayerManager.getVolume(i);
             if (mSeekBars[i] != null) {
@@ -83,12 +85,7 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         }
     }
 
-
-    public void setPlayerManager(PlayerManager manager) {
-        this.mPlayerManager = manager;
-    }
-
-
+    @Override
     public void refresh() {
         syncVolume();
     }
@@ -96,10 +93,8 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         int track = (Integer) seekBar.getTag();
-        if (track < PlayerManager.MAX_TRACKS_NUM && mPlayerManager != null) {
+        if (mPlayerManager != null && track < PlayerManager.MAX_TRACKS_NUM) {
             mPlayerManager.setVolume(track, seekBar.getProgress());
-            seekBar.refreshDrawableState();
-            seekBar.invalidate();
         }
     }
 
@@ -122,6 +117,7 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     }
 
     public int[] setDefaultVolumes() {
+        if (mPlayerManager == null) return null;
         int volume = mPlayerManager.getDefaultVolume();
         mVolumes = new int[PlayerManager.MAX_TRACKS_NUM];
         for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
@@ -132,6 +128,7 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     }
 
     public void setAllVolume(int[] volume) {
+        if (volume == null || mPlayerManager == null) return;
         for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
             mPlayerManager.setVolumeBySmooth(i, volume[i]);
         }
@@ -143,6 +140,15 @@ public class MixerFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public void onStop() {
         super.onStop();
-        syncVolume();
+    }
+
+    @Override
+    public void bindPlayerManager(final PlayerManager manager) {
+        this.mPlayerManager = manager;
+    }
+
+    @Override
+    public void unbindPlayerManager() {
+        this.mPlayerManager = null;
     }
 }
