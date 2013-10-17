@@ -11,9 +11,9 @@ import com.gracecode.RainNoise.R;
 
 import java.util.ArrayList;
 
-public final class PlayerManager {
-    private static final String TAG = PlayerManager.class.getName();
-    private static final long VOLUME_CHANGE_DURATION = 1600;
+public final class PlayManager {
+    private static final String TAG = PlayManager.class.getName();
+    private static final long VOLUME_CHANGE_DURATION = 500;
 
     private final Context mContext;
     private final AudioManager mAudioManager;
@@ -32,21 +32,21 @@ public final class PlayerManager {
      * @param context
      * @return playerManager
      */
-    private static PlayerManager ourInstance = null;
+    private static PlayManager ourInstance = null;
     private boolean playing = false;
 
 
-    public static PlayerManager getInstance(Context context) {
+    public static PlayManager getInstance(Context context) {
         if (ourInstance != null) {
             return ourInstance;
         }
 
-        ourInstance = new PlayerManager(context);
+        ourInstance = new PlayManager(context);
         return ourInstance;
     }
 
 
-    private PlayerManager(Context context) {
+    private PlayManager(Context context) {
         this.mContext = context.getApplicationContext();
         this.mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
@@ -153,12 +153,15 @@ public final class PlayerManager {
     }
 
 
-    public void setVolumeBySmooth(int track, int volume, Animator.AnimatorListener listener) {
+    synchronized public void setVolumeBySmooth(int track, int volume, Animator.AnimatorListener listener) {
+        mTrackerVolumes[track] = volume;
+
         Animator animator = getVolumeChangeAnimator(track, volume);
         animator.setDuration(VOLUME_CHANGE_DURATION);
         if (listener != null)
             animator.addListener(listener);
         animator.start();
+
     }
 
 
@@ -167,14 +170,19 @@ public final class PlayerManager {
     }
 
 
-    public void setVolume(int track, int volume, boolean temporary) {
+    synchronized public void setVolume(final int track, int volume, boolean temporary) {
         try {
             if (BuildConfig.DEBUG)
                 Log.v(TAG, "Set layout [" + track + "]'s volume " + volume + " / " + getMaxVolume());
 
-            float percent = volume / (float) getMaxVolume();
+            final float percent = volume / (float) getMaxVolume();
             if (mPlayers[track] != null) {
-                mPlayers[track].setStereoVolume(percent, percent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPlayers[track].setStereoVolume(percent, percent);
+                    }
+                }).start();
             }
 
             if (!temporary)

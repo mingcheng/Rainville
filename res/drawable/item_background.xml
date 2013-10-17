@@ -5,5 +5,6 @@
     <item android:drawable="@drawable/item_background_selected" android:state_selected="true"/>
     <item android:drawable="@drawable/item_background_selected" android:state_pressed="true"/>
     <item android:drawable="@drawable/item_background_checked" android:state_checked="true"/>
+    <item android:drawable="@drawable/item_background_checked" android:state_focused="true"/>
     <item android:drawable="@drawable/item_background_normal"/>
 </selector>

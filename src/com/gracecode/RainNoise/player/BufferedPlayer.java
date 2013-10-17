@@ -125,7 +125,7 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
         return (mAudioTrack != null) && (mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING);
     }
 
-    public int setStereoVolume(float a, float b) {
+    public synchronized int setStereoVolume(float a, float b) {
         try {
             leftVolume = a;
             rightVolume = b;

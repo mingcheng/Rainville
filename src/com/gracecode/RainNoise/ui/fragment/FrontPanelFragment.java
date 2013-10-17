@@ -13,7 +13,7 @@ import com.gracecode.RainNoise.BuildConfig;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
 import com.gracecode.RainNoise.player.PlayerBinder;
-import com.gracecode.RainNoise.player.PlayerManager;
+import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
 public class FrontPanelFragment extends Fragment
@@ -22,7 +22,7 @@ public class FrontPanelFragment extends Fragment
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
-    private PlayerManager mPlayerManager;
+    private PlayManager mPlayManager;
     private ToggleButton mPlayButton;
 
     @Override
@@ -75,8 +75,8 @@ public class FrontPanelFragment extends Fragment
     }
 
     public void togglePlay() throws RuntimeException {
-        if (mPlayerManager.isPlaying()) {
-            mPlayerManager.muteSmoothly(new Animator.AnimatorListener() {
+        if (mPlayManager.isPlaying()) {
+            mPlayManager.muteSmoothly(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
                     mPlayButton.setChecked(false);
@@ -85,7 +85,7 @@ public class FrontPanelFragment extends Fragment
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
-                    mPlayerManager.stop();
+                    mPlayManager.stop();
                     mPlayButton.setEnabled(true);
                 }
 
@@ -99,7 +99,7 @@ public class FrontPanelFragment extends Fragment
             });
 
         } else {
-            mPlayerManager.play();
+            mPlayManager.play();
             mPlayButton.setChecked(true);
         }
     }
@@ -109,18 +109,18 @@ public class FrontPanelFragment extends Fragment
     }
 
     @Override
-    public void bindPlayerManager(PlayerManager manager) {
-        this.mPlayerManager = manager;
+    public void bindPlayerManager(PlayManager manager) {
+        this.mPlayManager = manager;
     }
 
     @Override
     public void unbindPlayerManager() {
-        this.mPlayerManager = null;
+        this.mPlayManager = null;
     }
 
     @Override
     public void refresh() {
-        if (mPlayerManager != null && mPlayerManager.isPlaying()) {
+        if (mPlayManager != null && mPlayManager.isPlaying()) {
             mPlayButton.setChecked(true);
         } else {
             mPlayButton.setChecked(false);

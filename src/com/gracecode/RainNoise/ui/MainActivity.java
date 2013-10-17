@@ -9,10 +9,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.ControlCenterAdapter;
-import com.gracecode.RainNoise.player.PlayerManager;
+import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.serivce.PlayerService;
 import com.gracecode.RainNoise.ui.fragment.FrontPanelFragment;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
@@ -22,7 +23,7 @@ public class MainActivity extends Activity {
     private FrontPanelFragment mFrontPanelFragment;
 
     private PlayerService.MyBinder mBinder;
-    private PlayerManager mPlayerManager;
+    private PlayManager mPlayManager;
     private Intent mServerIntent;
     private ViewPager mControlCenterContainer;
     private ControlCenterAdapter mControlCenterAdapter;
@@ -45,6 +46,17 @@ public class MainActivity extends Activity {
                 .commit();
 
         startService(mServerIntent);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && mFrontPanel.isOpened()) {
+            mFrontPanel.close();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 
@@ -93,7 +105,7 @@ public class MainActivity extends Activity {
         public void onServiceConnected(ComponentName className, IBinder binder) {
             if (binder instanceof PlayerService.MyBinder) {
                 mBinder = (PlayerService.MyBinder) binder;
-                mPlayerManager = mBinder.getPlayersManager();
+                mPlayManager = mBinder.getPlayersManager();
 
                 bindPlayerManager();
                 refresh();
@@ -106,8 +118,8 @@ public class MainActivity extends Activity {
         }
 
         private void bindPlayerManager() {
-            mFrontPanelFragment.bindPlayerManager(mPlayerManager);
-            mControlCenterAdapter.bindPlayerManager(mPlayerManager);
+            mFrontPanelFragment.bindPlayerManager(mPlayManager);
+            mControlCenterAdapter.bindPlayerManager(mPlayManager);
         }
 
         public void onServiceDisconnected(ComponentName className) {

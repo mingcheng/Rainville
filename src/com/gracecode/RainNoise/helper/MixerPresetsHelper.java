@@ -31,12 +31,14 @@ public abstract interface MixerPresetsHelper {
     public static float[][] ALL_PRESETS = new float[][]{
             DEFAULT_PRESET, FAIRY_RAIN, BEDROOM, UNDER_THE_PORCH, DISTANT_STORM,
             GETTING_WET, ONLY_RUMBLE, UNDER_THE_LEAVES, DARK_RAIN, JUNGLE_LODGE,
-            BROWN_NOISE, PINK_NOISE, WHITE_NOISE, GREY_NOISE
+            BROWN_NOISE, PINK_NOISE, WHITE_NOISE, GREY_NOISE,
+            _60_HZ, _125_HZ, _250_HZ, _500_HZ, _1K_HZ, _2K_HZ, _4K_HZ, _8K_HZ
     };
 
     public static String[] PRESET_TITLES = new String[]{
             "Default", "Fairy Rain", "Bedroom", "Under The Porch", "Distant Storm",
             "Getting Wet", "Only Rumble", "Under The Leaves", "Dark Rain", "Jungle Lodge",
-            "Brown Noise", "Pink Noise", "White Noise", "Grey Noise"
+            "Brown Noise", "Pink Noise", "White Noise", "Grey Noise",
+            "60 Hz", "125 Hz", "250 Hz", "500 Hz", "1000 Hz", "2000 Hz", "4000 Hz", "8000 Hz"
     };
 }

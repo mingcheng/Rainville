@@ -10,14 +10,14 @@ import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
 import com.gracecode.RainNoise.player.PlayerBinder;
-import com.gracecode.RainNoise.player.PlayerManager;
+import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.ui.widget.VerticalSeekBar;
 
 public class MixerFragment extends Fragment
         implements SeekBar.OnSeekBarChangeListener, View.OnClickListener, PlayerBinder {
-    private PlayerManager mPlayerManager;
-    private VerticalSeekBar[] mSeekBars = new VerticalSeekBar[PlayerManager.MAX_TRACKS_NUM];
-    private int[] mVolumes = new int[PlayerManager.MAX_TRACKS_NUM];
+    private PlayManager mPlayManager;
+    private VerticalSeekBar[] mSeekBars = new VerticalSeekBar[PlayManager.MAX_TRACKS_NUM];
+    private int[] mVolumes = new int[PlayManager.MAX_TRACKS_NUM];
 
     private int seek = 0;
 
@@ -51,7 +51,7 @@ public class MixerFragment extends Fragment
 
 
     private void bindSeekBarsListener() {
-        for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
+        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
             if (mSeekBars[i] != null)
                 mSeekBars[i].setOnSeekBarChangeListener(this);
         }
@@ -63,7 +63,7 @@ public class MixerFragment extends Fragment
             View v = view.getChildAt(i);
             if (v instanceof VerticalSeekBar) {
                 int track = seek++;
-                if (track < PlayerManager.MAX_TRACKS_NUM) {
+                if (track < PlayManager.MAX_TRACKS_NUM) {
                     v.setTag(track);
                     mSeekBars[track] = (VerticalSeekBar) v;
                 }
@@ -75,11 +75,11 @@ public class MixerFragment extends Fragment
 
 
     private void syncVolume() {
-        if (mPlayerManager == null) return;
-        for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
-            int volume = (mVolumes[i] != 0) ? mVolumes[i] : mPlayerManager.getVolume(i);
+        if (mPlayManager == null) return;
+        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+            int volume = (mVolumes[i] != 0) ? mVolumes[i] : mPlayManager.getVolume(i);
             if (mSeekBars[i] != null) {
-                mSeekBars[i].setMax(mPlayerManager.getMaxVolume());
+                mSeekBars[i].setMax(mPlayManager.getMaxVolume());
                 mSeekBars[i].setProgress(volume);
             }
         }
@@ -93,8 +93,8 @@ public class MixerFragment extends Fragment
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         int track = (Integer) seekBar.getTag();
-        if (mPlayerManager != null && track < PlayerManager.MAX_TRACKS_NUM) {
-            mPlayerManager.setVolume(track, seekBar.getProgress());
+        if (mPlayManager != null && track < PlayManager.MAX_TRACKS_NUM) {
+            mPlayManager.setVolume(track, seekBar.getProgress());
         }
     }
 
@@ -117,10 +117,10 @@ public class MixerFragment extends Fragment
     }
 
     public int[] setDefaultVolumes() {
-        if (mPlayerManager == null) return null;
-        int volume = mPlayerManager.getDefaultVolume();
-        mVolumes = new int[PlayerManager.MAX_TRACKS_NUM];
-        for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
+        if (mPlayManager == null) return null;
+        int volume = mPlayManager.getDefaultVolume();
+        mVolumes = new int[PlayManager.MAX_TRACKS_NUM];
+        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
             mVolumes[i] = volume;
         }
 
@@ -128,9 +128,9 @@ public class MixerFragment extends Fragment
     }
 
     public void setAllVolume(int[] volume) {
-        if (volume == null || mPlayerManager == null) return;
-        for (int i = 0; i < PlayerManager.MAX_TRACKS_NUM; i++) {
-            mPlayerManager.setVolumeBySmooth(i, volume[i]);
+        if (volume == null || mPlayManager == null) return;
+        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+            mPlayManager.setVolumeBySmooth(i, volume[i]);
         }
 
         syncVolume();
@@ -143,12 +143,12 @@ public class MixerFragment extends Fragment
     }
 
     @Override
-    public void bindPlayerManager(final PlayerManager manager) {
-        this.mPlayerManager = manager;
+    public void bindPlayerManager(final PlayManager manager) {
+        this.mPlayManager = manager;
     }
 
     @Override
     public void unbindPlayerManager() {
-        this.mPlayerManager = null;
+        this.mPlayManager = null;
     }
 }

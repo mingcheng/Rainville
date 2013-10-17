@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import com.gracecode.RainNoise.player.PlayerManager;
+import com.gracecode.RainNoise.player.PlayManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,12 +13,12 @@ import com.gracecode.RainNoise.player.PlayerManager;
  * Date: 13-10-11
  */
 public class PlayerService extends Service {
-    private static PlayerManager mPlayerManager;
+    private static PlayManager mPlayManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mPlayerManager = PlayerManager.getInstance(this);
+        mPlayManager = PlayManager.getInstance(this);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class PlayerService extends Service {
             return PlayerService.this;
         }
 
-        public PlayerManager getPlayersManager() {
-            return mPlayerManager;
+        public PlayManager getPlayersManager() {
+            return mPlayManager;
         }
     }
 
@@ -48,8 +48,8 @@ public class PlayerService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        if (mPlayerManager.isPlaying()) {
-            mPlayerManager.stop();
+        if (mPlayManager.isPlaying()) {
+            mPlayManager.stop();
         }
     }
 }
