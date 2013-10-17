@@ -12,7 +12,7 @@ import com.gracecode.RainNoise.R;
 import java.util.ArrayList;
 
 public final class PlayManager {
-    private static final String TAG = PlayManager.class.getName();
+    public static final String TAG = PlayManager.class.getName();
     private static final long VOLUME_CHANGE_DURATION = 500;
 
     private final Context mContext;

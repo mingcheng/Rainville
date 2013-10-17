@@ -16,7 +16,7 @@ import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.ControlCenterAdapter;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
 import com.gracecode.RainNoise.player.PlayManager;
-import com.gracecode.RainNoise.serivce.PlayerService;
+import com.gracecode.RainNoise.serivce.PlayService;
 import com.gracecode.RainNoise.ui.fragment.FrontPanelFragment;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
@@ -24,12 +24,10 @@ public class MainActivity extends Activity {
     private SimplePanel mFrontPanel;
     private FrontPanelFragment mFrontPanelFragment;
 
-    private PlayerService.MyBinder mBinder;
     private PlayManager mPlayManager;
     private Intent mServerIntent;
     private ViewPager mControlCenterContainer;
     private ControlCenterAdapter mControlCenterAdapter;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class MainActivity extends Activity {
         mControlCenterContainer = (ViewPager) findViewById(R.id.control_center);
         mFrontPanelFragment = new FrontPanelFragment();
         mControlCenterAdapter = new ControlCenterAdapter(getFragmentManager());
-        mServerIntent = new Intent(this, PlayerService.class);
+        mServerIntent = new Intent(this, PlayService.class);
 
         getFragmentManager()
                 .beginTransaction()
@@ -107,11 +105,12 @@ public class MainActivity extends Activity {
     }
 
 
+    private PlayService.PlayBinder mBinder;
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder binder) {
-            if (binder instanceof PlayerService.MyBinder) {
-                mBinder = (PlayerService.MyBinder) binder;
-                mPlayManager = mBinder.getPlayersManager();
+            if (binder instanceof PlayService.PlayBinder) {
+                mBinder = (PlayService.PlayBinder) binder;
+                mPlayManager = mBinder.getPlayManager();
 
                 bindPlayerManager();
                 refresh();
@@ -120,11 +119,14 @@ public class MainActivity extends Activity {
 
         private void refresh() {
             mControlCenterAdapter.refresh();
-            mFrontPanelFragment.refresh();
+            if (mPlayManager.isPlaying()) {
+                mFrontPanelFragment.setPlaying();
+            } else {
+                mFrontPanelFragment.setStopped();
+            }
         }
 
         private void bindPlayerManager() {
-            mFrontPanelFragment.bindPlayerManager(mPlayManager);
             mControlCenterAdapter.bindPlayerManager(mPlayManager);
         }
 

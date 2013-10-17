@@ -1,29 +1,42 @@
 package com.gracecode.RainNoise.ui.fragment;
 
-import android.animation.Animator;
-import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import com.gracecode.RainNoise.BuildConfig;
 import com.gracecode.RainNoise.R;
+import com.gracecode.RainNoise.helper.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
-import com.gracecode.RainNoise.player.PlayerBinder;
-import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
-public class FrontPanelFragment extends Fragment
-        implements PlayerBinder, SimplePanel.SimplePanelListener, View.OnClickListener {
+public class FrontPanelFragment extends BasePlayerFragment
+        implements SimplePanel.SimplePanelListener, View.OnClickListener {
     private static final String TAG = FrontPanelFragment.class.getName();
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
-    private PlayManager mPlayManager;
     private ToggleButton mPlayButton;
+
+    private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
+        @Override
+        public void onPlay() {
+            setPlaying();
+        }
+
+        @Override
+        public void onStop() {
+            setStopped();
+        }
+
+        @Override
+        public void onSetVolume(int track, int volume) {
+
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -46,14 +59,22 @@ public class FrontPanelFragment extends Fragment
 
         mToggleButton = (ToggleButton) getView().findViewById(R.id.toggle_panel);
         mToggleButton.setOnClickListener(this);
-        mToggleButton.setChecked(false);
+        onClosed(); // The Panel is closed when initial launched.
 
         mPlayButton = (ToggleButton) getView().findViewById(R.id.toggle_play);
         mPlayButton.setOnClickListener(this);
-        mPlayButton.setChecked(false);
 
         setCustomFonts();
+        getActivity().registerReceiver(mBroadcastReceiver, new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
     }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mBroadcastReceiver);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,59 +95,22 @@ public class FrontPanelFragment extends Fragment
         }
     }
 
-    public void togglePlay() throws RuntimeException {
-        if (mPlayManager.isPlaying()) {
-            mPlayManager.muteSmoothly(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-                    mPlayButton.setChecked(false);
-                    mPlayButton.setEnabled(false);
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    mPlayManager.stop();
-                    mPlayButton.setEnabled(true);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-                }
-            });
-
-        } else {
-            mPlayManager.play();
-            mPlayButton.setChecked(true);
-        }
-    }
 
     public void setFrontPanel(SimplePanel panel) {
         this.mFrontPanel = panel;
     }
 
     @Override
-    public void bindPlayerManager(PlayManager manager) {
-        this.mPlayManager = manager;
+    public void setPlaying() {
+        super.setPlaying();
+        mPlayButton.setChecked(true);
     }
 
     @Override
-    public void unbindPlayerManager() {
-        this.mPlayManager = null;
+    public void setStopped() {
+        super.setStopped();
+        mPlayButton.setChecked(false);
     }
-
-    @Override
-    public void refresh() {
-        if (mPlayManager != null && mPlayManager.isPlaying()) {
-            mPlayButton.setChecked(true);
-        } else {
-            mPlayButton.setChecked(false);
-        }
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -140,14 +124,12 @@ public class FrontPanelFragment extends Fragment
                 break;
 
             case R.id.toggle_play:
-                try {
-                    togglePlay();
-                } catch (RuntimeException e) {
-                    if (BuildConfig.DEBUG)
-                        Log.e(TAG, "Toggle play status is failed. Maybe player not finished?");
+                if (isPlaying()) {
+                    sendStopBroadcast();
+                } else {
+                    sendPlayBroadcast();
                 }
                 break;
         }
     }
-
 }
