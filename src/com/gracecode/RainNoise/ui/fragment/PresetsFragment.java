@@ -16,19 +16,22 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
     private PlayManager mPlayManager;
     private SharedPreferences mSharedPreferences;
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         mAdapter = new PresetsAdapter(getActivity(), PRESET_TITLES);
-        mSharedPreferences = getActivity().getSharedPreferences(PresetsFragment.class.getName(), Context.MODE_PRIVATE);
+        mSharedPreferences = getActivity()
+                .getSharedPreferences(PresetsFragment.class.getName(), Context.MODE_PRIVATE);
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
         setListAdapter(mAdapter);
     }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -37,6 +40,7 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
 
     }
 
+
     public void setPresets(float[] presets) {
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
             int volume = (int) (mPlayManager.getMaxVolume() * presets[i]);
@@ -44,6 +48,7 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
             mSharedPreferences.edit().putFloat("_" + i, presets[i]).commit();
         }
     }
+
 
     public float[] getPresets() {
         float[] result = new float[PlayManager.MAX_TRACKS_NUM];
@@ -54,18 +59,22 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
         return result;
     }
 
+
     @Override
     public void bindPlayerManager(PlayManager manager) {
         mPlayManager = manager;
     }
+
 
     @Override
     public void unbindPlayerManager() {
         mPlayManager = null;
     }
 
+
     @Override
     public void refresh() {
+        if (mPlayManager == null || mSharedPreferences == null) return;
         setPresets(getPresets());
     }
 }
