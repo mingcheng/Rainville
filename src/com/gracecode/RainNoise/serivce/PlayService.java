@@ -83,7 +83,6 @@ public class PlayService extends Service {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.keep_running))
-                .setTicker(getString(R.string.keep_running))
                 .setOngoing(true)
                 .setAutoCancel(false)
                 .setContentIntent(intent);
