@@ -43,8 +43,6 @@ public class MainActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.front_panel, mFrontPanelFragment)
                 .commit();
-
-        startService(mServerIntent);
     }
 
 
@@ -56,13 +54,6 @@ public class MainActivity extends Activity {
         }
 
         return super.onKeyDown(keyCode, event);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bindService(mServerIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
 
@@ -80,12 +71,22 @@ public class MainActivity extends Activity {
         // Rain rain rain...
         ((TextView) findViewById(R.id.poem))
                 .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
+
+
+        startService(mServerIntent);
+        bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
     }
 
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        if (mPlayManager.isPlaying()) {
+            mBinder.getService().notifyRunning();
+        } else {
+            stopService(mServerIntent);
+        }
+
         unbindService(mConnection);
     }
 
@@ -113,6 +114,7 @@ public class MainActivity extends Activity {
 
                 if (mPlayManager.isPlaying()) {
                     mFrontPanelFragment.setPlaying();
+                    mBinder.getService().cancelNotification();
                 } else {
                     mFrontPanelFragment.setStopped();
                 }

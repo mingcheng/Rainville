@@ -82,6 +82,7 @@ public class SimplePanel extends FrameLayout {
                     mLastEventY = 0;
                 }
 
+                setAlpha(0.85f);
                 isDragging = true;
                 break;
 

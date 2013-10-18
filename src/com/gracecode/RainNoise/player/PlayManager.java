@@ -104,7 +104,7 @@ public final class PlayManager {
     }
 
 
-    synchronized public void stop() {
+    public void stop() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             if (mPlayers[i] != null) {
                 mPlayers[i].shutdown();
@@ -114,7 +114,7 @@ public final class PlayManager {
         playing = false;
     }
 
-    synchronized public void play() {
+    public void play() {
         if (isPlaying()) return;
 
         initPlayers();
