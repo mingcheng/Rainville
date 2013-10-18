@@ -23,7 +23,6 @@ import com.gracecode.RainNoise.ui.widget.SimplePanel;
 public class MainActivity extends Activity {
     private SimplePanel mFrontPanel;
     private FrontPanelFragment mFrontPanelFragment;
-
     private PlayManager mPlayManager;
     private Intent mServerIntent;
     private ViewPager mControlCenterContainer;
@@ -112,27 +111,17 @@ public class MainActivity extends Activity {
                 mBinder = (PlayService.PlayBinder) binder;
                 mPlayManager = mBinder.getPlayManager();
 
-                bindPlayerManager();
-                refresh();
+                if (mPlayManager.isPlaying()) {
+                    mFrontPanelFragment.setPlaying();
+                } else {
+                    mFrontPanelFragment.setStopped();
+                }
             }
-        }
-
-        private void refresh() {
-            mControlCenterAdapter.refresh();
-            if (mPlayManager.isPlaying()) {
-                mFrontPanelFragment.setPlaying();
-            } else {
-                mFrontPanelFragment.setStopped();
-            }
-        }
-
-        private void bindPlayerManager() {
-            mControlCenterAdapter.bindPlayerManager(mPlayManager);
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            mControlCenterAdapter.unbindPlayerManager();
             mBinder = null;
+            mPlayManager = null;
         }
     };
 }

@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
-import com.gracecode.RainNoise.player.PlayerBinder;
 import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.ui.widget.VerticalSeekBar;
 
 public class MixerFragment extends Fragment
-        implements SeekBar.OnSeekBarChangeListener, View.OnClickListener, PlayerBinder {
+        implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     private PlayManager mPlayManager;
     private VerticalSeekBar[] mSeekBars = new VerticalSeekBar[PlayManager.MAX_TRACKS_NUM];
     private int[] mVolumes = new int[PlayManager.MAX_TRACKS_NUM];
@@ -85,10 +84,10 @@ public class MixerFragment extends Fragment
         }
     }
 
-    @Override
-    public void refresh() {
-        syncVolume();
-    }
+//    @Override
+//    public void refresh() {
+//        syncVolume();
+//    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -142,13 +141,13 @@ public class MixerFragment extends Fragment
         super.onStop();
     }
 
-    @Override
-    public void bindPlayerManager(final PlayManager manager) {
-        this.mPlayManager = manager;
-    }
-
-    @Override
-    public void unbindPlayerManager() {
-        this.mPlayManager = null;
-    }
+//    @Override
+//    public void bindPlayerManager(final PlayManager manager) {
+//        this.mPlayManager = manager;
+//    }
+//
+//    @Override
+//    public void unbindPlayerManager() {
+//        this.mPlayManager = null;
+//    }
 }

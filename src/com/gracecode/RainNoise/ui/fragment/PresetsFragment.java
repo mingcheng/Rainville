@@ -1,20 +1,49 @@
 package com.gracecode.RainNoise.ui.fragment;
 
-import android.app.ListFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.PresetsAdapter;
 import com.gracecode.RainNoise.helper.MixerPresetsHelper;
+import com.gracecode.RainNoise.player.BufferedPlayer;
 import com.gracecode.RainNoise.player.PlayManager;
-import com.gracecode.RainNoise.player.PlayerBinder;
+import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
 
-public class PresetsFragment extends ListFragment implements PlayerBinder, MixerPresetsHelper {
+public class PresetsFragment extends PlayerFragment implements MixerPresetsHelper, AdapterView.OnItemClickListener {
     private PresetsAdapter mAdapter;
-    private PlayManager mPlayManager;
     private SharedPreferences mSharedPreferences;
+    private ListView mListView;
+
+
+    private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
+        @Override
+        public void onPlay() {
+            setPlaying();
+        }
+
+        @Override
+        public void onStop() {
+            setStopped();
+        }
+
+        @Override
+        public void onSetVolume(int track, int volume) {
+
+        }
+
+        @Override
+        public void onSetPresets(float[] presets) {
+            savePresets(presets);
+        }
+    };
 
 
     @Override
@@ -27,24 +56,34 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
 
 
     @Override
-    public void onStart() {
-        super.onStart();
-        setListAdapter(mAdapter);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_persents, null);
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        return view;
     }
 
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        setPresets(ALL_PRESETS[position]);
+    public void onStart() {
+        super.onStart();
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(this);
 
+        sendPresetsBroadcast(getPresets());
+        getActivity().registerReceiver(mBroadcastReceiver,
+                new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
     }
 
 
-    public void setPresets(float[] presets) {
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(mBroadcastReceiver);
+    }
+
+
+    public void savePresets(float[] presets) {
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            int volume = (int) (mPlayManager.getMaxVolume() * presets[i]);
-            mPlayManager.setVolume(i, volume);
             mSharedPreferences.edit().putFloat("_" + i, presets[i]).commit();
         }
     }
@@ -53,7 +92,7 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
     public float[] getPresets() {
         float[] result = new float[PlayManager.MAX_TRACKS_NUM];
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            result[i] = mSharedPreferences.getFloat("_" + i, mPlayManager.getDefaultVolume());
+            result[i] = mSharedPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
         }
 
         return result;
@@ -61,20 +100,10 @@ public class PresetsFragment extends ListFragment implements PlayerBinder, Mixer
 
 
     @Override
-    public void bindPlayerManager(PlayManager manager) {
-        mPlayManager = manager;
-    }
-
-
-    @Override
-    public void unbindPlayerManager() {
-        mPlayManager = null;
-    }
-
-
-    @Override
-    public void refresh() {
-        if (mPlayManager == null || mSharedPreferences == null) return;
-        setPresets(getPresets());
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        sendPresetsBroadcast(ALL_PRESETS[i]);
+        if (!isPlaying()) {
+            sendPlayBroadcast();
+        }
     }
 }

@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
-import com.gracecode.RainNoise.helper.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.player.PlayManager;
+import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
 
 
 public class PlayService extends Service {
@@ -37,6 +37,14 @@ public class PlayService extends Service {
         @Override
         public void onSetVolume(int track, int volume) {
             mPlayManager.setVolume(track, volume);
+        }
+
+        @Override
+        public void onSetPresets(float[] presets) {
+            for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+                int volume = (int) (mPlayManager.getMaxVolume() * presets[i]);
+                mPlayManager.setVolume(i, volume);
+            }
         }
     };
 

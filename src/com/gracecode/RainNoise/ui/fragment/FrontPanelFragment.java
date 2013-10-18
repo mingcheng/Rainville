@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.gracecode.RainNoise.R;
-import com.gracecode.RainNoise.helper.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
+import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
 
-public class FrontPanelFragment extends BasePlayerFragment
+public class FrontPanelFragment extends PlayerFragment
         implements SimplePanel.SimplePanelListener, View.OnClickListener {
-    private static final String TAG = FrontPanelFragment.class.getName();
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
@@ -35,6 +34,10 @@ public class FrontPanelFragment extends BasePlayerFragment
         @Override
         public void onSetVolume(int track, int volume) {
 
+        }
+
+        @Override
+        public void onSetPresets(float[] presets) {
         }
     };
 
@@ -65,7 +68,8 @@ public class FrontPanelFragment extends BasePlayerFragment
         mPlayButton.setOnClickListener(this);
 
         setCustomFonts();
-        getActivity().registerReceiver(mBroadcastReceiver, new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
+        getActivity().registerReceiver(mBroadcastReceiver,
+                new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
     }
 
 
