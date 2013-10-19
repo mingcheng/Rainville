@@ -25,6 +25,7 @@ public class TypefaceHelper {
 
     public static Typeface getTypefaceMusket2(Context context) {
         if (mTypefaceMusket2 == null) {
+            // http://bybu.es/portfolio/musket/
             mTypefaceMusket2 = Typeface.createFromAsset(context.getAssets(), "musket2.otf");
         }
 

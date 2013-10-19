@@ -17,6 +17,7 @@
             android:resizeable="true"/>
 
     <application
+            android:persistent="true"
             android:label="@string/app_name"
             android:icon="@drawable/ic_launcher"
             android:theme="@android:style/Theme.Holo.NoActionBar"
@@ -35,7 +36,6 @@
         <service
                 android:name=".serivce.PlayService"
                 android:label="@string/app_name"
-
                 />
     </application>
 </manifest>

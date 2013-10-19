@@ -43,6 +43,10 @@ public class MainActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.front_panel, mFrontPanelFragment)
                 .commit();
+
+        // Rain rain rain...
+        ((TextView) findViewById(R.id.poem))
+                .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
     }
 
 
@@ -68,11 +72,6 @@ public class MainActivity extends Activity {
         mFrontPanelFragment.setFrontPanel(mFrontPanel);
         mFrontPanel.addSimplePanelListener(mFrontPanelFragment);
 
-        // Rain rain rain...
-        ((TextView) findViewById(R.id.poem))
-                .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
-
-
         startService(mServerIntent);
         bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
     }
@@ -84,7 +83,6 @@ public class MainActivity extends Activity {
         if (!mPlayManager.isPlaying()) {
             stopService(mServerIntent);
         }
-
         unbindService(mConnection);
     }
 

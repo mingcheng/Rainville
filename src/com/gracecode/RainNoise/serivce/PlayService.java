@@ -30,6 +30,7 @@ public class PlayService extends Service {
         mNotificationManager.cancel(NOTIFY_ID);
     }
 
+
     public class PlayBinder extends Binder {
         public PlayService getService() {
             return PlayService.this;
@@ -80,7 +81,7 @@ public class PlayService extends Service {
                 PlayService.this,
                 NOTIFY_ID,
                 new Intent(PlayService.this, MainActivity.class),
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                NOTIFY_ID);
 
         mNotification = new NotificationCompat.Builder(PlayService.this)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -101,13 +102,16 @@ public class PlayService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
         if (mPlayManager.isPlaying()) {
             mPlayManager.stop();
+            clearNotification();
         }
+
+        unregisterReceiver(mBroadcastReceiver);
+        super.onDestroy();
     }
 
     @Override
