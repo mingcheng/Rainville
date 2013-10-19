@@ -81,9 +81,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (mPlayManager.isPlaying()) {
-            mBinder.getService().notifyRunning();
-        } else {
+        if (!mPlayManager.isPlaying()) {
             stopService(mServerIntent);
         }
 
@@ -114,7 +112,6 @@ public class MainActivity extends Activity {
 
                 if (mPlayManager.isPlaying()) {
                     mFrontPanelFragment.setPlaying();
-                    mBinder.getService().cancelNotification();
                 } else {
                     mFrontPanelFragment.setStopped();
                 }

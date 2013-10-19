@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -25,7 +26,7 @@ public class PlayService extends Service {
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }
 
-    public void cancelNotification() {
+    public void clearNotification() {
         mNotificationManager.cancel(NOTIFY_ID);
     }
 
@@ -45,11 +46,13 @@ public class PlayService extends Service {
         @Override
         public void onPlay() {
             mPlayManager.play();
+            notifyRunning();
         }
 
         @Override
         public void onStop() {
             mPlayManager.stop();
+            clearNotification();
         }
 
         @Override
@@ -77,10 +80,11 @@ public class PlayService extends Service {
                 PlayService.this,
                 NOTIFY_ID,
                 new Intent(PlayService.this, MainActivity.class),
-                PendingIntent.FLAG_NO_CREATE);
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
         mNotification = new NotificationCompat.Builder(PlayService.this)
                 .setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification))
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.keep_running))
                 .setOngoing(true)
