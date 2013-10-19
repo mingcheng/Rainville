@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -85,12 +84,21 @@ public class PlayService extends Service {
 
         mNotification = new NotificationCompat.Builder(PlayService.this)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification))
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.keep_running))
                 .setOngoing(true)
                 .setAutoCancel(false)
-                .setContentIntent(intent);
+                .setContentIntent(intent)
+                .addAction(android.R.color.transparent, getString(R.string.stop), getStopPendingIntent());
+    }
+
+
+    private PendingIntent getStopPendingIntent() {
+        Intent intent = new Intent()
+                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_STOP);
+
+        return PendingIntent.getBroadcast(PlayService.this, NOTIFY_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
