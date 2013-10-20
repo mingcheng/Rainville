@@ -3,6 +3,8 @@ package com.gracecode.RainNoise.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
+import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 
 
 public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
@@ -19,18 +21,40 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        switch (intent.getIntExtra(FIELD_CMD, CMD_NOP)) {
-            case CMD_PLAY:
-                onPlay();
-                break;
-            case CMD_STOP:
-                onStop();
-                break;
-            case CMD_SET_VOLUME:
-                break;
-            case CMD_SET_PRESETS:
-                onSetPresets(intent.getFloatArrayExtra(FIELD_PRESETS));
-                break;
+        String action = intent.getAction();
+
+        if (action.equals(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)) {
+            switch (intent.getIntExtra(FIELD_CMD, CMD_NOP)) {
+                case CMD_PLAY:
+                    onPlay();
+                    break;
+                case CMD_STOP:
+                    onStop();
+                    break;
+                case CMD_SET_VOLUME:
+                    break;
+                case CMD_SET_PRESETS:
+                    onSetPresets(intent.getFloatArrayExtra(FIELD_PRESETS));
+                    break;
+            }
+
+            return;
+        }
+
+        if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
+            int stat = intent.getIntExtra("state", -1);
+            switch (stat) {
+                case 0:
+                    Toast.makeText(context, "unplugged", Toast.LENGTH_SHORT).show();
+                    SendBroadcastHelper.sendStopBroadcast(context);
+                    break;
+                case 1:
+                    Toast.makeText(context, "plugged", Toast.LENGTH_SHORT).show();
+                    SendBroadcastHelper.sendPlayBroadcast(context);
+                    break;
+            }
+
+            return;
         }
     }
 

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.PresetsAdapter;
 import com.gracecode.RainNoise.helper.MixerPresetsHelper;
+import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 import com.gracecode.RainNoise.player.BufferedPlayer;
 import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
@@ -69,7 +70,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
-        sendPresetsBroadcast(getPresets());
+        SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresets());
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
     }
@@ -101,9 +102,9 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        sendPresetsBroadcast(ALL_PRESETS[i]);
+        SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
-            sendPlayBroadcast();
+            SendBroadcastHelper.sendPlayBroadcast(getActivity());
         }
     }
 }

@@ -11,6 +11,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import com.gracecode.RainNoise.R;
+import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.ui.MainActivity;
@@ -42,7 +43,7 @@ public class PlayService extends Service {
 
     private final IBinder mBinder = new PlayBinder();
     private static PlayManager mPlayManager;
-    private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
+    private BroadcastReceiver mPlayBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
         public void onPlay() {
             mPlayManager.play();
@@ -94,18 +95,20 @@ public class PlayService extends Service {
 
 
     private PendingIntent getStopPendingIntent() {
-        Intent intent = new Intent()
-                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
-                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_STOP);
-
-        return PendingIntent.getBroadcast(PlayService.this, NOTIFY_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(PlayService.this,
+                NOTIFY_ID,
+                SendBroadcastHelper.getNewStopBroadcastIntent(),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        registerReceiver(mBroadcastReceiver,
+        registerReceiver(mPlayBroadcastReceiver,
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
+
+        registerReceiver(mPlayBroadcastReceiver,
+                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -118,7 +121,7 @@ public class PlayService extends Service {
             clearNotification();
         }
 
-        unregisterReceiver(mBroadcastReceiver);
+        unregisterReceiver(mPlayBroadcastReceiver);
         super.onDestroy();
     }
 

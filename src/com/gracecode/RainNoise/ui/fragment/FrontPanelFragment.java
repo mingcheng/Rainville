@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.gracecode.RainNoise.R;
+import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
 import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
 import com.gracecode.RainNoise.ui.widget.SimplePanel;
@@ -129,9 +130,9 @@ public class FrontPanelFragment extends PlayerFragment
 
             case R.id.toggle_play:
                 if (isPlaying()) {
-                    sendStopBroadcast();
+                    SendBroadcastHelper.sendStopBroadcast(getActivity());
                 } else {
-                    sendPlayBroadcast();
+                    SendBroadcastHelper.sendPlayBroadcast(getActivity());
                 }
                 break;
         }
