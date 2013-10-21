@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:id="@+id/mixer"
+        >
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/trackers"
+            >
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="40"
+                style="@style/SeekBar"
+                />
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />'
+
+        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/SeekBar"
+                />
+    </LinearLayout>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/trackers"
+            android:orientation="vertical"
+            >
+
+        <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="\ue00a"
+                android:textOff="\ue00a"
+                android:id="@+id/animate"
+                style="@style/Button"
+                android:checked="false"
+                android:layout_alignParentTop="true"
+                />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0061"
+                android:layout_below="@id/animate"
+                android:id="@+id/reset"
+                style="@style/Button"
+                />
+
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0043"
+                android:id="@+id/down"
+                style="@style/Button"
+                android:layout_alignParentBottom="true"
+                />
+
+        <Button
+                android:layout_above="@id/down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u0042"
+                android:id="@+id/up"
+                style="@style/Button"
+                />
+    </RelativeLayout>
+</RelativeLayout>

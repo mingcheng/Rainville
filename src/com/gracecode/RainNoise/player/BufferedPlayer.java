@@ -1,10 +1,11 @@
-package com.gracecode.RainNoise;
+package com.gracecode.RainNoise.player;
 
 import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
+import com.gracecode.RainNoise.helper.MixerPresetsHelper;
 import org.xiph.vorbis.decoder.DecodeFeed;
 import org.xiph.vorbis.decoder.DecodeStreamInfo;
 import org.xiph.vorbis.decoder.VorbisDecoder;
@@ -14,23 +15,20 @@ import java.io.InputStream;
 
 public final class BufferedPlayer implements DecodeFeed, Runnable {
     public static final String TAG = BufferedPlayer.class.getName();
-    public static final float DEFAULT_VOLUME = (float) 0.35;
-
-    private static AudioManager mAudioManager;
-
+    public static final float DEFAULT_VOLUME_PERCENT = MixerPresetsHelper.DEFAULT_PRESET[0];
     private boolean looping = false;
 
     private final Context mContext;
     private InputStream mInputStream;
 
-    private float leftVolume = DEFAULT_VOLUME;
-    private float rightVolume = DEFAULT_VOLUME;
+    private float leftVolume = DEFAULT_VOLUME_PERCENT;
+    private float rightVolume = DEFAULT_VOLUME_PERCENT;
 
     private AudioTrack mAudioTrack;
 
     BufferedPlayer(Context context, int raw) {
         mContext = context.getApplicationContext();
-        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
         mInputStream = mContext.getResources().openRawResource(raw);
         if (mInputStream.markSupported()) {
@@ -125,7 +123,7 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
         return (mAudioTrack != null) && (mAudioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING);
     }
 
-    public int setStereoVolume(float a, float b) {
+    public synchronized int setStereoVolume(float a, float b) {
         try {
             leftVolume = a;
             rightVolume = b;

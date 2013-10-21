@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Rain</string>
+    <string name="app_desp">The Sound of Rain, without the wet feet.</string>
+    <string name="play">Play</string>
+    <string name="icon_rain">\uf019</string>
+    <string name="stop">Stop</string>
+    <string name="rain_poem">Rain, Rain, Rain, \ncome again and again. \n\nIn the winter, in the summer and in
+        spring.\n \nCome with joy, \nfall with happiness and go with sorrow.\n\nRain, Rain, Rain,\ncome again and
+        again\n…
+    </string>
+    <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
+    <string name="headset_needed">Please plugin headset before play.</string>
+    <string name="version" formatted="false">version %s(%d)</string>
 </resources>
