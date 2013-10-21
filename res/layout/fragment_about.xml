@@ -7,7 +7,7 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="5dip"
             >
@@ -39,12 +39,13 @@
                 android:layout_height="25dip"
                 android:layout_gravity="center"
                 android:alpha=".75"
-                android:background="@drawable/wu"/>
+                android:background="@drawable/wu"
+                android:contentDescription="@string/app_name"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="http://www.gracecode.com\nCopyright 2001-2013, All rights reserved. "
+                android:text="@string/copyrights"
                 android:gravity="center"
                 android:autoLink="web"
                 android:linksClickable="true"

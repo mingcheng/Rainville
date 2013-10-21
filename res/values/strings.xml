@@ -12,4 +12,5 @@
     <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
     <string name="headset_needed">Please plugin headset before play.</string>
     <string name="version" formatted="false">version %s(%d)</string>
+    <string name="copyrights">http://www.gracecode.com\nCopyright 2011-2013, All rights reserved.</string>
 </resources>
