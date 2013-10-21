@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.flurry.android.FlurryAgent;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.PresetsAdapter;
 import com.gracecode.RainNoise.helper.MixerPresetsHelper;
@@ -15,6 +16,8 @@ import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 import com.gracecode.RainNoise.player.BufferedPlayer;
 import com.gracecode.RainNoise.player.PlayManager;
 import com.gracecode.RainNoise.receiver.PlayBroadcastReceiver;
+
+import java.util.HashMap;
 
 public class PresetsFragment extends PlayerFragment implements MixerPresetsHelper, AdapterView.OnItemClickListener {
     private PresetsAdapter mAdapter;
@@ -54,6 +57,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         }
     };
 
+
     public void setDisabled(boolean flag) {
         this.isDisabled = flag;
     }
@@ -88,6 +92,8 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+
+        setDisabled(true);
     }
 
 
@@ -125,6 +131,10 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
             SendBroadcastHelper.sendPlayBroadcast(getActivity());
+
+            HashMap<String, String> hashMap = new HashMap<String, String>();
+            hashMap.put("SelectedPreset", PRESET_TITLES[i]);
+            FlurryAgent.logEvent(getTag(), hashMap);
         }
     }
 }

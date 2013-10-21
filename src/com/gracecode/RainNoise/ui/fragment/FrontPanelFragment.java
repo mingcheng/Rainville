@@ -100,6 +100,8 @@ public class FrontPanelFragment extends PlayerFragment
 
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+
+        setHeadsetNeeded();
     }
 
     public void setHeadsetNeeded() {

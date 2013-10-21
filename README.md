@@ -1,14 +1,6 @@
 # Rain Noise
 
 
-## Features
-
-* Many types of Rain sound
-* HD sound quality;
-* Simpify, Easy and comfortable to navigation;
-* Free!
-
-
 ## Usage
 
 
@@ -40,6 +32,12 @@ Sound affects many areas of the brain and has an undeniable effect on the body. 
 Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used mathematical techniques to create harmonic structures for emotional balance, spiritual and relationship healing, and overall health. Although science and medicine evolved in the meanwhile - harmonic structures are now perfectly understood as resulting from the laws of physics - many people still rely on sounds as a natural healing method, with numerous successes and no side effects yet known. myNoise offers different tonal noises characterized by rich harmonic structures.
 
 
+## Features
+
+* Many types of Rain sound
+* HD sound quality;
+* Simpify, Easy and comfortable to navigation;
+* Free!
 
 
 ## What's New

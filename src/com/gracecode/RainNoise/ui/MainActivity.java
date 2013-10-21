@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.flurry.android.FlurryAgent;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.ControlCenterAdapter;
 import com.gracecode.RainNoise.helper.TypefaceHelper;
@@ -74,6 +75,9 @@ public class MainActivity extends Activity {
 
         startService(mServerIntent);
         bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
+
+        FlurryAgent.setUseHttps(true);
+        FlurryAgent.onStartSession(this, getString(R.string.app_key));
     }
 
 
@@ -84,6 +88,7 @@ public class MainActivity extends Activity {
             stopService(mServerIntent);
         }
         unbindService(mConnection);
+        FlurryAgent.onEndSession(this);
     }
 
 
