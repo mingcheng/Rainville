@@ -28,6 +28,7 @@
             />
 
     <ToggleButton
+            android:visibility="invisible"
             android:layout_below="@id/icon"
             style="@style/Button"
             android:layout_width="wrap_content"
@@ -38,6 +39,21 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/toggle_play"
             android:checked="false"
+            />
+
+    <TextView
+            android:visibility="invisible"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_centerHorizontal="true"
+            android:text="\ue027"
+            android:textColor="@color/sufu"
+            android:padding="10dip"
+            android:background="@drawable/textview_headset_needed"
+            android:textSize="18dip"
+            android:layout_below="@id/toggle_play"
+            android:gravity="center"
+            android:id="@+id/headset_needed"
             />
 
     <LinearLayout

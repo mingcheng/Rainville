@@ -1,12 +1,16 @@
 package com.gracecode.RainNoise.ui.fragment;
 
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.helper.SendBroadcastHelper;
@@ -20,6 +24,7 @@ public class FrontPanelFragment extends PlayerFragment
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
+    private TextView mHeadsetNeeded;
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -39,6 +44,18 @@ public class FrontPanelFragment extends PlayerFragment
 
         @Override
         public void onSetPresets(float[] presets) {
+
+        }
+
+        @Override
+        public void onHeadsetPlugged() {
+            setAsNormal();
+        }
+
+        @Override
+        public void onHeadsetUnPlugged() {
+            setHeadsetNeeded();
+            setStopped();
         }
     };
 
@@ -46,6 +63,7 @@ public class FrontPanelFragment extends PlayerFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
 
     private void setCustomFonts() {
         TypefaceHelper.setAllTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
@@ -55,7 +73,12 @@ public class FrontPanelFragment extends PlayerFragment
         if (mToggleButton != null) {
             mToggleButton.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
         }
+
+        if (mHeadsetNeeded != null) {
+            mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
+        }
     }
+
 
     @Override
     public void onStart() {
@@ -68,9 +91,30 @@ public class FrontPanelFragment extends PlayerFragment
         mPlayButton = (ToggleButton) getView().findViewById(R.id.toggle_play);
         mPlayButton.setOnClickListener(this);
 
+        mHeadsetNeeded = (TextView) getView().findViewById(R.id.headset_needed);
+        mHeadsetNeeded.setOnClickListener(this);
+
         setCustomFonts();
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
+
+        getActivity().registerReceiver(mBroadcastReceiver,
+                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+    }
+
+    public void setHeadsetNeeded() {
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
+        mHeadsetNeeded.startAnimation(animation);
+
+        mPlayButton.setVisibility(View.INVISIBLE);
+        mHeadsetNeeded.setVisibility(View.VISIBLE);
+    }
+
+
+    public void setAsNormal() {
+        mHeadsetNeeded.clearAnimation();
+        mHeadsetNeeded.setVisibility(View.INVISIBLE);
+        mPlayButton.setVisibility(View.VISIBLE);
     }
 
 
@@ -134,6 +178,10 @@ public class FrontPanelFragment extends PlayerFragment
                 } else {
                     SendBroadcastHelper.sendPlayBroadcast(getActivity());
                 }
+                break;
+
+            case R.id.headset_needed:
+                Toast.makeText(getActivity(), getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

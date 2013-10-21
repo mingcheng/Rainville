@@ -68,6 +68,17 @@ public class PlayService extends Service {
                 mPlayManager.setVolume(i, volume);
             }
         }
+
+        @Override
+        public void onHeadsetPlugged() {
+
+        }
+
+        @Override
+        public void onHeadsetUnPlugged() {
+            mPlayManager.stop();
+            clearNotification();
+        }
     };
 
 

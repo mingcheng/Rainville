@@ -3,8 +3,6 @@ package com.gracecode.RainNoise.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-import com.gracecode.RainNoise.helper.SendBroadcastHelper;
 
 
 public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
@@ -12,6 +10,7 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
     public static final String FIELD_CMD = "command";
     public static final String FIELD_PRESETS = "presets";
+    public static final String FIELD_TRACK = "track";
 
     public static final int CMD_NOP = 0x00;
     public static final int CMD_STOP = 0x0a;
@@ -45,17 +44,24 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
             int stat = intent.getIntExtra("state", -1);
             switch (stat) {
                 case 0:
-                    Toast.makeText(context, "unplugged", Toast.LENGTH_SHORT).show();
-                    SendBroadcastHelper.sendStopBroadcast(context);
+                    onHeadsetUnPlugged();
                     break;
                 case 1:
-                    Toast.makeText(context, "plugged", Toast.LENGTH_SHORT).show();
-                    SendBroadcastHelper.sendPlayBroadcast(context);
+                    onHeadsetPlugged();
                     break;
             }
 
             return;
         }
+
+//        if (action.equals(AudioManager.ACTION_AUDIO_BECOMING_NOISY)) {
+//            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+//                onHeadsetPlugged();
+//            } else {
+//                onHeadsetUnPlugged();
+//            }
+//            return;
+//        }
     }
 
 
@@ -66,4 +72,8 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
     abstract public void onSetVolume(int track, int volume);
 
     abstract public void onSetPresets(float[] presets);
+
+    abstract public void onHeadsetPlugged();
+
+    abstract public void onHeadsetUnPlugged();
 }

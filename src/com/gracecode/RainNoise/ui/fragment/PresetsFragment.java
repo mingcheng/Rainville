@@ -1,15 +1,13 @@
 package com.gracecode.RainNoise.ui.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.gracecode.RainNoise.R;
 import com.gracecode.RainNoise.adapter.PresetsAdapter;
 import com.gracecode.RainNoise.helper.MixerPresetsHelper;
@@ -22,7 +20,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
     private PresetsAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
     private ListView mListView;
-
+    private boolean isDisabled = false;
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -44,7 +42,21 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         public void onSetPresets(float[] presets) {
             savePresets(presets);
         }
+
+        @Override
+        public void onHeadsetPlugged() {
+            setDisabled(false);
+        }
+
+        @Override
+        public void onHeadsetUnPlugged() {
+            setDisabled(true);
+        }
     };
+
+    public void setDisabled(boolean flag) {
+        this.isDisabled = flag;
+    }
 
 
     @Override
@@ -71,8 +83,11 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         mListView.setOnItemClickListener(this);
 
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresets());
+
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
+        getActivity().registerReceiver(mBroadcastReceiver,
+                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
     }
 
 
@@ -102,6 +117,11 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if (isDisabled) {
+            Toast.makeText(getActivity(), getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
             SendBroadcastHelper.sendPlayBroadcast(getActivity());
