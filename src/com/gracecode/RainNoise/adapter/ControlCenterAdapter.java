@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import com.gracecode.RainNoise.ui.fragment.AboutFragment;
 import com.gracecode.RainNoise.ui.fragment.PresetsFragment;
 
 
@@ -11,7 +12,7 @@ public class ControlCenterAdapter extends FragmentStatePagerAdapter
         implements ViewPager.OnPageChangeListener {
 
     private Fragment[] fragments = new Fragment[]{
-            new PresetsFragment()
+            new PresetsFragment(), new AboutFragment()
     };
 
     public ControlCenterAdapter(FragmentManager fm) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.gracecode.RainNoise"
-          android:versionCode="3"
-          android:versionName="1.12">
+          android:versionCode="20131021"
+          android:versionName="1.20">
 
     <uses-sdk
             android:minSdkVersion="11"
