@@ -17,62 +17,62 @@
             android:id="@+id/trackers"
             >
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:progress="40"
                 style="@style/SeekBar"
                 />
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"
                 />'
 
-        <com.gracecode.RainNoise.ui.widget.VerticalSeekBar
+        <com.gracecode.rain.ui.widget.VerticalSeekBar
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 style="@style/SeekBar"

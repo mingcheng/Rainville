@@ -46,7 +46,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <com.gracecode.RainNoise.ui.widget.SimplePanel
+    <com.gracecode.android.rain.ui.widget.SimplePanel
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/front_panel"
