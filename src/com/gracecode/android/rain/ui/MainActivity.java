@@ -18,7 +18,6 @@ import com.gracecode.android.rain.adapter.ControlCenterAdapter;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.serivce.PlayService;
-import com.gracecode.android.rain.ui.fragment.DonateDialogFragment;
 import com.gracecode.android.rain.ui.fragment.FrontPanelFragment;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 
@@ -29,8 +28,6 @@ public class MainActivity extends Activity {
     private Intent mServerIntent;
     private ViewPager mControlCenterContainer;
     private ControlCenterAdapter mControlCenterAdapter;
-    private DonateDialogFragment mDonationFragment;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +39,6 @@ public class MainActivity extends Activity {
         mFrontPanelFragment = new FrontPanelFragment();
         mControlCenterAdapter = new ControlCenterAdapter(getFragmentManager());
         mServerIntent = new Intent(this, PlayService.class);
-        mDonationFragment = new DonateDialogFragment(MainActivity.this);
 
         getFragmentManager()
                 .beginTransaction()
@@ -76,10 +72,6 @@ public class MainActivity extends Activity {
 
         mFrontPanelFragment.setFrontPanel(mFrontPanel);
         mFrontPanel.addSimplePanelListener(mFrontPanelFragment);
-
-        if (mDonationFragment.isNeedShow()) {
-            mDonationFragment.show(getFragmentManager(), "DonateDialog");
-        }
 
         startService(mServerIntent);
         bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
