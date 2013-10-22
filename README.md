@@ -1,6 +1,30 @@
 # Rain Noise
 
 
+    Rain, Rain, Rain,
+    come again and again.
+
+    In the winter, in the summer and in spring.
+
+    Come with joy,
+    fall with happiness and go with sorrow.
+
+    Rain, Rain, Rain,
+    come again and again…
+
+
+
+## Features
+
+* Cleanly Design;
+* Simplify, Easy and comfortable to navigation;
+* Headset Output Only, Does't disturb other people;
+* Many types of Rain Sound;
+* HD Sounds Quality;
+* That's All Free!
+
+
+
 ## Usage
 
 
@@ -32,17 +56,18 @@ Sound affects many areas of the brain and has an undeniable effect on the body. 
 Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used mathematical techniques to create harmonic structures for emotional balance, spiritual and relationship healing, and overall health. Although science and medicine evolved in the meanwhile - harmonic structures are now perfectly understood as resulting from the laws of physics - many people still rely on sounds as a natural healing method, with numerous successes and no side effects yet known. myNoise offers different tonal noises characterized by rich harmonic structures.
 
 
-## Features
-
-* Many types of Rain sound
-* HD sound quality;
-* Simpify, Easy and comfortable to navigation;
-* Free!
 
 
 ## What's New
 
-### Release 1.2(2013-10-21)
+
+### Release 1.0.1(2013-10-22)
+
+* Add donate button, thanks for donating this app.
+* Ready for Play Market.
+
+
+### Release 1.0.0(2013-10-21)
 
 * Initial release.
 
