@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@drawable/donate_background"
-              android:paddingTop="30dip"
-              android:paddingBottom="30dip"
-              android:paddingLeft="10dip"
-              android:paddingRight="10dip"
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/donate_background"
+        android:padding="5dip"
         >
 
     <TextView
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/need_money_for_nexus5"
             android:gravity="center"
             android:lines="2"
             android:lineSpacingExtra="10dip"
-            android:textColor="@color/dark_blue"
-            android:textSize="28sp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             style="@style/TitleShadow"
             />
 
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="120dip"
+            android:layout_height="wrap_content"
             android:text="\ue008"
             android:gravity="center"
-            android:textColor="@color/dark_blue"
-            android:textSize="100sp"
+            android:textColor="@color/red"
+            android:textSize="50sp"
             android:id="@+id/nexus5"
+            android:layout_centerInParent="true"
             style="@style/TitleShadow"
-            android:layout_marginTop="20dip"
-            android:layout_marginBottom="20dip"
             />
 
     <Button
@@ -42,10 +39,12 @@
             android:layout_height="wrap_content"
             android:text="Donate with Paypal"
             android:id="@+id/donate"
+            android:layout_alignParentBottom="true"
             />
 
     <TextView
-            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Never show this again"
             android:gravity="center"
@@ -54,4 +53,5 @@
             android:id="@+id/never_show_donate"
             android:textSize="14sp"
             />
-</LinearLayout>
+</RelativeLayout>
+

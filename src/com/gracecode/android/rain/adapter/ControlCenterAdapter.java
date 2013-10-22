@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import com.gracecode.android.rain.ui.fragment.AboutFragment;
+import com.gracecode.android.rain.ui.fragment.DonateFragment;
 import com.gracecode.android.rain.ui.fragment.PresetsFragment;
 
 
@@ -12,7 +13,7 @@ public class ControlCenterAdapter extends FragmentStatePagerAdapter
         implements ViewPager.OnPageChangeListener {
 
     private Fragment[] fragments = new Fragment[]{
-            new PresetsFragment(), new AboutFragment()
+            new PresetsFragment(), new AboutFragment(), new DonateFragment()
     };
 
     public ControlCenterAdapter(FragmentManager fm) {
@@ -41,34 +42,4 @@ public class ControlCenterAdapter extends FragmentStatePagerAdapter
     public void onPageScrollStateChanged(int i) {
 
     }
-//
-//    @Override
-//    public void bindPlayerManager(final PlayManager mPlayManager) {
-//        for (int i = 0; i < fragments.length; i++) {
-//            Fragment fragment = fragments[i];
-//            if (fragment instanceof PlayerBinder) {
-//                ((PlayerBinder) fragment).bindPlayerManager(mPlayManager);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void unbindPlayerManager() {
-//        for (int i = 0; i < fragments.length; i++) {
-//            Fragment fragment = fragments[i];
-//            if (fragment instanceof PlayerBinder) {
-//                ((PlayerBinder) fragment).unbindPlayerManager();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void refresh() {
-//        for (int i = 0; i < fragments.length; i++) {
-//            Fragment fragment = fragments[i];
-//            if (fragment instanceof PlayerBinder) {
-//                ((PlayerBinder) fragment).refresh();
-//            }
-//        }
-//    }
 }
