@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/donate_background"
+              android:paddingTop="30dip"
+              android:paddingBottom="30dip"
+              android:paddingLeft="10dip"
+              android:paddingRight="10dip"
+        >
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/need_money_for_nexus5"
+            android:gravity="center"
+            android:lines="2"
+            android:lineSpacingExtra="10dip"
+            android:textColor="@color/dark_blue"
+            android:textSize="28sp"
+            style="@style/TitleShadow"
+            />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="120dip"
+            android:text="\ue008"
+            android:gravity="center"
+            android:textColor="@color/dark_blue"
+            android:textSize="100sp"
+            android:id="@+id/nexus5"
+            style="@style/TitleShadow"
+            android:layout_marginTop="20dip"
+            android:layout_marginBottom="20dip"
+            />
+
+    <Button
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Donate with Paypal"
+            android:id="@+id/donate"
+            />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Never show this again"
+            android:gravity="center"
+            android:padding="5dip"
+            android:textColor="@color/berry_blue"
+            android:id="@+id/never_show_donate"
+            android:textSize="14sp"
+            />
+</LinearLayout>
