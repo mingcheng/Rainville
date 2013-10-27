@@ -7,7 +7,6 @@ import android.net.Uri;
 import com.gracecode.android.rain.R;
 
 public class DonateHelper {
-
     public static void gotoPaypalPage(Context context) {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getPaypalUrl(context))));
     }

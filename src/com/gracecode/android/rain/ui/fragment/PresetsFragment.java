@@ -13,8 +13,6 @@ import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
-import com.gracecode.android.rain.player.BufferedPlayer;
-import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 
 import java.util.HashMap;
@@ -43,7 +41,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
 
         @Override
         public void onSetPresets(float[] presets) {
-            savePresets(presets);
+//            savePresets(presets);
         }
 
         @Override
@@ -86,7 +84,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
-        SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresets());
+//        SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresets());
 
         getActivity().registerReceiver(mBroadcastReceiver,
                 new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
@@ -104,21 +102,21 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
     }
 
 
-    public void savePresets(float[] presets) {
-        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mSharedPreferences.edit().putFloat("_" + i, presets[i]).commit();
-        }
-    }
-
-
-    public float[] getPresets() {
-        float[] result = new float[PlayManager.MAX_TRACKS_NUM];
-        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            result[i] = mSharedPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
-        }
-
-        return result;
-    }
+//    public void savePresets(float[] presets) {
+//        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+//            mSharedPreferences.edit().putFloat("_" + i, presets[i]).commit();
+//        }
+//    }
+//
+//
+//    public float[] getPresets() {
+//        float[] result = new float[PlayManager.MAX_TRACKS_NUM];
+//        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+//            result[i] = mSharedPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
+//        }
+//
+//        return result;
+//    }
 
 
     @Override
@@ -131,7 +129,6 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
             SendBroadcastHelper.sendPlayBroadcast(getActivity());
-
             HashMap<String, String> hashMap = new HashMap<String, String>();
             hashMap.put("SelectedPreset", PRESET_TITLES[i]);
             FlurryAgent.logEvent(getTag(), hashMap);
