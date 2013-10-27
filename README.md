@@ -61,6 +61,12 @@ Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used m
 ## What's New
 
 
+### Release 1.1.0(2013-10-27)
+
+* Add App Widget, So you can start/stop play without open app;
+* Minor modified some ui;
+* Minor some bug fix.
+
 ### Release 1.0.1(2013-10-22)
 
 * Add donate button, thanks for donating this app.
