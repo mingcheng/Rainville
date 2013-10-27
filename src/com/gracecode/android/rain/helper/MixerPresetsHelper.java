@@ -28,7 +28,7 @@ public abstract interface MixerPresetsHelper {
 
     public static float[] DEFAULT_PRESET = PINK_NOISE;
 
-    public static float[][] ALL_PRESETS = new float[][]{
+    public static float[][] ALL_PRESETS = new float[][] {
             DEFAULT_PRESET, FAIRY_RAIN, BEDROOM, UNDER_THE_PORCH, DISTANT_STORM,
             GETTING_WET, ONLY_RUMBLE, UNDER_THE_LEAVES, DARK_RAIN, JUNGLE_LODGE,
             BROWN_NOISE, PINK_NOISE, WHITE_NOISE, GREY_NOISE,

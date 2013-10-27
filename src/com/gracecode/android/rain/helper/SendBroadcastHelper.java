@@ -14,13 +14,23 @@ public final class SendBroadcastHelper {
     }
 
 
+    public static Intent getNewPlayBroadcastIntent(Context context, Class cls) {
+        return new Intent(context, cls)
+                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_PLAY);
+    }
+
+
     public static Intent getNewPlayBroadcastIntent() {
-        return new Intent(PlayBroadcastReceiver.PLAY_BROADCAST_NAME);
+        return new Intent()
+                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_PLAY);
     }
 
 
     public static Intent getNewStopBroadcastIntent() {
-        return getNewPlayBroadcastIntent()
+        return new Intent()
+                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
                 .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_STOP);
     }
 
@@ -31,9 +41,7 @@ public final class SendBroadcastHelper {
 
 
     public static void sendPlayBroadcast(Context context) {
-        sendBroadcast(context, getNewPlayBroadcastIntent()
-                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_PLAY)
-        );
+        sendBroadcast(context, getNewPlayBroadcastIntent());
     }
 
 

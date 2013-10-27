@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_margin="5dip"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/appwidget_background"
+              android:alpha=".75"
+              android:padding="0dip"
+        >
+
+    <ImageButton
+            android:id="@+id/launch_activity"
+            android:layout_margin="0dip"
+            android:padding="0dip"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_blue"
+
+            android:layout_gravity="center"
+            />
+
+    <ImageButton
+            android:id="@+id/launch_play"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            android:padding="0dip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/play"
+            android:background="@drawable/appwidget_button_background"
+            android:src="@drawable/ic_action_av_play"
+            />
+
+    <ImageButton
+            android:id="@+id/launch_stop"
+            android:layout_weight="1"
+            android:layout_margin="0dip"
+            android:padding="0dip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/stop"
+            android:src="@drawable/ic_action_av_stop"
+            android:background="@drawable/appwidget_button_background"
+            />
+</LinearLayout>

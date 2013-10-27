@@ -1,7 +1,7 @@
 package com.gracecode.android.rain.helper;
 
 import android.content.Context;
-import android.graphics.Typeface;
+import android.graphics.*;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -48,5 +48,22 @@ public class TypefaceHelper {
         }
 
         return mTypefaceElegant;
+    }
+
+    public static Bitmap getStringBitmapFromTypeface(String string, Typeface typeface, int width, int height) {
+        Bitmap myBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+        Canvas myCanvas = new Canvas(myBitmap);
+        float textSize = width * .7f;
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setSubpixelText(true);
+        paint.setTypeface(typeface);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(textSize);
+        paint.setTextAlign(Paint.Align.LEFT);
+        myCanvas.drawText(string, width * .1f, (height - textSize) / 2 + height / 2,
+                paint);
+        return myBitmap;
     }
 }

@@ -6,7 +6,7 @@ import android.content.Intent;
 
 
 public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
-    public static final String PLAY_BROADCAST_NAME = PlayBroadcastReceiver.class.getName();
+    public static final String PLAY_BROADCAST_NAME = "com.gracecode.android.rain.receiver.PlayBroadcastReceiver";
 
     public static final String FIELD_CMD = "command";
     public static final String FIELD_PRESETS = "presets";
@@ -53,17 +53,7 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
             return;
         }
-
-//        if (action.equals(AudioManager.ACTION_AUDIO_BECOMING_NOISY)) {
-//            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
-//                onHeadsetPlugged();
-//            } else {
-//                onHeadsetUnPlugged();
-//            }
-//            return;
-//        }
     }
-
 
     abstract public void onPlay();
 
