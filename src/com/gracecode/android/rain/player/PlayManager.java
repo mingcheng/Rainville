@@ -14,16 +14,27 @@ import java.util.ArrayList;
 public final class PlayManager {
     public static final String TAG = PlayManager.class.getName();
     private static final long VOLUME_CHANGE_DURATION = 500;
+    private static final int LEFT_TRACK = 0;
+    private static final int RIGHT_TRACK = 1;
 
     private final Context mContext;
     private final AudioManager mAudioManager;
 
-    private static final int[] mTrackers = {
-            R.raw._0, R.raw._1, R.raw._2, R.raw._3, R.raw._4,
-            R.raw._5, R.raw._6, R.raw._7, R.raw._8, R.raw._9
+    private static final int[][] mTrackers = {
+            {R.raw._0a, R.raw._0b},
+            {R.raw._1a, R.raw._1b},
+            {R.raw._2a, R.raw._2b},
+            {R.raw._3a, R.raw._3b},
+            {R.raw._4a, R.raw._4b},
+            {R.raw._5a, R.raw._5b},
+            {R.raw._6a, R.raw._6b},
+            {R.raw._7a, R.raw._7b},
+            {R.raw._8a, R.raw._8b},
+            {R.raw._9a, R.raw._9b}
     };
+
     public static final int MAX_TRACKS_NUM = mTrackers.length;
-    private static BufferedPlayer[] mPlayers = new BufferedPlayer[MAX_TRACKS_NUM];
+    private static BufferedPlayer[][] mPlayers = new BufferedPlayer[MAX_TRACKS_NUM][2];
     private static int[] mTrackerVolumes = new int[MAX_TRACKS_NUM];
 
     /**
@@ -53,9 +64,19 @@ public final class PlayManager {
 
     private void initPlayers() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            mPlayers[i] = new BufferedPlayer(mContext, mTrackers[i]);
-            mPlayers[i].setLooping(true);
+            setPlayer(i, LEFT_TRACK);
+            setPlayer(i, RIGHT_TRACK);
         }
+    }
+
+    private void setPlayer(int i, int track) {
+        mPlayers[i][track] = new BufferedPlayer(mContext, mTrackers[i][track]);
+        mPlayers[i][track].setLooping(true);
+    }
+
+
+    private BufferedPlayer getPlayer(int i, int track) {
+        return mPlayers[i][track];
     }
 
 
@@ -107,7 +128,8 @@ public final class PlayManager {
     public void stop() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             if (mPlayers[i] != null) {
-                mPlayers[i].shutdown();
+                getPlayer(i, LEFT_TRACK).shutdown();
+                getPlayer(i, RIGHT_TRACK).shutdown();
             }
         }
 
@@ -119,9 +141,11 @@ public final class PlayManager {
 
         initPlayers();
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            if (BuildConfig.DEBUG)
+            if (BuildConfig.DEBUG) {
                 Log.v(TAG, "Start playing track " + i + ".");
-            mPlayers[i].play();
+            }
+            getPlayer(i, LEFT_TRACK).play();
+            getPlayer(i, RIGHT_TRACK).play();
             setVolume(i, getVolume(i));
         }
 
@@ -171,24 +195,20 @@ public final class PlayManager {
 
 
     synchronized public void setVolume(final int track, int volume, boolean temporary) {
+        if (BuildConfig.DEBUG) {
+            Log.v(TAG, "Set layout [" + track + "]'s volume " + volume + " / " + getMaxVolume());
+        }
+
         try {
-            if (BuildConfig.DEBUG)
-                Log.v(TAG, "Set layout [" + track + "]'s volume " + volume + " / " + getMaxVolume());
-
             final float percent = volume / (float) getMaxVolume();
-            if (mPlayers[track] != null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPlayers[track].setStereoVolume(percent, percent);
-                    }
-                }).start();
-            }
-
-            if (!temporary)
+            getPlayer(track, LEFT_TRACK).setStereoVolume(percent, percent);
+            getPlayer(track, RIGHT_TRACK).setStereoVolume(percent, percent);
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Can not set volume, maybe player is not ready.");
+        } finally {
+            if (!temporary) {
                 mTrackerVolumes[track] = volume;
-        } catch (IndexOutOfBoundsException e) {
-            Log.e(TAG, e.getMessage());
+            }
         }
     }
 }

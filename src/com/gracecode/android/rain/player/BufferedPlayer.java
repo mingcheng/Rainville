@@ -5,6 +5,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
+import com.gracecode.android.rain.BuildConfig;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import org.xiph.vorbis.decoder.DecodeFeed;
 import org.xiph.vorbis.decoder.DecodeStreamInfo;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 public final class BufferedPlayer implements DecodeFeed, Runnable {
     public static final String TAG = BufferedPlayer.class.getName();
     public static final float DEFAULT_VOLUME_PERCENT = MixerPresetsHelper.DEFAULT_PRESET[0];
+    private static final long TOTAL_DELAY_TIME = 3000;
     private boolean looping = false;
 
     private final Context mContext;
@@ -135,9 +137,22 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
 
     @Override
     public void run() {
-        do {
-            VorbisDecoder.startDecoding(this);
-        } while (looping);
+        try {
+            long delay = getRandomDelayTime();
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "The delay time is " + delay);
+            }
+            Thread.sleep(delay);
+            do {
+                VorbisDecoder.startDecoding(this);
+            } while (looping);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private long getRandomDelayTime() {
+        return (long) (TOTAL_DELAY_TIME * Math.random());
     }
 
     public void shutdown() {
