@@ -126,13 +126,16 @@ public final class PlayManager {
 
 
     public void stop() {
-        for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            if (mPlayers[i] != null) {
-                getPlayer(i, LEFT_TRACK).shutdown();
-                getPlayer(i, RIGHT_TRACK).shutdown();
+        try {
+            for (int i = 0; i < MAX_TRACKS_NUM; i++) {
+                if (mPlayers[i] != null) {
+                    getPlayer(i, LEFT_TRACK).shutdown();
+                    getPlayer(i, RIGHT_TRACK).shutdown();
+                }
             }
+        } catch (RuntimeException e) {
+            if (BuildConfig.DEBUG) Log.e(TAG, "Can not shutdown, maybe player is not ready?");
         }
-
         playing = false;
     }
 
