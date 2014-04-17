@@ -111,7 +111,7 @@ public class PlayService extends Service {
                 .setOngoing(true)
                 .setAutoCancel(false)
                 .setContentIntent(intent)
-                .addAction(android.R.color.transparent, getString(R.string.stop), getStopPendingIntent());
+                .addAction(R.drawable.ic_stop, getString(R.string.stop), getStopPendingIntent());
 
         mSharedPreferences = getSharedPreferences(PlayService.class.getName(), Context.MODE_PRIVATE);
     }
