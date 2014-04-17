@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -13,13 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.gracecode.android.rain.R;
+import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 
 public class FrontPanelFragment extends PlayerFragment
-        implements SimplePanel.SimplePanelListener, View.OnClickListener {
+        implements SimplePanel.SimplePanelListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
@@ -58,16 +60,23 @@ public class FrontPanelFragment extends PlayerFragment
             setStopped();
         }
     };
+    private Rainville mRainville;
+    private MenuItem mPlayMenuItem;
 
+    public void setPlayMenuItem(MenuItem item) {
+        this.mPlayMenuItem = item;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mRainville = Rainville.getInstance();
     }
 
 
     private void setCustomFonts() {
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
+        TypefaceHelper.setAllTypeface((ViewGroup) getView(),
+                TypefaceHelper.getTypefaceMusket2(getActivity()));
         ((TextView) getView().findViewById(R.id.icon))
                 .setTypeface(TypefaceHelper.getTypefaceWeather(getActivity()));
 
@@ -91,6 +100,10 @@ public class FrontPanelFragment extends PlayerFragment
 
         mPlayButton = (ToggleButton) getView().findViewById(R.id.toggle_play);
         mPlayButton.setOnClickListener(this);
+
+        if (mRainville.isMeizuDevice()) {
+            mPlayButton.setVisibility(View.INVISIBLE);
+        }
 
         mHeadsetNeeded = (TextView) getView().findViewById(R.id.headset_needed);
         mHeadsetNeeded.setOnClickListener(this);
@@ -118,7 +131,9 @@ public class FrontPanelFragment extends PlayerFragment
     public void setAsNormal() {
         mHeadsetNeeded.clearAnimation();
         mHeadsetNeeded.setVisibility(View.INVISIBLE);
-        mPlayButton.setVisibility(View.VISIBLE);
+        if (!mRainville.isMeizuDevice()) {
+            mPlayButton.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -159,6 +174,9 @@ public class FrontPanelFragment extends PlayerFragment
     public void setPlaying() {
         super.setPlaying();
         mPlayButton.setChecked(true);
+        if (mPlayMenuItem != null) {
+            mPlayMenuItem.setIcon(android.R.drawable.ic_media_pause);
+        }
     }
 
 
@@ -166,6 +184,9 @@ public class FrontPanelFragment extends PlayerFragment
     public void setStopped() {
         super.setStopped();
         mPlayButton.setChecked(false);
+        if (mPlayMenuItem != null) {
+            mPlayMenuItem.setIcon(android.R.drawable.ic_media_play);
+        }
     }
 
 
@@ -181,16 +202,30 @@ public class FrontPanelFragment extends PlayerFragment
                 break;
 
             case R.id.toggle_play:
-                if (isPlaying()) {
-                    SendBroadcastHelper.sendStopBroadcast(getActivity());
-                } else {
-                    SendBroadcastHelper.sendPlayBroadcast(getActivity());
-                }
+                togglePlay();
                 break;
 
             case R.id.headset_needed:
-                Toast.makeText(getActivity(), getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),
+                        getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        mPlayMenuItem = menuItem;
+        togglePlay();
+        return true;
+    }
+
+
+    private void togglePlay() {
+        if (isPlaying()) {
+            SendBroadcastHelper.sendStopBroadcast(getActivity());
+        } else {
+            SendBroadcastHelper.sendPlayBroadcast(getActivity());
         }
     }
 }
