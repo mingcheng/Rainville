@@ -14,6 +14,36 @@
 
 
 
+有时候有没有觉得您想专注下，但是却被周边的噪音打扰？或者您想休息下，却在飞机或者其他嘈杂的环境中无法入睡？那么，或许您可以试试这款应用！
+
+这款应用使用雨声中和和隔绝外接的所有噪音，并且能够是您的大脑得到充分的放松，使您能够专注的工作或者睡个好觉。
+
+## 特性
+
+* 优化的界面和交互设计，没有其他多余的元素干扰
+* 多种合成的立体声雨声，让您自由选择
+* 自动判断是否插入耳机播放，谢绝给别人造成困扰
+* 针对小米以及魅族的 SmartBar 等进行了针对性的优化
+* 当然，这些都是免费的！
+
+## 使用场景
+
+* 噪音隔绝，中和噪音对大脑的影响
+* 飞机、火车等嘈杂的环境中
+* 午休
+* 哄孩子入睡
+* 放松或者需要专注工作
+* 其他您认为所有值得使用此应用的情况 :^)
+
+## FAQ
+
+### 这款应用是完全免费的吗？
+
+是的，而且还是开放源代码的。您可以在这里获得此应用的源代码： https://github.com/feelinglucky/Rainville 。
+
+----
+
+
 ## Features
 
 * Cleanly Design;
@@ -22,6 +52,7 @@
 * Many types of Rain Sound;
 * HD Sounds Quality;
 * That's All Free!
+
 
 
 
@@ -60,7 +91,7 @@ Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used m
 
 ## What's New
 
-### Release 1.3.0(2014-04-20)
+### Release 1.3.0(2014-04-17)
 
 * Optimize for Meizu's Smartbar
 * Add headset button support
