@@ -12,6 +12,8 @@
     Rain, Rain, Rain,
     come again and again…
 
+## Download from Google Play: https://play.google.com/store/apps/details?id=com.gracecode.android.rain
+
 ![Screenshots](https://raw.githubusercontent.com/feelinglucky/Rainville/master/screenshots/20140417134851.png)
 
 有时候有没有觉得您想专注下，但是却被周边的噪音打扰？或者您想休息下，却在飞机或者其他嘈杂的环境中无法入睡？那么，或许您可以试试这款应用！
