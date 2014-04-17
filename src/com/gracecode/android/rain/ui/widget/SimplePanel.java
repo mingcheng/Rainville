@@ -74,8 +74,7 @@ public class SimplePanel extends FrameLayout {
                 if (isDragging) {
                     float offset = 0;
                     if (mLastEventY != 0) offset = mLastEventY - eventY;
-
-                    setDrawingCacheEnabled(true);
+//                    setDrawingCacheEnabled(true);
                     scrollTo(0, (int) (getScrollY() + offset));
                     mLastEventY = eventY;
                 } else {
@@ -129,8 +128,8 @@ public class SimplePanel extends FrameLayout {
     }
 
     private AnimatorSet setAnimatorOpenSet() {
-        mOpenAnimator = ValueAnimator.ofInt(getScrollY(),
-                (int) (getHeight() - getSlideBound()));
+        int scrollTo = (int) (getHeight() - getSlideBound());
+        mOpenAnimator = ValueAnimator.ofInt(getScrollY(), scrollTo);
 
         mOpenAnimator.setInterpolator(new OvershootInterpolator());
         mOpenAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

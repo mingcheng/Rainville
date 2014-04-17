@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.ui.fragment.AboutFragment;
 import com.gracecode.android.rain.ui.fragment.DonateFragment;
 import com.gracecode.android.rain.ui.fragment.PresetsFragment;
@@ -12,12 +13,14 @@ import com.gracecode.android.rain.ui.fragment.PresetsFragment;
 public class ControlCenterAdapter extends FragmentStatePagerAdapter
         implements ViewPager.OnPageChangeListener {
 
+    private final Rainville mRainville;
     private Fragment[] fragments = new Fragment[]{
             new PresetsFragment(), new AboutFragment(), new DonateFragment()
     };
 
     public ControlCenterAdapter(FragmentManager fm) {
         super(fm);
+        mRainville = Rainville.getInstance();
     }
 
     @Override
@@ -27,6 +30,9 @@ public class ControlCenterAdapter extends FragmentStatePagerAdapter
 
     @Override
     public int getCount() {
+        if (mRainville.isMeizuDevice()) {
+            return fragments.length - 1;
+        }
         return fragments.length;
     }
 

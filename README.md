@@ -60,6 +60,10 @@ Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used m
 
 ## What's New
 
+### Release 1.3.0(2014-04-20)
+
+* Optimize for Meizu's Smartbar
+* Add headset button support
 
 ### Release 1.1.0(2013-10-27)
 
