@@ -106,7 +106,11 @@ public class MainActivity extends Activity {
             stopService(mServerIntent);
         }
 
-        unbindService(mConnection);
+        try {
+            unbindService(mConnection);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
         FlurryAgent.onEndSession(this);
     }
 
@@ -126,8 +130,6 @@ public class MainActivity extends Activity {
 
 
     private int getControlCenterHeight() {
-//        DisplayMetrics displaymetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int height = mFrontPanel.getRootView().getMeasuredHeight();
         return (int) (height * (1 - mFrontPanel.getSlideRatio()) * .9);
     }
@@ -157,6 +159,19 @@ public class MainActivity extends Activity {
         }
 
         return super.onMenuItemSelected(featureId, item);
+    }
+
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                mFrontPanelFragment.togglePlay();
+                return true;
+        }
+
+        return super.onKeyUp(keyCode, event);
     }
 
     private PlayService.PlayBinder mBinder;

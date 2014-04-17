@@ -221,7 +221,7 @@ public class FrontPanelFragment extends PlayerFragment
     }
 
 
-    private void togglePlay() {
+    public void togglePlay() {
         if (isPlaying()) {
             SendBroadcastHelper.sendStopBroadcast(getActivity());
         } else {

@@ -23,6 +23,7 @@
             android:name=".Rainville"
             >
         <activity
+                android:windowSoftInputMode="stateHidden"
                 android:launchMode="singleInstance"
                 android:screenOrientation="portrait"
                 android:name=".ui.MainActivity"
