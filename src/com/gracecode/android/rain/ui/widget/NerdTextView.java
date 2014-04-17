@@ -23,6 +23,7 @@ public class NerdTextView extends TextView {
     public boolean onTouchEvent(MotionEvent event) {
         try {
             // ignore any exception
+            // @see http://bbs.csdn.net/topics/380184187
             return super.onTouchEvent(event);
         } catch (Exception e) {
             e.printStackTrace();
