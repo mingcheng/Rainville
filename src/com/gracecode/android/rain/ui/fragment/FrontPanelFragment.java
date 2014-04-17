@@ -208,6 +208,7 @@ public class FrontPanelFragment extends PlayerFragment
             case R.id.headset_needed:
                 Toast.makeText(getActivity(),
                         getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
+                setStopped();
                 break;
         }
     }

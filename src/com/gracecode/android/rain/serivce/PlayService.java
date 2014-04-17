@@ -48,7 +48,9 @@ public class PlayService extends Service {
         @Override
         public void onPlay() {
             if (isDisabled) {
-                Toast.makeText(PlayService.this, getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PlayService.this,
+                        getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
+                onHeadsetUnPlugged();
                 return;
             }
 
