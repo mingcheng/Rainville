@@ -64,7 +64,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAdapter = new PresetsAdapter(getActivity(), PRESET_TITLES);
+        mAdapter = new PresetsAdapter(getActivity(), getResources().getStringArray(R.array.presets));
         mSharedPreferences = getActivity()
                 .getSharedPreferences(PresetsFragment.class.getName(), Context.MODE_PRIVATE);
     }

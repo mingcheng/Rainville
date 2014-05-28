@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="presets">
+        <item>默认</item>
+        <item>细雨</item>
+        <item>庭院深深</item>
+        <item>门厅走廊</item>
+        <item>暴雨将至</item>
+        <item>润雨</item>
+        <item>夏日雷雨</item>
+        <item>荷塘</item>
+        <item>乌云压顶</item>
+        <item>从林</item>
+        <item>棕噪音</item>
+        <item>粉噪音</item>
+        <item>白噪音</item>
+        <item>灰噪音</item>
+        <item>60 Hz</item>
+        <item>125 Hz</item>
+        <item>250 Hz</item>
+        <item>500 Hz</item>
+        <item>1000 Hz</item>
+        <item>2000 Hz</item>
+        <item>4000 Hz</item>
+        <item>8000 Hz</item>
+    </string-array>
+</resources>

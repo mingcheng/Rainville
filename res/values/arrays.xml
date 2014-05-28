@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="presets">
+        <item>Default</item>
+        <item>Fairy Rain</item>
+        <item>Bedroom</item>
+        <item>Under The Porch</item>
+        <item>Distant Storm</item>
+        <item>Getting Wet</item>
+        <item>Only Rumble</item>
+        <item>Under The Leaves</item>
+        <item>Dark Rain</item>
+        <item>Jungle Lodge</item>
+        <item>Brown Noise</item>
+        <item>Pink Noise</item>
+        <item>White Noise</item>
+        <item>Grey Noise</item>
+        <item>60 Hz</item>
+        <item>125 Hz</item>
+        <item>250 Hz</item>
+        <item>500 Hz</item>
+        <item>1000 Hz</item>
+        <item>2000 Hz</item>
+        <item>4000 Hz</item>
+        <item>8000 Hz</item>
+    </string-array>
+</resources>
