@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">聆雨</string>
+    <string name="app_desp">聆听雨声，不湿衣襟</string>
+    <string name="play">播放</string>
+    <string name="stop">停止</string>
+    <string name="rain_poem">虞美人·听雨\n蒋捷（宋）\n\n少年听雨歌楼上，红烛昏罗帐。\n壮年听雨客舟中，江阔云低断雁叫西风。\n\n
+        而今听雨僧庐下，鬓已星星也。\n悲欢离合总无情，一任阶前点滴到天明。
+    </string>
+    <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
+    <string name="headset_needed">为了不打扰其他人，请插入耳机后聆听</string>
+    <string name="version" formatted="false">版本 %s（%d）</string>
+    <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com\n版权所有 2011-2014, 保留所有权利</string>
+    <string name="need_money_for_nexus5">码农求赐 Google Nexus5 用于开发</string>
+</resources>
