@@ -1,4 +1,4 @@
-# Rain Noise
+# Rain Noise / 聆雨
 
 
     Rain, Rain, Rain,
@@ -11,6 +11,7 @@
 
     Rain, Rain, Rain,
     come again and again…
+    
 
 ## Download from Google Play: https://play.google.com/store/apps/details?id=com.gracecode.android.rain
 
@@ -92,6 +93,11 @@ Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used m
 
 
 ## What's New
+
+### 2014年5月28日
+
+* 翻译界面为中文
+* 修复已知的 Bug
 
 ### Release 1.3.0(2014-04-17)
 
