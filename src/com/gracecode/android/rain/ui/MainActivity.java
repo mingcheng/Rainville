@@ -1,6 +1,5 @@
 package com.gracecode.android.rain.ui;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,7 +24,7 @@ import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.fragment.FrontPanelFragment;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
     private SimplePanel mFrontPanel;
     private FrontPanelFragment mFrontPanelFragment;
     private PlayManager mPlayManager;
@@ -41,12 +41,12 @@ public class MainActivity extends Activity {
         mFrontPanel = (SimplePanel) findViewById(R.id.front_panel);
         mControlCenterContainer = (ViewPager) findViewById(R.id.control_center);
         mFrontPanelFragment = new FrontPanelFragment();
-        mControlCenterAdapter = new ControlCenterAdapter(getFragmentManager());
+        mControlCenterAdapter = new ControlCenterAdapter(getSupportFragmentManager());
         mServerIntent = new Intent(this, PlayService.class);
 
         mRainville = Rainville.getInstance();
 
-        getFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.front_panel, mFrontPanelFragment)
                 .commit();
@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_feedback:
-                mRainville.sendFeedbackEmail(MainActivity.this);
+                mRainville.sendFeedbackEmail(MainActivity.this, getString(R.string.feedback_subject));
                 break;
 
             case R.id.action_play:

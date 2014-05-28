@@ -1,8 +1,9 @@
 package com.gracecode.android.rain.adapter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.ui.fragment.AboutFragment;
@@ -10,7 +11,7 @@ import com.gracecode.android.rain.ui.fragment.DonateFragment;
 import com.gracecode.android.rain.ui.fragment.PresetsFragment;
 
 
-public class ControlCenterAdapter extends FragmentStatePagerAdapter
+public class ControlCenterAdapter extends FragmentPagerAdapter
         implements ViewPager.OnPageChangeListener {
 
     private final Rainville mRainville;

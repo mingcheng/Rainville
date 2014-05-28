@@ -1,7 +1,7 @@
 package com.gracecode.android.rain.ui.fragment;
 
-import android.app.Fragment;
 
+import android.support.v4.app.Fragment;
 
 abstract class PlayerFragment extends Fragment {
     private static boolean mPlaying = false;

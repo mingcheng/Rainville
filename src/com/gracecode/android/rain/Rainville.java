@@ -1,6 +1,6 @@
 package com.gracecode.android.rain;
 
-import com.gracecode.android.common.CustemApplication;
+import com.gracecode.android.common.CustomApplication;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,7 +8,7 @@ import com.gracecode.android.common.CustemApplication;
  * User: mingcheng
  * Date: 14-4-17
  */
-public class Rainville extends CustemApplication {
+public class Rainville extends CustomApplication {
     private static Rainville mInstance;
 
     @Override
