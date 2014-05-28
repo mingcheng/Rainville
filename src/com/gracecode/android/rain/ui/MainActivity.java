@@ -156,6 +156,10 @@ public class MainActivity extends FragmentActivity {
 
             case R.id.action_play:
                 break;
+
+            case R.id.action_about:
+                mRainville.showAboutDialog(this, mRainville.getPackageInfo());
+                break;
         }
 
         return super.onMenuItemSelected(featureId, item);

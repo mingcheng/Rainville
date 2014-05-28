@@ -2,16 +2,21 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/action_feedback"
-            android:title="@string/feedback"
-            android:showAsAction="ifRoom"
+            android:id="@+id/action_play"
+            android:title="@string/play"
+            android:showAsAction="always"
             android:icon="@android:drawable/ic_menu_send"
             />
 
     <item
-            android:id="@+id/action_play"
-            android:title="@string/play"
-            android:showAsAction="ifRoom"
-            android:icon="@android:drawable/ic_menu_send"
+            android:id="@+id/action_feedback"
+            android:title="@string/feedback"
+            android:showAsAction="never"
+            />
+
+    <item
+            android:id="@+id/action_about"
+            android:title="@string/about"
+            android:showAsAction="never"
             />
 </menu>
