@@ -5,6 +5,7 @@
 /nbandroid/
 /proguard.cfg
 /build.xml
+/build
 /*.properties
 Thumbs.db
 .*.swp
