@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">聆雨</string>
-    <string name="app_desp">聆听细雨，不湿衣襟</string>
+    <string name="app_desp">聆听细雨，勿湿衣襟</string>
     <string name="play">播放</string>
     <string name="stop">停止</string>
     <string name="rain_poem">虞美人·听雨\n蒋捷（宋）\n\n少年听雨歌楼上，红烛昏罗帐。\n壮年听雨客舟中，江阔云低断雁叫西风。\n\n
