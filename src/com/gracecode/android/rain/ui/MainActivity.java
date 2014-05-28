@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -151,7 +152,10 @@ public class MainActivity extends FragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_feedback:
-                mRainville.sendFeedbackEmail(MainActivity.this, getString(R.string.feedback_subject));
+                PackageInfo info = mRainville.getPackageInfo();
+                mRainville.sendFeedbackEmail(MainActivity.this,
+                        String.format(getString(R.string.feedback_subject), getString(R.string.app_name), info.versionName)
+                );
                 break;
 
             case R.id.action_play:

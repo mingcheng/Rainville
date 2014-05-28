@@ -8,13 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.gracecode.android.rain.R;
+import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 
 public class AboutFragment extends Fragment {
+    private TextView mVersionTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_about, null);
+        View view = inflater.inflate(R.layout.fragment_about, null);
+        if (view != null) {
+            mVersionTextView = (TextView) view.findViewById(R.id.version);
+        }
+        return view;
     }
 
 
@@ -28,16 +34,12 @@ public class AboutFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         try {
-            PackageInfo packageInfo =
-                    getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-
-            TextView textView = (TextView) getView().findViewById(R.id.version);
-            textView.setText(
-                    String.format(getString(R.string.version),
-                            packageInfo.versionName, packageInfo.versionCode));
-        } catch (Exception e) {
+            if (mVersionTextView != null) {
+                PackageInfo packageInfo = Rainville.getInstance().getPackageInfo();
+                mVersionTextView.setText(String.format(getString(R.string.version), packageInfo.versionName, packageInfo.versionCode));
+            }
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
