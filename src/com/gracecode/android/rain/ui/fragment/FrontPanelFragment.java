@@ -18,6 +18,7 @@ import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
+import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 
 public class FrontPanelFragment extends PlayerFragment
@@ -109,11 +110,16 @@ public class FrontPanelFragment extends PlayerFragment
         mHeadsetNeeded.setOnClickListener(this);
 
         setCustomFonts();
-        getActivity().registerReceiver(mBroadcastReceiver,
-                new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
 
-        getActivity().registerReceiver(mBroadcastReceiver,
-                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+        IntentFilter filter = new IntentFilter();
+        for (String action : new String[]{
+                Intent.ACTION_HEADSET_PLUG,
+                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
+                PlayService.ACTION_A2DP_HEADSET_PLUG
+        }) {
+            filter.addAction(action);
+        }
+        getActivity().registerReceiver(mBroadcastReceiver, filter);
 
         setHeadsetNeeded();
     }

@@ -14,6 +14,7 @@ import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
+import com.gracecode.android.rain.serivce.PlayService;
 import com.umeng.analytics.MobclickAgent;
 
 public class PresetsFragment extends PlayerFragment implements MixerPresetsHelper, AdapterView.OnItemClickListener {
@@ -83,12 +84,15 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
-//        SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresets());
-
-        getActivity().registerReceiver(mBroadcastReceiver,
-                new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
-        getActivity().registerReceiver(mBroadcastReceiver,
-                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+        IntentFilter filter = new IntentFilter();
+        for (String action : new String[]{
+                Intent.ACTION_HEADSET_PLUG,
+                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
+                PlayService.ACTION_A2DP_HEADSET_PLUG
+        }) {
+            filter.addAction(action);
+        }
+        getActivity().registerReceiver(mBroadcastReceiver, filter);
 
         setDisabled(true);
     }

@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.*;
+import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -15,12 +16,18 @@ import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.ui.MainActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class PlayService extends Service {
     private static final int NOTIFY_ID = 0;
+    public static final String ACTION_A2DP_HEADSET_PLUG = "action_d2dp_headset_plugin";
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotification;
     private SharedPreferences mSharedPreferences;
+    private AudioManager mAudioManager;
+    private Timer mTimer;
 
     public void notifyRunning() {
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
@@ -128,16 +135,41 @@ public class PlayService extends Service {
 
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        registerReceiver(mPlayBroadcastReceiver,
-                new IntentFilter(PlayBroadcastReceiver.PLAY_BROADCAST_NAME));
-
-        registerReceiver(mPlayBroadcastReceiver,
-                new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+    public int onStartCommand(final Intent intent, int flags, int startId) {
+        IntentFilter filter = new IntentFilter();
+        for (String action : new String[]{
+                Intent.ACTION_HEADSET_PLUG,
+                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
+                ACTION_A2DP_HEADSET_PLUG
+        }) {
+            filter.addAction(action);
+        }
+        registerReceiver(mPlayBroadcastReceiver, filter);
 
         SendBroadcastHelper.sendPresetsBroadcast(PlayService.this, getPresets());
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        mTimer = new Timer();
+        mTimer.schedule(mDetectA2dpTimerTask, 0, 500);
+
         return super.onStartCommand(intent, flags, startId);
     }
+
+    private TimerTask mDetectA2dpTimerTask = new TimerTask() {
+        private int lastA2dpState = -1;
+
+        @Override
+        public void run() {
+            Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+            int state = (mAudioManager != null && mAudioManager.isBluetoothA2dpOn()) ? 1 : 0;
+            if (state != lastA2dpState) {
+                lastA2dpState = state;
+                intent.putExtra("state", state);
+                sendBroadcast(intent);
+            }
+        }
+    };
 
 
     public void setDisabled(boolean flag) {
@@ -169,6 +201,13 @@ public class PlayService extends Service {
         }
 
         unregisterReceiver(mPlayBroadcastReceiver);
+
+        try {
+            mTimer.cancel();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
         super.onDestroy();
     }
 
