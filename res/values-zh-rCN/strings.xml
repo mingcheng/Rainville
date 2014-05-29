@@ -10,6 +10,6 @@
     <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
     <string name="headset_needed">为了不打扰其他人，请插入耳机聆听</string>
     <string name="version" formatted="false">版本 %s（%d）</string>
-    <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com\n版权所有 2011-2014, 保留所有权利</string>
+    <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com</string>
     <string name="need_money_for_nexus5">码农求赐 Google Nexus5 用于开发</string>
 </resources>
