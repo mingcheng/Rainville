@@ -1,139 +1,84 @@
-# Rain Noise / 聆雨
+# 聆雨 for Android
 
-
-    Rain, Rain, Rain,
-    come again and again.
-
-    In the winter, in the summer and in spring.
-
-    Come with joy,
-    fall with happiness and go with sorrow.
-
-    Rain, Rain, Rain,
-    come again and again…
-    
-
-## Download from Google Play: https://play.google.com/store/apps/details?id=com.gracecode.android.rain
-
-![Screenshots](https://raw.githubusercontent.com/feelinglucky/Rainville/master/screenshots/20140417134851.png)
+![Screen Shots](http://files.gracecode.com/2014_05_29/1401368232.png)
 
 有时候有没有觉得您想专注下，但是却被周边的噪音打扰？或者您想休息下，却在飞机或者其他嘈杂的环境中无法入睡？那么，或许您可以试试这款应用！
 
-这款应用使用雨声中和和隔绝外接的所有噪音，并且能够是您的大脑得到充分的放松，使您能够专注的工作或者睡个好觉。
+雨声是大自然最自然的声音，大脑听到雨声并不会认为这是噪音，甚至听雨声对于很多人来讲能够得到充分的放松。这款应用能够巧妙得合成各种雨的声音，利用声音中和的原理隔绝外界的噪音，使您的大脑能够专注、安静下来。
 
-## 特性
+## 下载
 
-* 优化的界面和交互设计，没有其他多余的元素干扰
-* 多种合成的立体声雨声，让您自由选择
-* 自动判断是否插入耳机播放，谢绝给别人造成困扰
-* 针对小米以及魅族的 SmartBar 等进行了针对性的优化
-* 当然，这些都是免费的！
+- [小米市场](http://app.xiaomi.com/detail/63028)
+- [魅族市场](http://app.meizu.com/phone/apps/e6adf49e7f484fe18c6510e79cbbc9a8)
+- [Google Play](https://play.google.com/store/apps/details?id=com.gracecode.android.rain)
+
 
 ## 使用场景
 
-* 噪音隔绝，中和噪音对大脑的影响
+* 隔绝，中和噪音对大脑的影响
 * 飞机、火车等嘈杂的环境中
 * 午休
 * 哄孩子入睡
 * 放松或者需要专注工作
 * 其他您认为所有值得使用此应用的情况 :^)
 
-## FAQ
 
-### 这款应用是完全免费的吗？
+## 特性
 
-是的，而且还是开放源代码的。您可以在这里获得此应用的源代码： https://github.com/feelinglucky/Rainville 。
-
-----
-
-
-## Features
-
-* Cleanly Design;
-* Simplify, Easy and comfortable to navigation;
-* Headset Output Only, Does't disturb other people;
-* Many types of Rain Sound;
-* HD Sounds Quality;
-* That's All Free!
+- 优雅简洁的界面，没有多余的元素干扰
+- 独立音频解码器，省电省内存适合长期使用
+- 支持多达十几种合成雨声（后续仍在增加）
+- 针对小米以及魅族进行了针对性的优化
+- 插入耳机播放，谢绝给他人造成困扰
+- 完全免费而且是开源的！
 
 
+### 感谢
+
+感谢许多帮助开发和测试朋友，没有他们或许我就没法坚持到这个项目上线（对于我而言除了技术以外，似乎我很难在其他领域擅长什么）。
+
+- 感谢 [Stephane Pigeon](https://twitter.com/audiosampling) 提供音频文件，并允许将其打包进「聆雨」应用中
+- 使用 'Musket2' 字体，我爱它 http://bybu.es/portfolio/musket/
+- 使用 libvorbis 单独作为音频解码模块 https://github.com/vincentjames501/libvorbis-libogg-android
 
 
-## Usage
+## 更新记录
 
+### Release 1.4.8(2014-05-29)
 
-### Noise Masking
+- 蓝牙耳机支持
+- 修复界面的部分文案错误
 
-Your worst enemy can sometimes also be your best friend. The noises you will find here are of the second league, and will help you in masking noise you don't want to hear. Some people find it impossible to read, study, work, or do pretty much anything in the presence of undesired noise. Noise blockers usually use white noise, a continuum of frequencies equally distributed over the whole hearing range, which will mask the other noises in the room. This website introduces the concept of frequency-shaped noises, focusing on the frequencies one wants to effectively block. This ensures higher efficiency, and quieter masking levels.
+### Release 1.4.0(2014-05-20)
 
-
-### At the Office
-
-Open offices can be either too quiet or too noisy. In one situation, the slightest sound becomes distracting; in the other, ambient noise makes it impossible to concentrate. Open offices often benefit from sound masking devices, as the added noise covers existing sounds in the area, making workers less distracted and more productive.
-
-On another issue, private offices often appear to provide privacy but are poor performers in terms of acoustics. Sound masking between adjacent offices can be used to ensure that confidential conversations remain confidential. Either the masking sound is played inside the room where privacy should be guaranteed, or on the outside, depending on the application. For example, a doctor who does not want those in the waiting room to overhear a private conversation with a patient, will provide sound masking in the waiting area, not in his office.
-
-
-### Baby Sleep
-
-
-Noises and noisescapes are known to help soothe the babies to sleep, and sleep through the night. It helps parents too, when all sleep in the same room: healthy sleeping newborns can be pretty noisy as they move and make noises while they sleep. Playing some low-level noise in your bedroom will help you sleep through the wiggles and soft squeals your baby makes.
-
-
-### Relaxation
-
-Sound affects many areas of the brain and has an undeniable effect on the body. A good way to test if a particular sound is relaxing to you is to check your pulse: if it slows down, then you have found the sound that is calming you. Keep listening to it and you will relax, reaching a state of increased calmness and reducing your levels of anxiety, stress, or anger.
-
-
-### Sound Therapy
-
-Sound Therapy was common in the world of the Ancient Greeks. Pythagoreans used mathematical techniques to create harmonic structures for emotional balance, spiritual and relationship healing, and overall health. Although science and medicine evolved in the meanwhile - harmonic structures are now perfectly understood as resulting from the laws of physics - many people still rely on sounds as a natural healing method, with numerous successes and no side effects yet known. myNoise offers different tonal noises characterized by rich harmonic structures.
-
-
-
-
-## What's New
-
-### 2014年5月28日
-
-* 翻译界面为中文
-* 修复已知的 Bug
+- 增加唉中文界面，应用定名为「聆雨」
+- 修复若干已知的 Bug
 
 ### Release 1.3.0(2014-04-17)
 
-* Optimize for Meizu's Smartbar
-* Add headset button support
+- Optimized for Meizu's Smartbar
 
 ### Release 1.1.0(2013-10-27)
 
-* Add App Widget, So you can start/stop play without open app;
-* Minor modified some ui;
-* Minor some bug fix.
+- Add App Widget, So you can start/stop play without open app;
+- Minor modified some ui and bugs;
 
 ### Release 1.0.1(2013-10-22)
 
-* Add donate button, thanks for donating this app.
-* Ready for Play Market.
-
+- Ready for Google Play Market.
 
 ### Release 1.0.0(2013-10-21)
 
-* Initial release.
+- Initial release.
 
 
+## 点杯咖啡给我？
 
-## Thanks
+写应用其实是件「费力不讨好」的事情，需要花费更多看不见的精力和时间。虽然个人产出的应用可能毫无用处甚至脏乱不堪，但本人还是「恬不知耻」的希望的到大家的帮助和鼓励。
 
-* Stephane Pigeon <MyNoise.net>
-* Using 'Musket2' font at http://bybu.es/portfolio/musket/
+我的支付宝帐号是 ```amdk6@yeah.net``` ，不要求数额只要求心意到了即可。如您同意，您的名字将出现在应用的捐赠列表中，功德无量。
 
+计划这些费将用于[维持服务器](https://mos.meituan.com/r/71f9f5e918)等实际的开支，以及可能的话购买相应的硬件。
 
-
-# Contact
-
-* http://www.gracecode.com/
-* mingcheng<lucky[at]gracecode.com>
-
-
--- EOF --
+```-- EOF --```
 
