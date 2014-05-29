@@ -138,9 +138,9 @@ public class PlayService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
+                ACTION_A2DP_HEADSET_PLUG,
                 Intent.ACTION_HEADSET_PLUG,
-                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
-                ACTION_A2DP_HEADSET_PLUG
+                PlayBroadcastReceiver.PLAY_BROADCAST_NAME
         }) {
             filter.addAction(action);
         }
@@ -150,13 +150,25 @@ public class PlayService extends Service {
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
+        if (mTimer != null) {
+            try {
+                mTimer.cancel();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+
         mTimer = new Timer();
-        mTimer.schedule(mDetectA2dpTimerTask, 0, 500);
+        try {
+            mTimer.schedule(new DetectA2dpTimerTask(), 0, 500);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private TimerTask mDetectA2dpTimerTask = new TimerTask() {
+    class DetectA2dpTimerTask extends TimerTask {
         private int lastA2dpState = -1;
 
         @Override
@@ -169,7 +181,7 @@ public class PlayService extends Service {
                 sendBroadcast(intent);
             }
         }
-    };
+    }
 
 
     public void setDisabled(boolean flag) {

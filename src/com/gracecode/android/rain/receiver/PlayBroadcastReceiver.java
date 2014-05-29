@@ -3,6 +3,7 @@ package com.gracecode.android.rain.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import com.gracecode.android.rain.serivce.PlayService;
 
 
@@ -44,7 +45,12 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
                 int stat = intent.getIntExtra("state", -1);
                 switch (stat) {
                     case 0:
-                        onHeadsetUnPlugged();
+                        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                        if (manager != null && manager.isBluetoothA2dpOn()) {
+                            onHeadsetPlugged();
+                        } else {
+                            onHeadsetUnPlugged();
+                        }
                         break;
                     case 1:
                         onHeadsetPlugged();
