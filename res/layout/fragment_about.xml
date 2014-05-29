@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/copyrights"
                 android:gravity="center"
-                android:autoLink="web"
+                android:autoLink="email|web"
                 android:linksClickable="true"
                 android:lineSpacingExtra="10dip"
                 android:textColor="@color/sufu"
