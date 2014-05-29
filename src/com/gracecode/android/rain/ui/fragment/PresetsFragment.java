@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
@@ -127,7 +128,9 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
             SendBroadcastHelper.sendPlayBroadcast(getActivity());
-            MobclickAgent.onEvent(getActivity(), mAdapter.getItem(i));
         }
+
+        UIHelper.showShortToast(getActivity(), mAdapter.getItem(i));
+        MobclickAgent.onEvent(getActivity(), mAdapter.getItem(i));
     }
 }
