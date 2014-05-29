@@ -6,12 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.flurry.android.FlurryAgent;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.helper.DonateHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
-
-import java.util.HashMap;
 
 public class DonateFragment extends Fragment implements View.OnClickListener {
     @Override
@@ -37,19 +34,13 @@ public class DonateFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        HashMap<String, String> hashMap = new HashMap<String, String>();
-
         switch (view.getId()) {
             case R.id.donate:
                 DonateHelper.gotoPaypalPage(getActivity());
-                hashMap.put("DonateButton", "DonateButton");
                 break;
 
             case R.id.never_show_donate:
-                hashMap.put("DonateButton", "NeverShow");
                 break;
         }
-
-        FlurryAgent.logEvent(getTag(), hashMap);
     }
 }

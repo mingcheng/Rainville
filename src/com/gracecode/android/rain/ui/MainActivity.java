@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.flurry.android.FlurryAgent;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.adapter.ControlCenterAdapter;
@@ -24,6 +23,8 @@ import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.fragment.FrontPanelFragment;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
     private SimplePanel mFrontPanel;
@@ -57,6 +58,7 @@ public class MainActivity extends FragmentActivity {
                 .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
 
         getActionBar().hide();
+        XiaomiUpdateAgent.update(this);
     }
 
 
@@ -93,11 +95,16 @@ public class MainActivity extends FragmentActivity {
 
                 startService(mServerIntent);
                 bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
-
-                FlurryAgent.setUseHttps(true);
-                FlurryAgent.onStartSession(MainActivity.this, getString(R.string.app_key));
             }
         }, 100);
+
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -112,7 +119,6 @@ public class MainActivity extends FragmentActivity {
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
-        FlurryAgent.onEndSession(this);
     }
 
 

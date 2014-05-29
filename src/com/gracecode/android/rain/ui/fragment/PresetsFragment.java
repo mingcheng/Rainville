@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.flurry.android.FlurryAgent;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
-
-import java.util.HashMap;
+import com.umeng.analytics.MobclickAgent;
 
 public class PresetsFragment extends PlayerFragment implements MixerPresetsHelper, AdapterView.OnItemClickListener {
     private PresetsAdapter mAdapter;
@@ -129,9 +127,7 @@ public class PresetsFragment extends PlayerFragment implements MixerPresetsHelpe
         SendBroadcastHelper.sendPresetsBroadcast(getActivity(), ALL_PRESETS[i]);
         if (!isPlaying()) {
             SendBroadcastHelper.sendPlayBroadcast(getActivity());
-            HashMap<String, String> hashMap = new HashMap<String, String>();
-            hashMap.put("SelectedPreset", PRESET_TITLES[i]);
-            FlurryAgent.logEvent(getTag(), hashMap);
+            MobclickAgent.onEvent(getActivity(), mAdapter.getItem(i));
         }
     }
 }

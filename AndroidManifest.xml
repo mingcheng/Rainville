@@ -2,15 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.gracecode.android.rain"
           android:versionCode="20140530"
-          android:versionName="1.4.5">
+          android:versionName="1.4.6">
 
     <uses-sdk
             android:minSdkVersion="11"
             android:targetSdkVersion="16"/>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
 
     <supports-screens
             android:anyDensity="true"
@@ -55,5 +59,16 @@
                 android:name=".serivce.PlayService"
                 android:label="@string/app_name"
                 />
+
+        <meta-data
+                android:name="UMENG_APPKEY"
+                android:value="5386854056240bb33e043bfc" >
+        </meta-data>
+
+        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
