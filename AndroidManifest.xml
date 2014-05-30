@@ -8,13 +8,13 @@
             android:minSdkVersion="16"
             android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE"/>
 
     <supports-screens
             android:anyDensity="true"
@@ -62,12 +62,11 @@
 
         <meta-data
                 android:name="UMENG_APPKEY"
-                android:value="5386854056240bb33e043bfc" >
-        </meta-data>
+                android:value="5386854056240bb33e043bfc"/>
 
-        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver" >
+        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>
     </application>
