@@ -173,12 +173,16 @@ public class PlayService extends Service {
 
         @Override
         public void run() {
-            Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
-            int state = (mAudioManager != null && mAudioManager.isBluetoothA2dpOn()) ? 1 : 0;
-            if (state != lastA2dpState) {
-                lastA2dpState = state;
-                intent.putExtra("state", state);
-                sendBroadcast(intent);
+            if (mAudioManager != null) {
+                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+
+                // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
+                int state = (mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn()) ? 1 : 0;
+                if (state != lastA2dpState) {
+                    lastA2dpState = state;
+                    intent.putExtra("state", state);
+                    sendBroadcast(intent);
+                }
             }
         }
     }
