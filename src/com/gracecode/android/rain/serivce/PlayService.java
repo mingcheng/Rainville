@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.gracecode.android.rain.R;
+import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.player.BufferedPlayer;
 import com.gracecode.android.rain.player.PlayManager;
@@ -23,11 +24,14 @@ import java.util.TimerTask;
 public class PlayService extends Service {
     private static final int NOTIFY_ID = 0;
     public static final String ACTION_A2DP_HEADSET_PLUG = "action_d2dp_headset_plugin";
+    public static final String PREF_FOCUS_PLAY_WITHOUT_HEADSET = "pref_foucs_play_without_headset";
+
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotification;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mPreferences;
     private AudioManager mAudioManager;
     private Timer mTimer;
+    private SharedPreferences mSharedPreferences;
 
     public void notifyRunning() {
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
@@ -122,7 +126,8 @@ public class PlayService extends Service {
                 .setContentIntent(intent)
                 .addAction(R.drawable.ic_stop, getString(R.string.stop), getStopPendingIntent());
 
-        mSharedPreferences = getSharedPreferences(PlayService.class.getName(), Context.MODE_PRIVATE);
+        mPreferences = getSharedPreferences(PlayService.class.getName(), Context.MODE_PRIVATE);
+        mSharedPreferences = Rainville.getInstance().getSharedPreferences();
     }
 
 
@@ -170,19 +175,22 @@ public class PlayService extends Service {
 
     class DetectA2dpTimerTask extends TimerTask {
         private int lastA2dpState = -1;
+        private boolean lastFocusState = false;
 
         @Override
         public void run() {
-            if (mAudioManager != null) {
-                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+            // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
+            int state = (mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn()) ? 1 : 0;
+            boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
 
-                // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
-                int state = (mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn()) ? 1 : 0;
-                if (state != lastA2dpState) {
-                    lastA2dpState = state;
-                    intent.putExtra("state", state);
-                    sendBroadcast(intent);
-                }
+            if (lastFocusState != focus || state != lastA2dpState) {
+                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+                intent.putExtra("state", state);
+                intent.putExtra("focus", focus);
+                sendBroadcast(intent);
+
+                lastA2dpState = state;
+                lastFocusState = focus;
             }
         }
     }
@@ -195,7 +203,7 @@ public class PlayService extends Service {
 
     public void savePresets(float[] presets) {
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mSharedPreferences.edit().putFloat("_" + i, presets[i]).commit();
+            mPreferences.edit().putFloat("_" + i, presets[i]).commit();
         }
     }
 
@@ -203,7 +211,7 @@ public class PlayService extends Service {
     public float[] getPresets() {
         float[] result = new float[PlayManager.MAX_TRACKS_NUM];
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            result[i] = mSharedPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
+            result[i] = mPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
         }
 
         return result;

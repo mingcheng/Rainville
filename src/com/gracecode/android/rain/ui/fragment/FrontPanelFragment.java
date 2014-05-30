@@ -3,6 +3,7 @@ package com.gracecode.android.rain.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,8 +12,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
@@ -28,6 +29,9 @@ public class FrontPanelFragment extends PlayerFragment
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
     private TextView mHeadsetNeeded;
+
+    private int mFocusPlayTime = 0;
+    static private final int MAX_FOCUS_PLAY_TIMES = 12;
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -63,6 +67,7 @@ public class FrontPanelFragment extends PlayerFragment
     };
     private Rainville mRainville;
     private MenuItem mPlayMenuItem;
+    private SharedPreferences mSharedPreferences;
 
     public void setPlayMenuItem(MenuItem item) {
         this.mPlayMenuItem = item;
@@ -72,6 +77,7 @@ public class FrontPanelFragment extends PlayerFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mRainville = Rainville.getInstance();
+        mSharedPreferences = mRainville.getSharedPreferences();
     }
 
 
@@ -212,11 +218,30 @@ public class FrontPanelFragment extends PlayerFragment
                 break;
 
             case R.id.headset_needed:
-                Toast.makeText(getActivity(),
-                        getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
-                setStopped();
+
+                try {
+                    String message = getString(R.string.headset_needed);
+
+                    // 这里有个小的彩蛋，多点击耳机图标多次就可以解锁直接使用耳机外放播放
+                    if (mFocusPlayTime >= MAX_FOCUS_PLAY_TIMES) {
+                        markAsPlayWithoutHeadset();
+                        message = getString(R.string.play_wihout_headset);
+                    }
+
+                    UIHelper.showShortToast(getActivity(), message);
+                } finally {
+                    mFocusPlayTime++;
+                    setStopped();
+                }
+
                 break;
         }
+    }
+
+    private void markAsPlayWithoutHeadset() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true);
+        editor.commit();
     }
 
 

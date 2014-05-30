@@ -3,7 +3,9 @@ package com.gracecode.android.rain.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
+import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.serivce.PlayService;
 
 
@@ -19,6 +21,14 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
     public static final int CMD_PLAY = 0x0b;
     public static final int CMD_SET_VOLUME = 0x0c;
     public static final int CMD_SET_PRESETS = 0x0d;
+
+    private final Rainville mRainville;
+    private final SharedPreferences mSharedPreferences;
+
+    public PlayBroadcastReceiver() {
+        mRainville = Rainville.getInstance();
+        mSharedPreferences = mRainville.getSharedPreferences();
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -42,6 +52,13 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
             case Intent.ACTION_HEADSET_PLUG:
             case PlayService.ACTION_A2DP_HEADSET_PLUG:
+                boolean focus = mSharedPreferences.getBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, false)
+                        || intent.getBooleanExtra("focus", false);
+                if (focus) {
+                    onHeadsetPlugged();
+                    break;
+                }
+
                 int stat = intent.getIntExtra("state", -1);
                 switch (stat) {
                     case 0:

@@ -23,4 +23,6 @@
     <string name="paypal_account">lucky@gracecode.com</string>
     <string name="paypal_item_name">Rain for Android</string>
     <string name="paypal_amount">2.99</string>
+    <string name="focus_play_remain">Click %d times play without headset.</string>
+    <string name="play_wihout_headset">Now you can play without headset</string>
 </resources>

@@ -12,4 +12,6 @@
     <string name="version" formatted="false">版本 %s（%d）</string>
     <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com</string>
     <string name="need_money_for_nexus5">码农求赐 Google Nexus5 用于开发</string>
+    <string name="focus_play_remain">再点击 %d 次直接使用手机外放播放</string>
+    <string name="play_wihout_headset">现在您直接使用手机外放播放了。</string>
 </resources>
