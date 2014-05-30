@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
@@ -161,7 +160,7 @@ public class PresetsFragment extends PlayerFragment
             mAdapter.notifyDataSetChanged();
         }
 
-        UIHelper.showShortToast(getActivity(), presetName);
+        //UIHelper.showShortToast(getActivity(), presetName);
         MobclickAgent.onEvent(getActivity(), presetName);
     }
 }
