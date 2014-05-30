@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 
@@ -13,10 +13,21 @@ import com.gracecode.android.rain.helper.TypefaceHelper;
 public class PresetsAdapter extends BaseAdapter {
     private static Context mContext;
     private final String[] mPresets;
+    private String mCurrentPreset;
 
     public PresetsAdapter(Context context, String[] presets) {
         mContext = context;
         mPresets = presets;
+    }
+
+    public int getPositionFromName(String name) {
+        for (int i = mPresets.length - 1; i >= 0; i--) {
+            if (name.equals(mPresets[i])) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     @Override
@@ -42,16 +53,28 @@ public class PresetsAdapter extends BaseAdapter {
         }
 
         Holder h = Holder.get(view);
-        h.title.setText(mPresets[i]);
+        String preset = mPresets[i];
+        h.title.setText(preset);
+
+        if (view != null) {
+            h.title.setChecked(preset.equals(mCurrentPreset));
+        }
         return view;
     }
 
+    public void setCurrentPresetName(String name) {
+        mCurrentPreset = name;
+    }
+
+    public String getCurrentPreset() {
+        return mCurrentPreset;
+    }
 
     private static final class Holder {
-        public final TextView title;
+        public final CheckedTextView title;
 
         private Holder(View v) {
-            title = (TextView) v.findViewById(android.R.id.text1);
+            title = (CheckedTextView) v.findViewById(android.R.id.text1);
             title.setTypeface(TypefaceHelper.getTypefaceMusket2(mContext));
             v.setTag(this);
         }
