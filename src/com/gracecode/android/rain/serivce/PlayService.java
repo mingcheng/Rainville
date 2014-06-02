@@ -25,6 +25,7 @@ public class PlayService extends Service {
     private static final int NOTIFY_ID = 0;
     public static final String ACTION_A2DP_HEADSET_PLUG = "action_d2dp_headset_plugin";
     public static final String PREF_FOCUS_PLAY_WITHOUT_HEADSET = "pref_foucs_play_without_headset";
+    public static final int MAX_TIMEOUT_MINUTES = 60;
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotification;

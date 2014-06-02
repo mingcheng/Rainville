@@ -9,6 +9,7 @@ import com.gracecode.android.rain.Rainville;
 import com.gracecode.android.rain.ui.fragment.AboutFragment;
 import com.gracecode.android.rain.ui.fragment.DonateFragment;
 import com.gracecode.android.rain.ui.fragment.PresetsFragment;
+import com.gracecode.android.rain.ui.fragment.SetTimerFragment;
 
 
 public class ControlCenterAdapter extends FragmentPagerAdapter
@@ -16,7 +17,7 @@ public class ControlCenterAdapter extends FragmentPagerAdapter
 
     private final Rainville mRainville;
     private Fragment[] fragments = new Fragment[]{
-            new PresetsFragment(), new AboutFragment(), new DonateFragment()
+            new PresetsFragment(), new SetTimerFragment(), new AboutFragment(), new DonateFragment()
     };
 
     public ControlCenterAdapter(FragmentManager fm) {

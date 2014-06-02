@@ -25,4 +25,6 @@
     <string name="paypal_amount">2.99</string>
     <string name="focus_play_remain">Click %d times play without headset.</string>
     <string name="play_wihout_headset">Now you can play without headset</string>
+    <string name="set_close_timer">Auto stop play after</string>
+    <string name="minutes">minutes</string>
 </resources>
