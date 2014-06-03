@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +16,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.Rainville;
+import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
+import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.serivce.PlayService;
@@ -32,6 +34,10 @@ public class FrontPanelFragment extends PlayerFragment
 
     private int mFocusPlayTime = 0;
     static private final int MAX_FOCUS_PLAY_TIMES = 12;
+
+    private RainApplication mRainApplication;
+    private MenuItem mPlayMenuItem;
+    private SharedPreferences mSharedPreferences;
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -64,20 +70,26 @@ public class FrontPanelFragment extends PlayerFragment
             setHeadsetNeeded();
             setStopped();
         }
+
+        @Override
+        public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
+            if (!byUser && remain != StopPlayTimeoutHelper.NO_REMAIN) {
+                Log.e("", remain / 1000 / 60 + "");
+            }
+        }
     };
-    private Rainville mRainville;
-    private MenuItem mPlayMenuItem;
-    private SharedPreferences mSharedPreferences;
+
 
     public void setPlayMenuItem(MenuItem item) {
         this.mPlayMenuItem = item;
     }
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mRainville = Rainville.getInstance();
-        mSharedPreferences = mRainville.getSharedPreferences();
+        mRainApplication = RainApplication.getInstance();
+        mSharedPreferences = mRainApplication.getSharedPreferences();
     }
 
 
@@ -108,7 +120,7 @@ public class FrontPanelFragment extends PlayerFragment
         mPlayButton = (ToggleButton) getView().findViewById(R.id.toggle_play);
         mPlayButton.setOnClickListener(this);
 
-        if (mRainville.isMeizuDevice()) {
+        if (mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.INVISIBLE);
         }
 
@@ -120,7 +132,8 @@ public class FrontPanelFragment extends PlayerFragment
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
                 Intent.ACTION_HEADSET_PLUG,
-                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
+                StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT,
+                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST,
                 PlayService.ACTION_A2DP_HEADSET_PLUG
         }) {
             filter.addAction(action);
@@ -143,7 +156,7 @@ public class FrontPanelFragment extends PlayerFragment
     public void setAsNormal() {
         mHeadsetNeeded.clearAnimation();
         mHeadsetNeeded.setVisibility(View.INVISIBLE);
-        if (!mRainville.isMeizuDevice()) {
+        if (!mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.VISIBLE);
         }
     }

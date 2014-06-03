@@ -8,8 +8,8 @@ import com.gracecode.android.common.CustomApplication;
  * User: mingcheng
  * Date: 14-4-17
  */
-public class Rainville extends CustomApplication {
-    private static Rainville mInstance;
+public class RainApplication extends CustomApplication {
+    private static RainApplication mInstance;
 
     @Override
     public void onCreate() {
@@ -17,7 +17,7 @@ public class Rainville extends CustomApplication {
         mInstance = this;
     }
 
-    public static Rainville getInstance() {
+    public static RainApplication getInstance() {
         return mInstance;
     }
 }

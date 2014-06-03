@@ -16,21 +16,21 @@ public final class SendBroadcastHelper {
 
     public static Intent getNewPlayBroadcastIntent(Context context, Class cls) {
         return new Intent(context, cls)
-                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .setAction(PlayBroadcastReceiver.ACTION_PLAY_BROADCAST)
                 .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_PLAY);
     }
 
 
     public static Intent getNewPlayBroadcastIntent() {
         return new Intent()
-                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .setAction(PlayBroadcastReceiver.ACTION_PLAY_BROADCAST)
                 .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_PLAY);
     }
 
 
     public static Intent getNewStopBroadcastIntent() {
         return new Intent()
-                .setAction(PlayBroadcastReceiver.PLAY_BROADCAST_NAME)
+                .setAction(PlayBroadcastReceiver.ACTION_PLAY_BROADCAST)
                 .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_STOP);
     }
 
@@ -47,8 +47,28 @@ public final class SendBroadcastHelper {
 
     public static void sendPresetsBroadcast(Context context, float[] presets) {
         sendBroadcast(context, getNewPlayBroadcastIntent()
-                .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_SET_PRESETS)
-                .putExtra(PlayBroadcastReceiver.FIELD_PRESETS, presets)
+                        .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_SET_PRESETS)
+                        .putExtra(PlayBroadcastReceiver.FIELD_PRESETS, presets)
         );
+    }
+
+
+    public static void sendPlayStopTimeoutBroadcast(Context context, long timeout, long remain, boolean set) {
+        Intent intent = new Intent(StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT);
+        intent.putExtra(PlayBroadcastReceiver.FIELD_TIMEOUT, timeout);
+        if (set) {
+            intent.putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_SET_TIMEOUT);
+        }
+
+        if (remain != StopPlayTimeoutHelper.NO_REMAIN) {
+            intent.putExtra(StopPlayTimeoutHelper.FIELD_REMAIN, remain);
+        }
+
+        sendBroadcast(context, intent);
+    }
+
+
+    public static void sendPlayStopTimeoutBroadcast(Context context, long timeout, boolean set) {
+        sendPlayStopTimeoutBroadcast(context, timeout, StopPlayTimeoutHelper.NO_REMAIN, set);
     }
 }
