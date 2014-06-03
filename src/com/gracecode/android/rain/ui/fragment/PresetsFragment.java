@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.Rainville;
+import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
@@ -61,6 +60,11 @@ public class PresetsFragment extends PlayerFragment
         public void onHeadsetUnPlugged() {
             setDisabled(true);
         }
+
+        @Override
+        public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
+
+        }
     };
 
 
@@ -75,7 +79,7 @@ public class PresetsFragment extends PlayerFragment
 
         mPresets = getResources().getStringArray(R.array.presets);
         mAdapter = new PresetsAdapter(getActivity(), mPresets);
-        mSharedPreferences = Rainville.getInstance().getSharedPreferences();
+        mSharedPreferences = RainApplication.getInstance().getSharedPreferences();
 
         String preset = mSharedPreferences.getString(PREF_SAVED_PRESET_NAME, mPresets[0]);
         mAdapter.setCurrentPresetName(preset);
@@ -115,7 +119,7 @@ public class PresetsFragment extends PlayerFragment
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
                 Intent.ACTION_HEADSET_PLUG,
-                PlayBroadcastReceiver.PLAY_BROADCAST_NAME,
+                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST,
                 PlayService.ACTION_A2DP_HEADSET_PLUG
         }) {
             filter.addAction(action);
@@ -161,7 +165,7 @@ public class PresetsFragment extends PlayerFragment
             mAdapter.notifyDataSetChanged();
         }
 
-        UIHelper.showShortToast(getActivity(), presetName);
+        //UIHelper.showShortToast(getActivity(), presetName);
         MobclickAgent.onEvent(getActivity(), presetName);
     }
 }

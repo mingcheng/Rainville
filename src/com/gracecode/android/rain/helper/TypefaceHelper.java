@@ -2,26 +2,13 @@ package com.gracecode.android.rain.helper;
 
 import android.content.Context;
 import android.graphics.*;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class TypefaceHelper {
 
     private static Typeface mTypefaceMusket2;
     private static Typeface mTypefaceWeather;
     private static Typeface mTypefaceElegant;
-
-    public static void setAllTypeface(ViewGroup view, final Typeface typeface) {
-        for (int i = 0; i < view.getChildCount(); i++) {
-            View v = view.getChildAt(i);
-            if (v instanceof ViewGroup) {
-                setAllTypeface((ViewGroup) v, typeface);
-            } else if (v instanceof TextView) {
-                ((TextView) v).setTypeface(typeface);
-            }
-        }
-    }
+    private static Typeface mTypefaceRoboto;
 
     public static Typeface getTypefaceMusket2(Context context) {
         if (mTypefaceMusket2 == null) {
@@ -48,6 +35,15 @@ public class TypefaceHelper {
         }
 
         return mTypefaceElegant;
+    }
+
+
+    public static Typeface getTypefaceRoboto(Context context) {
+        if (mTypefaceRoboto == null) {
+            mTypefaceRoboto = Typeface.createFromAsset(context.getAssets(), "roboto.ttf");
+        }
+
+        return mTypefaceRoboto;
     }
 
     public static Bitmap getStringBitmapFromTypeface(String string, Typeface typeface, int width, int height) {

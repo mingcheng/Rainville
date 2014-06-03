@@ -207,7 +207,7 @@ public final class PlayManager {
             getPlayer(track, LEFT_TRACK).setStereoVolume(percent, percent);
             getPlayer(track, RIGHT_TRACK).setStereoVolume(percent, percent);
         } catch (RuntimeException e) {
-            Log.e(TAG, "Can not set volume, maybe player is not ready.");
+            e.printStackTrace();
         } finally {
             if (!temporary) {
                 mTrackerVolumes[track] = volume;

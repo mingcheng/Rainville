@@ -7,9 +7,13 @@
     <string name="rain_poem">虞美人·听雨\n蒋捷（宋）\n\n少年听雨歌楼上，红烛昏罗帐。\n壮年听雨客舟中，江阔云低断雁叫西风。\n\n
         而今听雨僧庐下，鬓已星星也。\n悲欢离合总无情，一任阶前点滴到天明。
     </string>
-    <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
+    <string name="keep_running">且听细雨，勿湿衣襟</string>
     <string name="headset_needed">为了不打扰其他人，请插入耳机聆听</string>
     <string name="version" formatted="false">版本 %s（%d）</string>
     <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com</string>
     <string name="need_money_for_nexus5">码农求赐 Google Nexus5 用于开发</string>
+    <string name="focus_play_remain">再点击 %d 次直接使用手机外放播放</string>
+    <string name="play_wihout_headset">现在您直接使用手机外放播放了。</string>
+    <string name="set_close_timer">设定在</string>
+    <string name="minutes">分钟以后，停止播放</string>
 </resources>

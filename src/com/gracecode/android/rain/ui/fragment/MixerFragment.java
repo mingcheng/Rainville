@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.ui.widget.VerticalSeekBar;
 
@@ -41,7 +41,7 @@ public class MixerFragment extends Fragment
     public void onStart() {
         super.onStart();
 
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(),
+        UIHelper.setCustomTypeface((ViewGroup) getView(),
                 Typeface.createFromAsset(getActivity().getAssets(), "elegant.ttf"));
 
         bindSeekBarsListener();
