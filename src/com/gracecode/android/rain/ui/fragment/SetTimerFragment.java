@@ -58,11 +58,9 @@ public class SetTimerFragment extends Fragment {
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
-            if (mNumberPicker != null && !byUser) {
-                int value = (int) (Math.ceil(timeout / (60 * 1000)) / VALUE_STEP);
-                if (value != mNumberPicker.getValue()) {
-                    mNumberPicker.setValue(value);
-                }
+            int value = (int) (Math.ceil(timeout / (60 * 1000)) / VALUE_STEP);
+            if (value != mNumberPicker.getValue()) {
+                mNumberPicker.setValue(value);
             }
         }
     };

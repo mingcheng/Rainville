@@ -76,7 +76,9 @@ public class FrontPanelFragment extends PlayerFragment
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
             if (!byUser && remain != StopPlayTimeoutHelper.NO_REMAIN) {
                 String countdown = DateHelper.getCountDownString(remain);
-                mCountDownTextView.setVisibility(View.VISIBLE);
+                if (mCountDownTextView.getVisibility() != View.VISIBLE) {
+                    mCountDownTextView.setVisibility(View.VISIBLE);
+                }
                 mCountDownTextView.setText(countdown);
             } else {
                 mCountDownTextView.setVisibility(View.INVISIBLE);
