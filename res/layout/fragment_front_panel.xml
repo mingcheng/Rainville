@@ -102,7 +102,7 @@
                 android:textSize="30sp"
                 android:gravity="center"
                 android:visibility="invisible"
-                android:textColor="@color/sufu"
+                android:textColor="@color/berry_blue"
                 android:layout_marginTop="10dp"
                 android:id="@+id/countdown"
                 />
