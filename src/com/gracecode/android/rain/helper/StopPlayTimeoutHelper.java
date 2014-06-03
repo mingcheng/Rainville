@@ -36,6 +36,7 @@ public class StopPlayTimeoutHelper {
     public void clearStopPlayTimeout() {
         mHandler.removeCallbacks(mStopPlayRunnable);
         mTimeout = DEFAULT_STOP_TIMEOUT;
+        mFinishTime = SystemClock.uptimeMillis();
     }
 
     /**
@@ -50,10 +51,6 @@ public class StopPlayTimeoutHelper {
             mFinishTime = mTimeout + SystemClock.uptimeMillis();
             mHandler.postAtTime(mStopPlayRunnable, mFinishTime);
         }
-    }
-
-    public void setStopPlayTimeout() {
-        setStopPlayTimeout(DEFAULT_STOP_TIMEOUT);
     }
 
     public long getTimeout() {

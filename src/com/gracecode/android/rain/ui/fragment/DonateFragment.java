@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.helper.DonateHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
@@ -15,7 +16,7 @@ public class DonateFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(),
+        UIHelper.setCustomTypeface((ViewGroup) getView(),
                 TypefaceHelper.getTypefaceMusket2(getActivity()));
 
         ((TextView) getView().findViewById(R.id.nexus5))

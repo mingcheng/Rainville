@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import com.gracecode.android.common.helper.DateHelper;
 import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
@@ -31,6 +31,7 @@ public class FrontPanelFragment extends PlayerFragment
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
     private TextView mHeadsetNeeded;
+    private TextView mCountDownTextView;
 
     private int mFocusPlayTime = 0;
     static private final int MAX_FOCUS_PLAY_TIMES = 12;
@@ -74,7 +75,11 @@ public class FrontPanelFragment extends PlayerFragment
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
             if (!byUser && remain != StopPlayTimeoutHelper.NO_REMAIN) {
-                Log.e("", remain / 1000 / 60 + "");
+                String countdown = DateHelper.getCountDownString(remain);
+                mCountDownTextView.setVisibility(View.VISIBLE);
+                mCountDownTextView.setText(countdown);
+            } else {
+                mCountDownTextView.setVisibility(View.INVISIBLE);
             }
         }
     };
@@ -93,9 +98,12 @@ public class FrontPanelFragment extends PlayerFragment
     }
 
 
+    /**
+     * 自定义字体样式
+     */
     private void setCustomFonts() {
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(),
-                TypefaceHelper.getTypefaceMusket2(getActivity()));
+        UIHelper.setCustomTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
+
         ((TextView) getView().findViewById(R.id.icon))
                 .setTypeface(TypefaceHelper.getTypefaceWeather(getActivity()));
 
@@ -105,6 +113,10 @@ public class FrontPanelFragment extends PlayerFragment
 
         if (mHeadsetNeeded != null) {
             mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
+        }
+
+        if (mCountDownTextView != null) {
+            mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceRoboto(getActivity()));
         }
     }
 
@@ -127,6 +139,9 @@ public class FrontPanelFragment extends PlayerFragment
         mHeadsetNeeded = (TextView) getView().findViewById(R.id.headset_needed);
         mHeadsetNeeded.setOnClickListener(this);
 
+        mCountDownTextView = (TextView) getView().findViewById(R.id.countdown);
+
+        // 设置自定义的字体
         setCustomFonts();
 
         IntentFilter filter = new IntentFilter();
@@ -209,6 +224,8 @@ public class FrontPanelFragment extends PlayerFragment
     public void setStopped() {
         super.setStopped();
         mPlayButton.setChecked(false);
+        mCountDownTextView.setVisibility(View.INVISIBLE);
+
         if (mPlayMenuItem != null) {
             mPlayMenuItem.setIcon(android.R.drawable.ic_media_play);
         }

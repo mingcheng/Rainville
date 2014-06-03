@@ -154,7 +154,7 @@ public class PlayService extends Service {
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
-            if (byUser) {
+            if (byUser && mPlayManager.isPlaying()) {
                 mStopPlayTimeoutHelper.setStopPlayTimeout(timeout);
             }
         }
