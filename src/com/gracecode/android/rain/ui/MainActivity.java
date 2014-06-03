@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.Rainville;
+import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.adapter.ControlCenterAdapter;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.player.PlayManager;
@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity {
     private Intent mServerIntent;
     private ViewPager mControlCenterContainer;
     private ControlCenterAdapter mControlCenterAdapter;
-    private Rainville mRainville;
+    private RainApplication mRainApplication;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity {
         mControlCenterAdapter = new ControlCenterAdapter(getSupportFragmentManager());
         mServerIntent = new Intent(this, PlayService.class);
 
-        mRainville = Rainville.getInstance();
+        mRainApplication = RainApplication.getInstance();
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -92,12 +92,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void run() {
                 setControlCenterLayout();
-
-                startService(mServerIntent);
-                bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
             }
-        }, 100);
+        }, 1000);
 
+        startService(mServerIntent);
+        bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
         MobclickAgent.onResume(this);
     }
 
@@ -122,17 +121,13 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    /**
+     * 自动设定控制面板的高度, @TODO 需要检查更多机型的兼容性
+     */
     private void setControlCenterLayout() {
-        int height = getControlCenterHeight();
-
-        RelativeLayout parentView = (RelativeLayout) mControlCenterContainer.getParent();
-        RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.MATCH_PARENT);
-
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        params.height = height;
-        parentView.setLayoutParams(params);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mControlCenterContainer.getLayoutParams();
+        params.height = getControlCenterHeight();
+        mControlCenterContainer.setLayoutParams(params);
     }
 
 
@@ -143,7 +138,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mRainville.isMeizuDevice()) {
+        if (mRainApplication.isMeizuDevice()) {
             getMenuInflater().inflate(R.menu.main, menu);
             MenuItem menuItem = menu.findItem(R.id.action_play);
             if (menuItem != null) {
@@ -158,8 +153,8 @@ public class MainActivity extends FragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_feedback:
-                PackageInfo info = mRainville.getPackageInfo();
-                mRainville.sendFeedbackEmail(MainActivity.this,
+                PackageInfo info = mRainApplication.getPackageInfo();
+                mRainApplication.sendFeedbackEmail(MainActivity.this,
                         String.format(getString(R.string.feedback_subject), getString(R.string.app_name), info.versionName)
                 );
                 break;
@@ -168,7 +163,7 @@ public class MainActivity extends FragmentActivity {
                 break;
 
             case R.id.action_about:
-                mRainville.showAboutDialog(this, mRainville.getPackageInfo());
+                mRainApplication.showAboutDialog(this, mRainApplication.getPackageInfo());
                 break;
         }
 

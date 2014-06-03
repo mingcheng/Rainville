@@ -10,8 +10,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.Rainville;
+import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
+import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
 import com.gracecode.android.rain.player.BufferedPlayer;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
@@ -32,15 +33,62 @@ public class PlayService extends Service {
     private AudioManager mAudioManager;
     private Timer mTimer;
     private SharedPreferences mSharedPreferences;
+    private StopPlayTimeoutHelper mStopPlayTimeoutHelper;
 
+    /**
+     * 定时检查系统状态
+     */
+    class RepeatStateTimerTask extends TimerTask {
+        private boolean lastA2dpState = false;
+        private boolean lastFocusState = false;
+        private long lastTimeoutRemain;
+
+        @Override
+        public void run() {
+            // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
+            detectA2dpOrHeadset();
+
+            // 定时停止状态，避免同个重复发送
+            long timeoutRemain = mStopPlayTimeoutHelper.getTimeoutRemain();
+            if (timeoutRemain != StopPlayTimeoutHelper.NO_REMAIN && lastTimeoutRemain != timeoutRemain) {
+                mStopPlayTimeoutHelper.sendStateBroadcast();
+                lastTimeoutRemain = timeoutRemain;
+            }
+        }
+
+
+        private boolean detectA2dpOrHeadset() {
+            boolean state = mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn();
+            boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
+            if (lastFocusState != focus || state != lastA2dpState) {
+                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+                intent.putExtra("state", state ? 1 : 0);
+                intent.putExtra("focus", focus);
+                sendBroadcast(intent);
+
+                lastA2dpState = state;
+                lastFocusState = focus;
+            }
+
+            return state || focus;
+        }
+    }
+
+
+    /**
+     * 显示通知信息
+     */
     public void notifyRunning() {
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }
 
+
+    /**
+     * 清除通知信息
+     */
     public void clearNotification() {
         mNotificationManager.cancel(NOTIFY_ID);
     }
-
 
     public class PlayBinder extends Binder {
         public PlayService getService() {
@@ -73,6 +121,7 @@ public class PlayService extends Service {
         public void onStop() {
             mPlayManager.stop();
             clearNotification();
+            mStopPlayTimeoutHelper.clearStopPlayTimeout();
         }
 
         @Override
@@ -102,6 +151,13 @@ public class PlayService extends Service {
             SendBroadcastHelper.sendStopBroadcast(PlayService.this);
             setDisabled(true);
         }
+
+        @Override
+        public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
+            if (byUser && mPlayManager.isPlaying()) {
+                mStopPlayTimeoutHelper.setStopPlayTimeout(timeout);
+            }
+        }
     };
 
 
@@ -127,7 +183,8 @@ public class PlayService extends Service {
                 .addAction(R.drawable.ic_stop, getString(R.string.stop), getStopPendingIntent());
 
         mPreferences = getSharedPreferences(PlayService.class.getName(), Context.MODE_PRIVATE);
-        mSharedPreferences = Rainville.getInstance().getSharedPreferences();
+        mSharedPreferences = RainApplication.getInstance().getSharedPreferences();
+        mStopPlayTimeoutHelper = new StopPlayTimeoutHelper(this);
     }
 
 
@@ -144,8 +201,9 @@ public class PlayService extends Service {
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
                 ACTION_A2DP_HEADSET_PLUG,
+                StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT,
                 Intent.ACTION_HEADSET_PLUG,
-                PlayBroadcastReceiver.PLAY_BROADCAST_NAME
+                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST
         }) {
             filter.addAction(action);
         }
@@ -165,34 +223,12 @@ public class PlayService extends Service {
 
         mTimer = new Timer();
         try {
-            mTimer.schedule(new DetectA2dpTimerTask(), 0, 500);
+            mTimer.schedule(new RepeatStateTimerTask(), 0, 1000);  // 一秒检查一次
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
 
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    class DetectA2dpTimerTask extends TimerTask {
-        private int lastA2dpState = -1;
-        private boolean lastFocusState = false;
-
-        @Override
-        public void run() {
-            // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
-            int state = (mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn()) ? 1 : 0;
-            boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
-
-            if (lastFocusState != focus || state != lastA2dpState) {
-                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
-                intent.putExtra("state", state);
-                intent.putExtra("focus", focus);
-                sendBroadcast(intent);
-
-                lastA2dpState = state;
-                lastFocusState = focus;
-            }
-        }
     }
 
 
@@ -230,6 +266,8 @@ public class PlayService extends Service {
             mTimer.cancel();
         } catch (RuntimeException e) {
             e.printStackTrace();
+        } finally {
+            mTimer = null;
         }
 
         super.onDestroy();

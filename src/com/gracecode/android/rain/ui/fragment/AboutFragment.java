@@ -7,8 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.Rainville;
+import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 
 public class AboutFragment extends Fragment {
@@ -27,7 +28,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TypefaceHelper.setAllTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
+        UIHelper.setCustomTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
     }
 
 
@@ -36,7 +37,7 @@ public class AboutFragment extends Fragment {
         super.onStart();
         try {
             if (mVersionTextView != null) {
-                PackageInfo packageInfo = Rainville.getInstance().getPackageInfo();
+                PackageInfo packageInfo = RainApplication.getInstance().getPackageInfo();
                 mVersionTextView.setText(String.format(getString(R.string.version), packageInfo.versionName, packageInfo.versionCode));
             }
         } catch (RuntimeException e) {

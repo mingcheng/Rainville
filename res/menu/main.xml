@@ -5,7 +5,7 @@
             android:id="@+id/action_play"
             android:title="@string/play"
             android:showAsAction="always"
-            android:icon="@android:drawable/ic_menu_send"
+            android:icon="@android:drawable/ic_media_play"
             />
 
     <item
