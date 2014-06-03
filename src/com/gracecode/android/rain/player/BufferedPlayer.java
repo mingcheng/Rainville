@@ -68,7 +68,7 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
             if (mAudioTrack != null)
                 mAudioTrack.write(pcmData, 0, amountToRead);
         } catch (RuntimeException e) {
-            Log.e(TAG, "Can not write to audio, maybe audio is closed?");
+            e.printStackTrace();
         }
     }
 
@@ -80,7 +80,7 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
                 mAudioTrack.stop();
                 mAudioTrack.release();
             } catch (RuntimeException e) {
-                Log.e(TAG, e.getMessage());
+                e.printStackTrace();
             } finally {
                 mAudioTrack = null;
             }
@@ -162,7 +162,7 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
                 mInputStream = null;
             }
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
 
         looping = false;
