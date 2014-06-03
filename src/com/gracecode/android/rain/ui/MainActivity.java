@@ -1,9 +1,6 @@
 package com.gracecode.android.rain.ui;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +24,8 @@ import com.umeng.analytics.MobclickAgent;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
+    private static final String SAVED_CURRENT_ITEM = "pref_saved_current_item";
+
     private SimplePanel mFrontPanel;
     private FrontPanelFragment mFrontPanelFragment;
     private PlayManager mPlayManager;
@@ -34,6 +33,7 @@ public class MainActivity extends FragmentActivity {
     private ViewPager mControlCenterContainer;
     private ControlCenterAdapter mControlCenterAdapter;
     private RainApplication mRainApplication;
+    private SharedPreferences mPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MainActivity extends FragmentActivity {
         mServerIntent = new Intent(this, PlayService.class);
 
         mRainApplication = RainApplication.getInstance();
+        mPreferences = getSharedPreferences(MainActivity.class.getName(), Context.MODE_PRIVATE);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -82,6 +83,9 @@ public class MainActivity extends FragmentActivity {
 
         mFrontPanelFragment.setFrontPanel(mFrontPanel);
         mFrontPanel.addSimplePanelListener(mFrontPanelFragment);
+
+        int currentItem = mPreferences.getInt(SAVED_CURRENT_ITEM, 0);
+        mControlCenterContainer.setCurrentItem(currentItem);
     }
 
     @Override
@@ -112,6 +116,11 @@ public class MainActivity extends FragmentActivity {
         if (mPlayManager != null && !mPlayManager.isPlaying()) {
             stopService(mServerIntent);
         }
+
+        int currentItem = mControlCenterContainer.getCurrentItem();
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(SAVED_CURRENT_ITEM, currentItem);
+        editor.commit();
 
         try {
             unbindService(mConnection);
