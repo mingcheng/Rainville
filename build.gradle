@@ -1,0 +1,98 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.10.+'
+    }
+}
+
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':libs:libogg')
+    compile project(':libs:common')
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate.toInteger()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        targetSdkVersion 19
+        minSdkVersion 16
+        versionCode getDate()
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file(System.getProperty("user.home") + "/.android/debug.keystore")
+        }
+
+        release {
+            // Save password to ~/.gradle/gradle.properties
+            storeFile file(System.getProperty("user.home") + MC_ANDROID_STORE_PATH)
+            storePassword MC_ANDROID_STORE_PASSWORD
+            keyAlias "RainNoise"
+            keyPassword MC_ANDROID_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-DEBUG"
+        }
+
+        release {
+            debuggable false
+            jniDebugBuild false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            manifest {
+                srcFile 'AndroidManifest.xml'
+            }
+            java {
+                srcDir 'src'
+            }
+            res {
+                srcDir 'res'
+            }
+            assets {
+                srcDir 'assets'
+            }
+            resources {
+                srcDir 'src'
+            }
+        }
+    }
+}
+
+
+tasks.withType(Compile) {
+    options.encoding = "UTF-8"
+}
+
