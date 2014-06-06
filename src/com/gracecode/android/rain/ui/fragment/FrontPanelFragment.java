@@ -1,9 +1,6 @@
 package com.gracecode.android.rain.ui.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.common.helper.DateHelper;
 import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
@@ -27,6 +26,8 @@ import com.gracecode.android.rain.ui.widget.SimplePanel;
 public class FrontPanelFragment extends PlayerFragment
         implements SimplePanel.SimplePanelListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
 
+    private static final String PREF_IS_FIRST_OPEN_PANEL = "PREF_IS_FIRST_OPEN_PANEL";
+
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
@@ -39,6 +40,7 @@ public class FrontPanelFragment extends PlayerFragment
     private RainApplication mRainApplication;
     private MenuItem mPlayMenuItem;
     private SharedPreferences mSharedPreferences;
+    private SharedPreferences mPreferences;
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -97,6 +99,7 @@ public class FrontPanelFragment extends PlayerFragment
         super.onActivityCreated(savedInstanceState);
         mRainApplication = RainApplication.getInstance();
         mSharedPreferences = mRainApplication.getSharedPreferences();
+        mPreferences = getActivity().getSharedPreferences(FrontPanelFragment.class.getName(), Context.MODE_PRIVATE);
     }
 
 
@@ -194,10 +197,33 @@ public class FrontPanelFragment extends PlayerFragment
 
     @Override
     public void onOpened() {
-        if (mToggleButton != null)
+        if (mToggleButton != null) {
             mToggleButton.setChecked(true);
+        }
+
+        // 第一次打开面板的时候，显示功能介绍
+        if (isFirstOpenPanel()) {
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(getView()))
+                    .setContentTitle(getString(R.string.panel_intro))
+                    .setContentText(getString(R.string.panel_intro_summary))
+                    .setStyle(R.style.RainShowcaseView)
+                    .hideOnTouchOutside()
+                    .build();
+
+            markPanelOpened();  // 设定下次不再打开
+        }
     }
 
+    private boolean isFirstOpenPanel() {
+        return mPreferences.getBoolean(PREF_IS_FIRST_OPEN_PANEL, true);
+    }
+
+    private void markPanelOpened() {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(PREF_IS_FIRST_OPEN_PANEL, false);
+        editor.commit();
+    }
 
     @Override
     public void onClosed() {

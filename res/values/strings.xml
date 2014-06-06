@@ -30,4 +30,8 @@
     <string name="welcome_use_rainville">Welcome use Rainville!</string>
     <string name="welcome_use_rainville_summary">\n\nYou can straight tap on the red button\n
         to enable paly with your phone speaker.</string>
+    <string name="panel_intro">Now, You have more choice :^)</string>
+    <string name="panel_intro_summary">\n\nYou can select more type of rain, \n and swip left to set stop play
+        timeout.
+    </string>
 </resources>
