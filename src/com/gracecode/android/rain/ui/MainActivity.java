@@ -17,6 +17,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.adapter.ControlCenterAdapter;
+import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.serivce.PlayService;
@@ -38,6 +39,8 @@ public class MainActivity extends FragmentActivity {
     private RainApplication mRainApplication;
     private SharedPreferences mPreferences;
 
+    private Handler mHandler = new Handler();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,7 @@ public class MainActivity extends FragmentActivity {
         mRainApplication = RainApplication.getInstance();
         mPreferences = getSharedPreferences(MainActivity.class.getName(), Context.MODE_PRIVATE);
 
+        // 设置界面，通充 Fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.front_panel, mFrontPanelFragment)
@@ -108,7 +112,8 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        new Handler().postDelayed(new Runnable() {
+        // 当确定其他的 UI 都渲染好了以后，重新放置控制台的位置
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 setControlCenterLayout();
@@ -133,6 +138,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        try {
+            unbindService(mConnection);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
         MobclickAgent.onPause(this);
     }
 
@@ -143,16 +155,11 @@ public class MainActivity extends FragmentActivity {
             stopService(mServerIntent);
         }
 
+        // 保存上次面板滚动的位置
         int currentItem = mControlCenterContainer.getCurrentItem();
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt(SAVED_CURRENT_ITEM, currentItem);
         editor.commit();
-
-        try {
-            unbindService(mConnection);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -225,11 +232,17 @@ public class MainActivity extends FragmentActivity {
                 mBinder = (PlayService.PlayBinder) binder;
                 mPlayManager = mBinder.getPlayManager();
 
-                if (mPlayManager.isPlaying()) {
-                    mFrontPanelFragment.setPlaying();
-                } else {
-                    mFrontPanelFragment.setStopped();
-                }
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 发送广播，重新设置UI状态
+                        if (mPlayManager.isPlaying()) {
+                            SendBroadcastHelper.sendPlayBroadcast(MainActivity.this);
+                        } else {
+                            SendBroadcastHelper.sendStopBroadcast(MainActivity.this);
+                        }
+                    }
+                }, 200);
             }
         }
 
