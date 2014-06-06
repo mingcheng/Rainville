@@ -1,2 +1,2 @@
-include ':libs:common', ':libs:libogg'
+include ':libs:common', ':libs:libogg', ':libs:showcase-view:library'
 
