@@ -27,4 +27,7 @@
     <string name="play_wihout_headset">Now you can play without headset</string>
     <string name="set_close_timer">Auto stop play after</string>
     <string name="minutes">minutes</string>
+    <string name="welcome_use_rainville">Welcome use Rainville!</string>
+    <string name="welcome_use_rainville_summary">\n\nYou can straight tap on the red button\n
+        to enable paly with your phone speaker.</string>
 </resources>
