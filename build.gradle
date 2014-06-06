@@ -17,6 +17,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libs:libogg')
     compile project(':libs:common')
+    compile project(':libs:showcase-view:library')
 }
 
 def getDate() {

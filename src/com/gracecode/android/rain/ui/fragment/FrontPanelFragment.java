@@ -149,17 +149,7 @@ public class FrontPanelFragment extends PlayerFragment
         // 设置自定义的字体
         setCustomFonts();
 
-        IntentFilter filter = new IntentFilter();
-        for (String action : new String[]{
-                Intent.ACTION_HEADSET_PLUG,
-                StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT,
-                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST,
-                PlayService.ACTION_A2DP_HEADSET_PLUG
-        }) {
-            filter.addAction(action);
-        }
-        getActivity().registerReceiver(mBroadcastReceiver, filter);
-
+        // 初始化界面
         setHeadsetNeeded();
     }
 
@@ -179,13 +169,6 @@ public class FrontPanelFragment extends PlayerFragment
         if (!mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.VISIBLE);
         }
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 
 
@@ -239,6 +222,11 @@ public class FrontPanelFragment extends PlayerFragment
 
 
     @Override
+    BroadcastReceiver getBroadcastReceiver() {
+        return mBroadcastReceiver;
+    }
+
+    @Override
     public void setPlaying() {
         super.setPlaying();
         mPlayButton.setChecked(true);
@@ -253,7 +241,6 @@ public class FrontPanelFragment extends PlayerFragment
         super.setStopped();
         mPlayButton.setChecked(false);
         mCountDownTextView.setVisibility(View.INVISIBLE);
-
         if (mPlayMenuItem != null) {
             mPlayMenuItem.setIcon(android.R.drawable.ic_media_play);
         }
