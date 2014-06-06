@@ -113,15 +113,19 @@ public class PlayService extends Service {
                 return;
             }
 
-            mPlayManager.play();
-            notifyRunning();
+            if (!mPlayManager.isPlaying()) {
+                mPlayManager.play();
+                notifyRunning();
+            }
         }
 
         @Override
         public void onStop() {
-            mPlayManager.stop();
-            clearNotification();
-            mStopPlayTimeoutHelper.clearStopPlayTimeout();
+            if (mPlayManager.isPlaying()) {
+                mPlayManager.stop();
+                clearNotification();
+                mStopPlayTimeoutHelper.clearStopPlayTimeout();
+            }
         }
 
         @Override

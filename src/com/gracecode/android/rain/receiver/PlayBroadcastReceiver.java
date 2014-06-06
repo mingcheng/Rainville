@@ -62,6 +62,7 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
             case Intent.ACTION_HEADSET_PLUG:
             case PlayService.ACTION_A2DP_HEADSET_PLUG:
+                // 是否强制打开使用扬声器？
                 boolean focus = mSharedPreferences.getBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, false)
                         || intent.getBooleanExtra("focus", false);
                 if (focus) {

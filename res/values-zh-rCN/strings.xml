@@ -16,4 +16,8 @@
     <string name="play_wihout_headset">现在您直接使用手机外放播放了。</string>
     <string name="set_close_timer">设定在</string>
     <string name="minutes">分钟以后，停止播放</string>
+    <string name="welcome_use_rainville">感谢您使用「聆雨」</string>
+    <string name="welcome_use_rainville_summary">\n\n您可以连续多次点击红色的耳机按钮，\n开启直接使用扬声器播放选项。</string>
+    <string name="panel_intro">现在，您有更多的选择</string>
+    <string name="panel_intro_summary">\n\n您可以选择多种不同类型的雨声、\n左右滑动可以设置定时播放选项。</string>
 </resources>
