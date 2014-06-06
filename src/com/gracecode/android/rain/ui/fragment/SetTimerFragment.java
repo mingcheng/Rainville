@@ -31,6 +31,7 @@ public class SetTimerFragment extends PlayerFragment {
 
         @Override
         public void onStop() {
+            mNumberPicker.setValue(0);
             mNumberPicker.setEnabled(false);
         }
 

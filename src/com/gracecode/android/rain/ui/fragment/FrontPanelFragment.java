@@ -148,6 +148,9 @@ public class FrontPanelFragment extends PlayerFragment
 
         // 设置自定义的字体
         setCustomFonts();
+
+        // 初始化界面
+        setHeadsetNeeded();
     }
 
 
