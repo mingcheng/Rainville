@@ -1,9 +1,7 @@
 package com.gracecode.android.rain.ui.fragment;
 
 import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 
 import java.util.ArrayList;
 
-public class SetTimerFragment extends Fragment {
+public class SetTimerFragment extends PlayerFragment {
     private static final int VALUE_STEP = 5;
 
     private NumberPicker mNumberPicker;
@@ -98,6 +96,11 @@ public class SetTimerFragment extends Fragment {
 
 
     @Override
+    BroadcastReceiver getBroadcastReceiver() {
+        return mBroadcastReceiver;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -108,22 +111,5 @@ public class SetTimerFragment extends Fragment {
                 SendBroadcastHelper.sendPlayStopTimeoutBroadcast(getActivity(), minutes * (60 * 1000), true);
             }
         });
-
-        // 注册响应的广播，根据广播判断状态
-        IntentFilter filter = new IntentFilter();
-        for (String action : new String[]{
-                StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT,
-                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST
-        }) {
-            filter.addAction(action);
-        }
-
-        getActivity().registerReceiver(mBroadcastReceiver, filter);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 }

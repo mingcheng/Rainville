@@ -1,8 +1,6 @@
 package com.gracecode.android.rain.ui.fragment;
 
 import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,8 +15,6 @@ import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
-import com.gracecode.android.rain.serivce.PlayService;
-import com.umeng.analytics.MobclickAgent;
 
 public class PresetsFragment extends PlayerFragment
         implements MixerPresetsHelper, AdapterView.OnItemClickListener {
@@ -67,11 +63,9 @@ public class PresetsFragment extends PlayerFragment
         }
     };
 
-
     public void setDisabled(boolean flag) {
         this.isDisabled = flag;
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -81,6 +75,7 @@ public class PresetsFragment extends PlayerFragment
         mAdapter = new PresetsAdapter(getActivity(), mPresets);
         mSharedPreferences = RainApplication.getInstance().getSharedPreferences();
 
+        // 恢复上次播放的预制
         String preset = mSharedPreferences.getString(PREF_SAVED_PRESET_NAME, mPresets[0]);
         mAdapter.setCurrentPresetName(preset);
 
@@ -110,30 +105,15 @@ public class PresetsFragment extends PlayerFragment
 
 
     @Override
+    BroadcastReceiver getBroadcastReceiver() {
+        return mBroadcastReceiver;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
-
-        // 注册响应的广播，根据广播判断状态
-        IntentFilter filter = new IntentFilter();
-        for (String action : new String[]{
-                Intent.ACTION_HEADSET_PLUG,
-                PlayBroadcastReceiver.ACTION_PLAY_BROADCAST,
-                PlayService.ACTION_A2DP_HEADSET_PLUG
-        }) {
-            filter.addAction(action);
-        }
-        getActivity().registerReceiver(mBroadcastReceiver, filter);
-
-        setDisabled(true);
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 
 
@@ -165,7 +145,6 @@ public class PresetsFragment extends PlayerFragment
             mAdapter.notifyDataSetChanged();
         }
 
-        //UIHelper.showShortToast(getActivity(), presetName);
-        MobclickAgent.onEvent(getActivity(), presetName);
+        //MobclickAgent.onEvent(getActivity(), presetName);
     }
 }
