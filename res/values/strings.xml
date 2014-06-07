@@ -12,9 +12,6 @@
     <string name="keep_running">Rain, Rain, Rain, \ncome again and again…</string>
     <string name="headset_needed">Please plugin headset before playing.</string>
     <string name="version" formatted="false">version %s(%d)</string>
-    <string name="copyrights">http://www.gracecode.com\nlucky@gracecode.com\nCopyright 2011-2014,
-        All rights reserved.
-    </string>
     <string name="app_key">V6W2SZNP8PRG59654ZZ7</string>
     <string name="need_money_for_nexus5">Need money for Google Nexus5.</string>
     <string name="paypal_url" formatted="false">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;
