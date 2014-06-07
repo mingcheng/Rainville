@@ -187,7 +187,7 @@ public class FrontPanelFragment extends PlayerFragment
         // 第一次打开面板的时候，显示功能介绍
         if (isFirstOpenPanel()) {
             new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(getView()))
+                    .setTarget(new ViewTarget(android.R.id.list, getActivity()))
                     .setContentTitle(getString(R.string.panel_intro))
                     .setContentText(getString(R.string.panel_intro_summary))
                     .setStyle(R.style.RainShowcaseView)
