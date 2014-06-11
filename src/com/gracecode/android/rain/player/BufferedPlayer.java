@@ -17,7 +17,7 @@ import java.io.InputStream;
 public final class BufferedPlayer implements DecodeFeed, Runnable {
     public static final String TAG = BufferedPlayer.class.getName();
     public static final float DEFAULT_VOLUME_PERCENT = MixerPresetsHelper.DEFAULT_PRESET[0];
-    private static final long TOTAL_DELAY_TIME = 3000;
+    private static final long TOTAL_DELAY_TIME = 5000;
     private boolean looping = false;
 
     private final Context mContext;
@@ -138,12 +138,14 @@ public final class BufferedPlayer implements DecodeFeed, Runnable {
     @Override
     public void run() {
         try {
-            long delay = getRandomDelayTime();
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, "The delay time is " + delay);
-            }
-            Thread.sleep(delay);
             do {
+                long delay = getRandomDelayTime();
+                if (BuildConfig.DEBUG) {
+                    Log.v(TAG, "Delay " + delay + "ms, from steam " + mInputStream.toString());
+                }
+                Thread.sleep(delay);
+
+                // Decode and playing
                 VorbisDecoder.startDecoding(this);
             } while (looping);
         } catch (InterruptedException e) {
