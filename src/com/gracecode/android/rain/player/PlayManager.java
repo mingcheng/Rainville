@@ -14,27 +14,19 @@ import java.util.ArrayList;
 public final class PlayManager {
     public static final String TAG = PlayManager.class.getName();
     private static final long VOLUME_CHANGE_DURATION = 500;
-    private static final int LEFT_TRACK = 0;
-    private static final int RIGHT_TRACK = 1;
 
     private final Context mContext;
     private final AudioManager mAudioManager;
 
-    private static final int[][] mTrackers = {
-            {R.raw._0a, R.raw._0b},
-            {R.raw._1a, R.raw._1b},
-            {R.raw._2a, R.raw._2b},
-            {R.raw._3a, R.raw._3b},
-            {R.raw._4a, R.raw._4b},
-            {R.raw._5a, R.raw._5b},
-            {R.raw._6a, R.raw._6b},
-            {R.raw._7a, R.raw._7b},
-            {R.raw._8a, R.raw._8b},
-            {R.raw._9a, R.raw._9b}
+    private static final int[] mTrackers = {
+            R.raw._0, R.raw._1, R.raw._2,
+            R.raw._3, R.raw._4, R.raw._5,
+            R.raw._6, R.raw._7, R.raw._8,
+            R.raw._9,
     };
 
     public static final int MAX_TRACKS_NUM = mTrackers.length;
-    private static BufferedPlayer[][] mPlayers = new BufferedPlayer[MAX_TRACKS_NUM][2];
+    private static BufferedPlayer[] mPlayers = new BufferedPlayer[MAX_TRACKS_NUM];
     private static int[] mTrackerVolumes = new int[MAX_TRACKS_NUM];
 
     /**
@@ -64,19 +56,18 @@ public final class PlayManager {
 
     private void initPlayers() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            setPlayer(i, LEFT_TRACK);
-            setPlayer(i, RIGHT_TRACK);
+            setPlayer(i);
         }
     }
 
-    private void setPlayer(int i, int track) {
-        mPlayers[i][track] = new BufferedPlayer(mContext, mTrackers[i][track]);
-        mPlayers[i][track].setLooping(true);
+    private void setPlayer(int track) {
+        mPlayers[track] = new BufferedPlayer(mContext, mTrackers[track]);
+        mPlayers[track].setLooping(true);
     }
 
 
-    private BufferedPlayer getPlayer(int i, int track) {
-        return mPlayers[i][track];
+    private BufferedPlayer getPlayer(int track) {
+        return mPlayers[track];
     }
 
 
@@ -95,7 +86,7 @@ public final class PlayManager {
 
 
     public void muteSmoothly(Animator.AnimatorListener listener) {
-        ArrayList<Animator> animators = new ArrayList<Animator>();
+        ArrayList<Animator> animators = new ArrayList<>();
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             if (getVolume(i) > 0)
                 animators.add(getSmoothlyMuteAnimator(i));
@@ -129,8 +120,7 @@ public final class PlayManager {
         try {
             for (int i = 0; i < MAX_TRACKS_NUM; i++) {
                 if (mPlayers[i] != null) {
-                    getPlayer(i, LEFT_TRACK).shutdown();
-                    getPlayer(i, RIGHT_TRACK).shutdown();
+                    getPlayer(i).shutdown();
                 }
             }
         } catch (RuntimeException e) {
@@ -147,8 +137,7 @@ public final class PlayManager {
             if (BuildConfig.DEBUG) {
                 Log.v(TAG, "Start playing track " + i + ".");
             }
-            getPlayer(i, LEFT_TRACK).play();
-            getPlayer(i, RIGHT_TRACK).play();
+            getPlayer(i).play();
             setVolume(i, getVolume(i));
         }
 
@@ -204,8 +193,7 @@ public final class PlayManager {
 
         try {
             final float percent = volume / (float) getMaxVolume();
-            getPlayer(track, LEFT_TRACK).setStereoVolume(percent, percent);
-            getPlayer(track, RIGHT_TRACK).setStereoVolume(percent, percent);
+            getPlayer(track).setStereoVolume(percent, percent);
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
