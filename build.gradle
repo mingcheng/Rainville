@@ -64,6 +64,11 @@ android {
             debuggable false
             jniDebugBuild false
             signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                def file = variant.outputFile
+                variant.outputFile = new File(file.parent, file.name.replace(".apk", "-v" + defaultConfig.versionCode + ".apk")) 
+            }
         }
     }
 
@@ -112,5 +117,4 @@ clean.dependsOn 'cleanCopyNativeLibs'
 tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
    pkgTask.jniFolders = [new File(buildDir, 'lib')]
 }
-
 
