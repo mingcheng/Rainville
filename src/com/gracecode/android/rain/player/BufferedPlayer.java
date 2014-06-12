@@ -17,7 +17,7 @@ import java.io.InputStream;
 public final class BufferedPlayer implements DecodeFeed, Runnable {
     public static final String TAG = BufferedPlayer.class.getName();
     public static final float DEFAULT_VOLUME_PERCENT = MixerPresetsHelper.DEFAULT_PRESET[0];
-    private static final long TOTAL_DELAY_TIME = 5000;
+    private static final long TOTAL_DELAY_TIME = 2000;
     private boolean looping = false;
 
     private final Context mContext;
