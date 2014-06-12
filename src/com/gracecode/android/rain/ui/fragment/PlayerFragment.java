@@ -4,6 +4,7 @@ package com.gracecode.android.rain.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
@@ -11,6 +12,7 @@ import com.gracecode.android.rain.serivce.PlayService;
 
 abstract class PlayerFragment extends Fragment {
     private static boolean mPlaying = false;
+    protected Handler mHandler = new Handler();
 
     abstract BroadcastReceiver getBroadcastReceiver();
 
