@@ -96,13 +96,17 @@ public class MainActivity extends FragmentActivity {
 
         // 如果是首次启动，则显示提示信息框
         if (isFirstRun()) {
-            new ShowcaseView.Builder(this)
-                    .setTarget(new ViewTarget(R.id.headset_needed, this))
-                    .setContentTitle(getString(R.string.welcome_use_rainville))
-                    .setContentText(getString(R.string.welcome_use_rainville_summary))
-                    .setStyle(R.style.RainShowcaseView)
-                    .hideOnTouchOutside()
-                    .build();
+            try {
+                new ShowcaseView.Builder(this)
+                        .setTarget(new ViewTarget(R.id.headset_needed, this))
+                        .setContentTitle(getString(R.string.welcome_use_rainville))
+                        .setContentText(getString(R.string.welcome_use_rainville_summary))
+                        .setStyle(R.style.RainShowcaseView)
+                        .hideOnTouchOutside()
+                        .build();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
 
             markNotFirstRun(); // 标记下次不再启动
         }
