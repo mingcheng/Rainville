@@ -1,6 +1,8 @@
 package com.gracecode.android.rain.ui.fragment;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,7 +28,6 @@ import com.gracecode.android.rain.ui.widget.SimplePanel;
 public class FrontPanelFragment extends PlayerFragment
         implements SimplePanel.SimplePanelListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
 
-    private static final String PREF_IS_FIRST_OPEN_PANEL = "PREF_IS_FIRST_OPEN_PANEL";
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
@@ -41,6 +42,74 @@ public class FrontPanelFragment extends PlayerFragment
     private MenuItem mPlayMenuItem;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences mPreferences;
+
+    private Runnable mShowMainIntroRunnable = new Runnable() {
+        private static final String PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN";
+
+        private boolean isFirstRun() {
+            return mPreferences.getBoolean(PREF_IS_FIRST_RUN, true);
+        }
+
+        private void markNotFirstRun() {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(PREF_IS_FIRST_RUN, false);
+            editor.commit();
+        }
+
+        @Override
+        public void run() {
+            try {
+                // 如果是首次启动，则显示提示信息框
+                if (isFirstRun()) {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(R.id.headset_needed, getActivity()))
+                            .setContentTitle(getString(R.string.welcome_use_rainville))
+                            .setContentText(getString(R.string.welcome_use_rainville_summary))
+                            .setStyle(R.style.RainShowcaseView)
+                            .hideOnTouchOutside()
+                            .build();
+                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            } finally {
+                markNotFirstRun(); // 标记下次不再启动
+            }
+        }
+    };
+
+    private Runnable mOpenPanelRunnable = new Runnable() {
+        private static final String PREF_IS_FIRST_OPEN_PANEL = "PREF_IS_FIRST_OPEN_PANEL";
+
+        private boolean isFirstOpenPanel() {
+            return mPreferences.getBoolean(PREF_IS_FIRST_OPEN_PANEL, true);
+        }
+
+        private void markPanelOpened() {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean(PREF_IS_FIRST_OPEN_PANEL, false);
+            editor.commit();
+        }
+
+        @Override
+        public void run() {
+            // 第一次打开面板的时候，显示功能介绍
+            if (isFirstOpenPanel()) {
+                try {
+                    new ShowcaseView.Builder(getActivity())
+                            .setTarget(new ViewTarget(android.R.id.list, getActivity()))
+                            .setContentTitle(getString(R.string.panel_intro))
+                            .setContentText(getString(R.string.panel_intro_summary))
+                            .setStyle(R.style.RainShowcaseView)
+                            .hideOnTouchOutside()
+                            .build();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                } finally {
+                    markPanelOpened();  // 设定下次不再打开
+                }
+            }
+        }
+    };
 
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -153,10 +222,21 @@ public class FrontPanelFragment extends PlayerFragment
         setHeadsetNeeded();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShowMainIntroRunnable.run();
+    }
+
+    public void setFrontPanel(SimplePanel panel) {
+        this.mFrontPanel = panel;
+    }
 
     public void setHeadsetNeeded() {
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
-        mHeadsetNeeded.startAnimation(animation);
+        if (animation != null) {
+            mHeadsetNeeded.startAnimation(animation);
+        }
 
         mPlayButton.setVisibility(View.INVISIBLE);
         mHeadsetNeeded.setVisibility(View.VISIBLE);
@@ -171,7 +251,6 @@ public class FrontPanelFragment extends PlayerFragment
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_front_panel, null);
@@ -184,40 +263,15 @@ public class FrontPanelFragment extends PlayerFragment
             mToggleButton.setChecked(true);
         }
 
-        // 第一次打开面板的时候，显示功能介绍
-        if (isFirstOpenPanel()) {
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(android.R.id.list, getActivity()))
-                    .setContentTitle(getString(R.string.panel_intro))
-                    .setContentText(getString(R.string.panel_intro_summary))
-                    .setStyle(R.style.RainShowcaseView)
-                    .hideOnTouchOutside()
-                    .build();
-
-            markPanelOpened();  // 设定下次不再打开
-        }
+        mOpenPanelRunnable.run();
     }
 
-    private boolean isFirstOpenPanel() {
-        return mPreferences.getBoolean(PREF_IS_FIRST_OPEN_PANEL, true);
-    }
-
-    private void markPanelOpened() {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(PREF_IS_FIRST_OPEN_PANEL, false);
-        editor.commit();
-    }
 
     @Override
     public void onClosed() {
         if (mToggleButton != null) {
             mToggleButton.setChecked(false);
         }
-    }
-
-
-    public void setFrontPanel(SimplePanel panel) {
-        this.mFrontPanel = panel;
     }
 
 
@@ -289,14 +343,12 @@ public class FrontPanelFragment extends PlayerFragment
         editor.commit();
     }
 
-
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         mPlayMenuItem = menuItem;
         togglePlay();
         return true;
     }
-
 
     public void togglePlay() {
         if (isPlaying()) {

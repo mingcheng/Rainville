@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.adapter.ControlCenterAdapter;
@@ -28,7 +26,6 @@ import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
     private static final String SAVED_CURRENT_ITEM = "pref_saved_current_item";
-    private static final String PREF_IS_FIRST_RUN = "pref_is_first_run";
 
     private SimplePanel mFrontPanel;
     private FrontPanelFragment mFrontPanelFragment;
@@ -80,7 +77,6 @@ public class MainActivity extends FragmentActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -93,19 +89,6 @@ public class MainActivity extends FragmentActivity {
 
         int currentItem = mPreferences.getInt(SAVED_CURRENT_ITEM, 0);
         mControlCenterContainer.setCurrentItem(currentItem);
-
-        // 如果是首次启动，则显示提示信息框
-        if (isFirstRun()) {
-            new ShowcaseView.Builder(this)
-                    .setTarget(new ViewTarget(R.id.headset_needed, this))
-                    .setContentTitle(getString(R.string.welcome_use_rainville))
-                    .setContentText(getString(R.string.welcome_use_rainville_summary))
-                    .setStyle(R.style.RainShowcaseView)
-                    .hideOnTouchOutside()
-                    .build();
-
-            markNotFirstRun(); // 标记下次不再启动
-        }
     }
 
     @Override
@@ -123,16 +106,6 @@ public class MainActivity extends FragmentActivity {
         startService(mServerIntent);
         bindService(mServerIntent, mConnection, Context.BIND_NOT_FOREGROUND);
         MobclickAgent.onResume(this);
-    }
-
-    private void markNotFirstRun() {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(PREF_IS_FIRST_RUN, false);
-        editor.commit();
-    }
-
-    private boolean isFirstRun() {
-        return mPreferences.getBoolean(PREF_IS_FIRST_RUN, true);
     }
 
     @Override
