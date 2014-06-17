@@ -125,7 +125,7 @@ public class MixerFragment extends Fragment
     public void setAllVolume(int[] volume) {
         if (volume == null || mPlayManager == null) return;
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mPlayManager.setVolumeBySmooth(i, volume[i]);
+            mPlayManager.setVolume(i, volume[i]);
         }
 
         syncVolume();
