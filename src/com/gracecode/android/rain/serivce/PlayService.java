@@ -121,11 +121,9 @@ public class PlayService extends Service {
 
         @Override
         public void onStop() {
-            if (mPlayManager.isPlaying()) {
-                mPlayManager.stop();
-                clearNotification();
-                mStopPlayTimeoutHelper.clearStopPlayTimeout();
-            }
+            clearNotification();
+            mStopPlayTimeoutHelper.clearStopPlayTimeout();
+            mPlayManager.stop();
         }
 
         @Override
