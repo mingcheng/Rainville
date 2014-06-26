@@ -27,11 +27,11 @@ def getDate() {
 }
 
 android {
-    compileSdkVersion 14
+    compileSdkVersion 19
     buildToolsVersion '19.1.0'
 
     defaultConfig {
-        targetSdkVersion 14
+        targetSdkVersion 19
         minSdkVersion 14
         versionCode getDate()
     }
@@ -67,7 +67,7 @@ android {
 
             applicationVariants.all { variant ->
                 def file = variant.outputFile
-                variant.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionCode + ".apk")) 
+                variant.outputFile = new File(file.parent, file.name.replace(".apk", "-" + defaultConfig.versionCode + ".apk"))
             }
         }
     }
