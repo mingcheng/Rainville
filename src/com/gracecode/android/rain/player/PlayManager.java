@@ -2,14 +2,11 @@ package com.gracecode.android.rain.player;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.util.Log;
+import com.gracecode.android.common.Logger;
 import com.gracecode.android.rain.BuildConfig;
 import com.gracecode.android.rain.R;
 
 public final class PlayManager {
-    public static final String TAG = PlayManager.class.getName();
-    private static final long VOLUME_CHANGE_DURATION = 2000;
-
     private final Context mContext;
     private final AudioManager mAudioManager;
 
@@ -74,7 +71,7 @@ public final class PlayManager {
                 }
             }
         } catch (RuntimeException e) {
-            if (BuildConfig.DEBUG) Log.e(TAG, "Can not shutdown, maybe player is not ready?");
+            if (BuildConfig.DEBUG) Logger.w("Can not shutdown, maybe player is not ready?");
         }
         playing = false;
     }
@@ -85,7 +82,7 @@ public final class PlayManager {
         initPlayers();
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             if (BuildConfig.DEBUG) {
-                Log.v(TAG, "Start playing track " + i + ".");
+                Logger.v("Start playing track " + i + ".");
             }
             getPlayer(i).play();
             setVolume(i, getVolume(i));
@@ -121,7 +118,7 @@ public final class PlayManager {
 
     public synchronized void setVolume(final int track, final int volume, boolean temporary) {
         if (BuildConfig.DEBUG) {
-            Log.v(TAG, "Set track[" + track + "]'s volume " + volume + " / " + getMaxVolume());
+            Logger.v("Set track[" + track + "]'s volume " + volume + " / " + getMaxVolume());
         }
 
         try {
