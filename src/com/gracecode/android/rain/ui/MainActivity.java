@@ -205,17 +205,19 @@ public class MainActivity extends FragmentActivity {
                 mBinder = (PlayService.PlayBinder) binder;
                 mPlayManager = mBinder.getPlayManager();
 
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 发送广播，重新设置UI状态
-                        if (mPlayManager.isPlaying()) {
-                            SendBroadcastHelper.sendPlayBroadcast(MainActivity.this);
-                        } else {
-                            SendBroadcastHelper.sendStopBroadcast(MainActivity.this);
+                if (mPlayManager != null) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 发送广播，重新设置UI状态
+                            if (mPlayManager.isPlaying()) {
+                                SendBroadcastHelper.sendPlayBroadcast(MainActivity.this);
+                            } else {
+                                SendBroadcastHelper.sendStopBroadcast(MainActivity.this);
+                            }
                         }
-                    }
-                }, 200);
+                    }, 200);
+                }
             }
         }
 
