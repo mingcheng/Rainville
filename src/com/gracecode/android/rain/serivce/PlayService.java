@@ -13,7 +13,6 @@ import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
-import com.gracecode.android.rain.player.BufferedPlayer;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.ui.MainActivity;
@@ -241,7 +240,7 @@ public class PlayService extends Service {
 
     public void savePresets(float[] presets) {
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mPreferences.edit().putFloat("_" + i, presets[i]).commit();
+            mPreferences.edit().putFloat("_" + i, presets[i]).apply();
         }
     }
 
@@ -249,7 +248,7 @@ public class PlayService extends Service {
     public float[] getPresets() {
         float[] result = new float[PlayManager.MAX_TRACKS_NUM];
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            result[i] = mPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
+            result[i] = mPreferences.getFloat("_" + i, PlayManager.DEFAULT_VOLUME_PERCENT);
         }
 
         return result;
