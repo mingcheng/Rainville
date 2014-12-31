@@ -16,7 +16,7 @@ public class MixerFragment extends Fragment
         implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     private PlayManager mPlayManager;
     private VerticalSeekBar[] mSeekBars = new VerticalSeekBar[PlayManager.MAX_TRACKS_NUM];
-    private int[] mVolumes = new int[PlayManager.MAX_TRACKS_NUM];
+    private float[] mVolumes = new float[PlayManager.MAX_TRACKS_NUM];
 
     private int seek = 0;
 
@@ -76,10 +76,10 @@ public class MixerFragment extends Fragment
     private void syncVolume() {
         if (mPlayManager == null) return;
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            int volume = (mVolumes[i] != 0) ? mVolumes[i] : mPlayManager.getVolume(i);
+            float volume = (mVolumes[i] != 0) ? mVolumes[i] : mPlayManager.getVolume(i);
             if (mSeekBars[i] != null) {
                 mSeekBars[i].setMax(mPlayManager.getMaxVolume());
-                mSeekBars[i].setProgress(volume);
+                mSeekBars[i].setProgress((int) volume);
             }
         }
     }
@@ -106,23 +106,22 @@ public class MixerFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.reset:
-                setAllVolume(setDefaultVolumes());
+//                setAllVolume(setDefaultVolumes());
                 break;
         }
     }
 
-    public int[] setDefaultVolumes() {
-        if (mPlayManager == null) return null;
-        int volume = mPlayManager.getDefaultVolume();
-        mVolumes = new int[PlayManager.MAX_TRACKS_NUM];
-        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mVolumes[i] = volume;
-        }
+//    public float[] setDefaultVolumes() {
+//        if (mPlayManager == null) return null;
+//        mVolumes = new float[PlayManager.MAX_TRACKS_NUM];
+//        for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
+//            mVolumes[i] = i;
+//        }
+//
+//        return mVolumes;
+//    }
 
-        return mVolumes;
-    }
-
-    public void setAllVolume(int[] volume) {
+    public void setAllVolume(float[] volume) {
         if (volume == null || mPlayManager == null) return;
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
             mPlayManager.setVolume(i, volume[i]);

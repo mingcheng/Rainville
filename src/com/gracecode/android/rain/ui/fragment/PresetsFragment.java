@@ -1,6 +1,7 @@
 package com.gracecode.android.rain.ui.fragment;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.gracecode.android.common.Logger;
+import com.gracecode.android.rain.BuildConfig;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.adapter.PresetsAdapter;
 import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
@@ -18,14 +20,22 @@ import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 
 public class PresetsFragment extends PlayerFragment
         implements MixerPresetsHelper, AdapterView.OnItemClickListener {
-    public static final String PREF_SAVED_PRESET_NAME = "pref_saved_preset_name";
+    public static final String PREF_SAVED_PRESET = "pref_saved_preset_name";
+    private static final int DEFAULT_PRESET_POSITION = 0;
 
     private PresetsAdapter mAdapter;
-    private SharedPreferences mSharedPreferences;
+    private SharedPreferences mPreferences;
     private ListView mListView;
     private boolean isDisabled = false;
     private String[] mPresets;
 
+    public PresetsFragment() {
+        super();
+    }
+
+    /**
+     * 针对广播的不同逻辑
+     */
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
         public void onPlay() {
@@ -38,7 +48,7 @@ public class PresetsFragment extends PlayerFragment
         }
 
         @Override
-        public void onSetVolume(int track, int volume) {
+        public void onSetVolume(int track, float volume) {
 
         }
 
@@ -67,27 +77,33 @@ public class PresetsFragment extends PlayerFragment
         this.isDisabled = flag;
     }
 
+    /**
+     * 初始化界面以及逻辑
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mPresets = getResources().getStringArray(R.array.presets);
         mAdapter = new PresetsAdapter(getActivity(), mPresets);
-        mSharedPreferences = RainApplication.getInstance().getSharedPreferences();
+        mPreferences = getActivity().getSharedPreferences(PresetsFragment.class.getName(), Context.MODE_PRIVATE);
 
         // 恢复上次播放的预制
-        String preset = mSharedPreferences.getString(PREF_SAVED_PRESET_NAME, mPresets[0]);
-        mAdapter.setCurrentPresetName(preset);
+        int preset = mPreferences.getInt(PREF_SAVED_PRESET, DEFAULT_PRESET_POSITION);
+        mAdapter.setCurrentPosition(preset);
+
+        if (BuildConfig.DEBUG) {
+            Logger.i("Set preset position " + preset + " which name is " + mPresets[preset]);
+        }
 
         SendPresetsBroadcast(preset);
     }
 
-    // 发送预设的事件广播
-    private void SendPresetsBroadcast(String name) {
-        int position = mAdapter.getPositionFromName(name);
-        SendPresetsBroadcast(position);
-    }
-
+    /**
+     * 发送预设的事件广播
+     */
     private void SendPresetsBroadcast(int position) {
         try {
             SendBroadcastHelper.sendPresetsBroadcast(getActivity(), getPresetsFromPosition(position));
@@ -103,7 +119,6 @@ public class PresetsFragment extends PlayerFragment
         return view;
     }
 
-
     @Override
     BroadcastReceiver getBroadcastReceiver() {
         return mBroadcastReceiver;
@@ -116,9 +131,18 @@ public class PresetsFragment extends PlayerFragment
         mListView.setOnItemClickListener(this);
     }
 
-
+    /**
+     * 根据位置获取预置
+     *
+     * @param position
+     * @return
+     */
     private float[] getPresetsFromPosition(int position) {
-        return ALL_PRESETS[position];
+        try {
+            return ALL_PRESETS[position];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return ALL_PRESETS[0];
+        }
     }
 
     @Override
@@ -128,23 +152,24 @@ public class PresetsFragment extends PlayerFragment
             return;
         }
 
+        // 预置的效果名
         String presetName = mAdapter.getItem(i);
 
-        SendPresetsBroadcast(i);
-        if (!isPlaying()) {
-            SendBroadcastHelper.sendPlayBroadcast(getActivity());
+        try {
+            SendPresetsBroadcast(i);
+        } finally {
+            if (!isPlaying()) {
+                SendBroadcastHelper.sendPlayBroadcast(getActivity());
+            }
+
+            // 保存已经选择的预设
+            mPreferences.edit().putInt(PREF_SAVED_PRESET, i).apply();
+
+            // 改变高亮条
+            if (!presetName.equals(mAdapter.getCurrentPreset())) {
+                mAdapter.setCurrentPresetName(presetName);
+                mAdapter.notifyDataSetChanged();
+            }
         }
-
-        // 保存已经选择的预设
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(PREF_SAVED_PRESET_NAME, presetName);
-        editor.commit();
-
-        if (!presetName.equals(mAdapter.getCurrentPreset())) {
-            mAdapter.setCurrentPresetName(presetName);
-            mAdapter.notifyDataSetChanged();
-        }
-
-        //MobclickAgent.onEvent(getActivity(), presetName);
     }
 }

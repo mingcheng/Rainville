@@ -123,7 +123,7 @@ public class FrontPanelFragment extends PlayerFragment
         }
 
         @Override
-        public void onSetVolume(int track, int volume) {
+        public void onSetVolume(int track, float volume) {
 
         }
 
@@ -190,7 +190,7 @@ public class FrontPanelFragment extends PlayerFragment
         }
 
         if (mCountDownTextView != null) {
-            mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceRoboto(getActivity()));
+            mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceMusket2(getActivity()));
         }
     }
 

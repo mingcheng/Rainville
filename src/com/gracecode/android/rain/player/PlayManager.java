@@ -6,16 +6,9 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
-import android.os.Handler;
-import com.gracecode.android.common.Logger;
-import com.gracecode.android.rain.BuildConfig;
 import com.gracecode.android.rain.R;
-import com.gracecode.android.rain.helper.MixerPresetsHelper;
 
 public final class PlayManager {
-    public static final int DEFAULT_VOLUME_PERCENT = (int) MixerPresetsHelper.DEFAULT_PRESET[0];
-    private static final double TOTAL_DELAY_TIME = 2000;
-
     private final Context mContext;
     private final AudioManager mAudioManager;
 
@@ -27,9 +20,12 @@ public final class PlayManager {
     };
     public static final int MAX_TRACKS_NUM = mTrackers.length;
 
-    private static int[] mStreamID = new int[MAX_TRACKS_NUM];
-    private static int[] mSoundID = new int[MAX_TRACKS_NUM];
-    private static int[] mVolume = new int[MAX_TRACKS_NUM];
+    private int[] mStreamID = new int[MAX_TRACKS_NUM];
+    private int[] mSoundID = new int[MAX_TRACKS_NUM];
+    private float[] mVolume = new float[MAX_TRACKS_NUM];
+
+    private SoundPool mSoundPool;
+    private boolean playing = false;
 
     /**
      * Singleton Mode
@@ -38,8 +34,6 @@ public final class PlayManager {
      * @return playerManager
      */
     private static PlayManager ourInstance = null;
-    private SoundPool mSoundPool;
-    private boolean isPlaying = false;
 
     /**
      * 播放控制器，使用单例模式
@@ -56,6 +50,10 @@ public final class PlayManager {
         return ourInstance;
     }
 
+
+    /**
+     * 根据新的 SDK 文档说明，尽可能使用新的 Build 声明方式
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void createNewSoundPool() {
         AudioAttributes attributes = new AudioAttributes.Builder()
@@ -63,7 +61,7 @@ public final class PlayManager {
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
 
-        this.mSoundPool =
+        mSoundPool =
                 new SoundPool.Builder()
                         .setAudioAttributes(attributes)
                         .build();
@@ -74,7 +72,7 @@ public final class PlayManager {
      */
     @SuppressWarnings("deprecation")
     protected void createOldSoundPool() {
-        this.mSoundPool = new SoundPool(MAX_TRACKS_NUM, AudioManager.STREAM_MUSIC, 0);
+        mSoundPool = new SoundPool(MAX_TRACKS_NUM, AudioManager.STREAM_MUSIC, 0);
     }
 
     /**
@@ -92,56 +90,47 @@ public final class PlayManager {
         } else {
             createOldSoundPool();
         }
-
-        initSoundPool();
     }
-
 
     /**
      * 初始化 SoundPool，载入所有的资源
      */
-    private void initSoundPool() {
+    public void load() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             mSoundID[i] = mSoundPool.load(mContext, mTrackers[i], 0);
         }
     }
 
-    public synchronized void stop() {
+    public void unload() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-            mSoundPool.stop(mStreamID[i]);
+            mSoundPool.unload(mSoundID[i]);
         }
-
-        isPlaying = false;
     }
 
-
-    Handler mHandler = new Handler();
-
-    public synchronized void play() {
-        for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-//            final int track = i;
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Logger.i("Now play track [" + track + "]");
-//                    mStreamID[track] = mSoundPool.play(mSoundID[track], getVolume(track), getVolume(track), 0, -1, 1.0f);  // loop
-//                }
-//            }, getRandomDelayTime());
-            mStreamID[i] = mSoundPool.play(mSoundID[i], getVolume(i), getVolume(i), 0, -1, 1.0f);  // loop
+    public void stop() {
+        try {
+            for (int i = 0; i < MAX_TRACKS_NUM; i++) {
+                mSoundPool.stop(mStreamID[i]);
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            playing = false;
         }
-
-        isPlaying = true;
     }
 
-
-    /**
-     * 播放的时候随机暂停时间
-     *
-     * @return
-     */
-    private long getRandomDelayTime() {
-        return (long) (TOTAL_DELAY_TIME * Math.random());
+    public void play() {
+        try {
+            for (int i = 0; i < MAX_TRACKS_NUM; i++) {
+                mStreamID[i] = mSoundPool.play(mSoundID[i], getVolume(i), getVolume(i), 0, -1, 1.0f);
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            playing = true;
+        }
     }
+
 
     /**
      * 判断是否在播放
@@ -149,39 +138,44 @@ public final class PlayManager {
      * @return
      */
     public boolean isPlaying() {
-        return isPlaying;
+        return playing;
     }
 
-    public int getVolume(int track) {
+    public float getVolume(int track) {
         return mVolume[track];
-    }
-
-    public int getDefaultVolume() {
-        return DEFAULT_VOLUME_PERCENT * getMaxVolume();
     }
 
     public int getMaxVolume() {
         return mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
     }
 
-    public synchronized void setVolume(int track, int volume) {
+    /**
+     * 设置音轨的音量
+     * <p/>
+     * 采用设置不同音轨的音量，从而改变不同的声音效果
+     *
+     * @param track
+     * @param volume
+     */
+    public void setVolume(int track, float volume) {
         setVolume(track, volume, false);
     }
 
-    public synchronized void setVolume(final int track, final int volume, boolean temporary) {
-        if (BuildConfig.DEBUG) {
-            Logger.v("Set track[" + track + "]'s volume " + volume + " / " + getMaxVolume());
-        }
-
+    public void setVolume(final int track, final float volume, boolean temporary) {
         try {
-            final float percent = volume / (float) getMaxVolume();
-            mSoundPool.setVolume(mStreamID[track], percent, percent);
+            mSoundPool.setVolume(mStreamID[track], volume, volume);
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
             if (!temporary) {
                 mVolume[track] = volume;
             }
+        }
+    }
+
+    public void setPresets(float[] presets) {
+        for (int i = 0; i < MAX_TRACKS_NUM; i++) {
+            setVolume(i, presets[i]);
         }
     }
 }

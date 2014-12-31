@@ -45,6 +45,12 @@ public final class SendBroadcastHelper {
     }
 
 
+    /**
+     * 设置预设选项
+     *
+     * @param context
+     * @param presets
+     */
     public static void sendPresetsBroadcast(Context context, float[] presets) {
         sendBroadcast(context, getNewPlayBroadcastIntent()
                         .putExtra(PlayBroadcastReceiver.FIELD_CMD, PlayBroadcastReceiver.CMD_SET_PRESETS)

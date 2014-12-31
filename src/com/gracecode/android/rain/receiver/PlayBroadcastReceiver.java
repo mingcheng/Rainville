@@ -92,7 +92,7 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
     abstract public void onStop();
 
-    abstract public void onSetVolume(int track, int volume);
+    abstract public void onSetVolume(int track, float volume);
 
     abstract public void onSetPresets(float[] presets);
 

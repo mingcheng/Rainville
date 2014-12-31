@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.gracecode.android.rain"
-          android:versionName="1.6.0">
+          android:versionName="1.7.0">
 
     <uses-sdk
-            android:minSdkVersion="16"
+            android:minSdkVersion="14"
             android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -24,7 +24,7 @@
             android:label="@string/app_name"
             android:icon="@drawable/ic_launcher"
             android:name=".RainApplication"
-            >
+            android:allowBackup="false">
         <activity
                 android:windowSoftInputMode="stateHidden"
                 android:launchMode="singleInstance"
