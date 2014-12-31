@@ -169,7 +169,7 @@ public class MainActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.action_feedback:
                 PackageInfo info = mRainApplication.getPackageInfo();
-                mRainApplication.sendFeedbackEmail(MainActivity.this,
+                mRainApplication.sendEmail(MainActivity.this,
                         String.format(getString(R.string.feedback_subject), getString(R.string.app_name), info.versionName)
                 );
                 break;
