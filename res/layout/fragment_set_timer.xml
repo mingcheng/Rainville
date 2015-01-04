@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:descendantFocusability="blocksDescendants"
                 />
 
 
@@ -33,7 +34,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="18sp"
-
                 android:text="@string/minutes"
                 />
     </LinearLayout>

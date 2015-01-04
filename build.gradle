@@ -1,3 +1,5 @@
+import com.android.build.gradle.tasks.PackageApplication
+
 buildscript {
     repositories {
         mavenCentral()
@@ -67,7 +69,10 @@ android {
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+                    output.outputFile =
+                            new File(output.outputFile.parent,
+                                    output.outputFile.name.replace(".apk",
+                                            "-" + defaultConfig.versionName + ".apk"))
                 }
             }
         }
@@ -103,19 +108,23 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
+/*
 // @from http://blog.csdn.net/look_down/article/details/17557031
 task copyNativeLibs(type: Copy) {
     from fileTree(dir: 'libs', include: 'armeabi/*.so') into 'build/lib'
     from fileTree(dir: 'libs/libogg/libs', include: ['armeabi/*.so', 'armeabi-v7a/*.so', 'mips/*.so', 'x86/*.so']) into 'build/lib'
 }
 
+
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn copyNativeLibs
 }
 
-clean.dependsOn 'cleanCopyNativeLibs'
 
-tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+clean.dependsOn 'cleanCopyNativeLibs'
+    */
+
+tasks.withType(PackageApplication) { pkgTask ->
     pkgTask.jniFolders = [new File(buildDir, 'lib')]
 }
 
