@@ -20,15 +20,15 @@ public class PresetsAdapter extends BaseAdapter {
         mPresets = presets;
     }
 
-    public int getPositionFromName(String name) {
-        for (int i = mPresets.length - 1; i >= 0; i--) {
-            if (name.equals(mPresets[i])) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+//    public int getPositionFromName(String name) {
+//        for (int i = mPresets.length - 1; i >= 0; i--) {
+//            if (name.equals(mPresets[i])) {
+//                return i;
+//            }
+//        }
+//
+//        return -1;
+//    }
 
     @Override
     public int getCount() {
@@ -62,6 +62,22 @@ public class PresetsAdapter extends BaseAdapter {
         return view;
     }
 
+
+    /**
+     * 设置当前的位置
+     *
+     * @param position
+     */
+    public void setCurrentPosition(int position) {
+        mCurrentPreset = getItem(position);
+    }
+
+
+    /**
+     * 设置当前的名字
+     *
+     * @param name
+     */
     public void setCurrentPresetName(String name) {
         mCurrentPreset = name;
     }

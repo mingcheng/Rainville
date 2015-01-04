@@ -7,7 +7,7 @@ public abstract interface MixerPresetsHelper {
     public static float[] UNDER_THE_PORCH = new float[]{.0f, .3f, .2f, .25f, .3f, .25f, .2f, .15f, .1f, .0f};
     public static float[] DISTANT_STORM = new float[]{.7f, .6f, .5f, .4f, .3f, .2f, .2f, .3f, .2f, .1f};
     public static float[] GETTING_WET = new float[]{.7f, .5f, .2f, .35f, .55f, .35f, .3f, .25f, .2f, .2f};
-    public static float[] ONLY_RUMBLE = new float[]{.7f, .5f, .0f, .0f, .0f, .0f, .0f, .0f, .0f, .0f};
+    public static float[] ONLY_RUMBLE = new float[]{.7f, .5f, .15f, .15f, .15f, .15f, .1f, .1f, .0f, .0f};
     public static float[] UNDER_THE_LEAVES = new float[]{.3f, .3f, .0f, .0f, .0f, .3f, .0f, .0f, .1f, .2f};
     public static float[] DARK_RAIN = new float[]{.0f, .5f, .4f, .3f, .2f, .0f, .0f, .1f, .1f, .0f};
     public static float[] JUNGLE_LODGE = new float[]{.7f, .0f, .2f, .0f, .25f, .0f, .25f, .0f, .2f, .0f};

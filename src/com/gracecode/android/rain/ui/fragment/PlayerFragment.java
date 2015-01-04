@@ -4,30 +4,51 @@ package com.gracecode.android.rain.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.serivce.PlayService;
 
+/**
+ * 和播放有关联的 Fragment
+ */
 abstract class PlayerFragment extends Fragment {
     private static boolean mPlaying = false;
-    protected Handler mHandler = new Handler();
 
     abstract BroadcastReceiver getBroadcastReceiver();
 
+    public PlayerFragment() {
+        super();
+    }
+
+    /**
+     * 设置正在播放的状态
+     */
     public void setPlaying() {
         mPlaying = true;
     }
 
+    /**
+     * 设置停止的状态
+     */
     public void setStopped() {
         mPlaying = false;
     }
 
+    /**
+     * 判断是否在播放
+     *
+     * @return
+     */
     public boolean isPlaying() {
         return mPlaying;
     }
 
+    /**
+     * 注册默认的广播
+     *
+     * @param receiver
+     */
     public void registerReceiver(BroadcastReceiver receiver) {
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
@@ -42,10 +63,14 @@ abstract class PlayerFragment extends Fragment {
         getActivity().registerReceiver(receiver, filter);
     }
 
+    /**
+     * 注销广播
+     *
+     * @param receiver
+     */
     public void unregisterReceiver(BroadcastReceiver receiver) {
         getActivity().unregisterReceiver(receiver);
     }
-
 
     @Override
     public void onResume() {

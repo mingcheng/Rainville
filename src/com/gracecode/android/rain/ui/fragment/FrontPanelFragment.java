@@ -53,7 +53,7 @@ public class FrontPanelFragment extends PlayerFragment
         private void markNotFirstRun() {
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(PREF_IS_FIRST_RUN, false);
-            editor.commit();
+            editor.apply();
         }
 
         @Override
@@ -87,7 +87,7 @@ public class FrontPanelFragment extends PlayerFragment
         private void markPanelOpened() {
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putBoolean(PREF_IS_FIRST_OPEN_PANEL, false);
-            editor.commit();
+            editor.apply();
         }
 
         @Override
@@ -123,7 +123,7 @@ public class FrontPanelFragment extends PlayerFragment
         }
 
         @Override
-        public void onSetVolume(int track, int volume) {
+        public void onSetVolume(int track, float volume) {
 
         }
 
@@ -190,7 +190,7 @@ public class FrontPanelFragment extends PlayerFragment
         }
 
         if (mCountDownTextView != null) {
-            mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceRoboto(getActivity()));
+            mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceMusket2(getActivity()));
         }
     }
 

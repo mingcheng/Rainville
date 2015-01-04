@@ -130,9 +130,7 @@ public class MainActivity extends FragmentActivity {
 
         // 保存上次面板滚动的位置
         int currentItem = mControlCenterContainer.getCurrentItem();
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(SAVED_CURRENT_ITEM, currentItem);
-        editor.commit();
+        mPreferences.edit().putInt(SAVED_CURRENT_ITEM, currentItem).apply();
     }
 
 
@@ -148,7 +146,7 @@ public class MainActivity extends FragmentActivity {
 
     private int getControlCenterHeight() {
         int height = mFrontPanel.getRootView().getMeasuredHeight();
-        return (int) (height * (1 - mFrontPanel.getSlideRatio()) * .9);
+        return (int) (height * (1 - mFrontPanel.getSlideRatio()));
     }
 
     @Override
@@ -169,7 +167,7 @@ public class MainActivity extends FragmentActivity {
         switch (item.getItemId()) {
             case R.id.action_feedback:
                 PackageInfo info = mRainApplication.getPackageInfo();
-                mRainApplication.sendFeedbackEmail(MainActivity.this,
+                mRainApplication.sendEmail(MainActivity.this,
                         String.format(getString(R.string.feedback_subject), getString(R.string.app_name), info.versionName)
                 );
                 break;

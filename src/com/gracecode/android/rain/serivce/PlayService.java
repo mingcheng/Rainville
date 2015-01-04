@@ -11,9 +11,9 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
+import com.gracecode.android.rain.helper.MixerPresetsHelper;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
-import com.gracecode.android.rain.player.BufferedPlayer;
 import com.gracecode.android.rain.player.PlayManager;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.ui.MainActivity;
@@ -101,7 +101,7 @@ public class PlayService extends Service {
     }
 
     private final IBinder mBinder = new PlayBinder();
-    private static PlayManager mPlayManager;
+    private PlayManager mPlayManager;
     private boolean isDisabled = true;
     private BroadcastReceiver mPlayBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
@@ -127,18 +127,13 @@ public class PlayService extends Service {
         }
 
         @Override
-        public void onSetVolume(int track, int volume) {
+        public void onSetVolume(int track, float volume) {
             mPlayManager.setVolume(track, volume);
         }
 
-
         @Override
         public void onSetPresets(float[] presets) {
-            for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-                int volume = (int) (mPlayManager.getMaxVolume() * presets[i]);
-                mPlayManager.setVolume(i, volume);
-            }
-
+            mPlayManager.setPresets(presets);
             savePresets(presets);
         }
 
@@ -230,6 +225,8 @@ public class PlayService extends Service {
             e.printStackTrace();
         }
 
+        // 载入音频资源
+        mPlayManager.load();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -239,17 +236,29 @@ public class PlayService extends Service {
     }
 
 
+    /**
+     * 保存声音配置到本地
+     *
+     * @param presets
+     */
     public void savePresets(float[] presets) {
+        SharedPreferences.Editor editor = mPreferences.edit();
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            mPreferences.edit().putFloat("_" + i, presets[i]).commit();
+            editor.putFloat("_" + i, presets[i]);
         }
+        editor.apply();
     }
 
 
+    /**
+     * 获取声音配置
+     *
+     * @return
+     */
     public float[] getPresets() {
         float[] result = new float[PlayManager.MAX_TRACKS_NUM];
         for (int i = 0; i < PlayManager.MAX_TRACKS_NUM; i++) {
-            result[i] = mPreferences.getFloat("_" + i, BufferedPlayer.DEFAULT_VOLUME_PERCENT);
+            result[i] = mPreferences.getFloat("_" + i, MixerPresetsHelper.DEFAULT_PRESET[i]);
         }
 
         return result;
@@ -257,19 +266,18 @@ public class PlayService extends Service {
 
     @Override
     public void onDestroy() {
-        if (mPlayManager.isPlaying()) {
-            mPlayManager.stop();
-            clearNotification();
-        }
-
-        unregisterReceiver(mPlayBroadcastReceiver);
-
         try {
             mTimer.cancel();
+            if (mPlayManager.isPlaying()) {
+                mPlayManager.stop();
+                mPlayManager.unload();
+            }
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
             mTimer = null;
+            clearNotification();
+            unregisterReceiver(mPlayBroadcastReceiver);
         }
 
         super.onDestroy();

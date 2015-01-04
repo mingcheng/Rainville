@@ -38,14 +38,6 @@ public class TypefaceHelper {
     }
 
 
-    public static Typeface getTypefaceRoboto(Context context) {
-        if (mTypefaceRoboto == null) {
-            mTypefaceRoboto = Typeface.createFromAsset(context.getAssets(), "roboto.ttf");
-        }
-
-        return mTypefaceRoboto;
-    }
-
     public static Bitmap getStringBitmapFromTypeface(String string, Typeface typeface, int width, int height) {
         Bitmap myBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
         Canvas myCanvas = new Canvas(myBitmap);

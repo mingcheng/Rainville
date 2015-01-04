@@ -36,7 +36,7 @@ public class SetTimerFragment extends PlayerFragment {
         }
 
         @Override
-        public void onSetVolume(int track, int volume) {
+        public void onSetVolume(int track, float volume) {
 
         }
 
