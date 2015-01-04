@@ -225,6 +225,7 @@ public class PlayService extends Service {
             e.printStackTrace();
         }
 
+        // 载入音频资源
         mPlayManager.load();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -267,8 +268,10 @@ public class PlayService extends Service {
     public void onDestroy() {
         try {
             mTimer.cancel();
-            mPlayManager.stop();
-            mPlayManager.unload();
+            if (mPlayManager.isPlaying()) {
+                mPlayManager.stop();
+                mPlayManager.unload();
+            }
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {

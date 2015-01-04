@@ -20,12 +20,12 @@ public final class PlayManager {
     };
     public static final int MAX_TRACKS_NUM = mTrackers.length;
 
-    private int[] mStreamID = new int[MAX_TRACKS_NUM];
-    private int[] mSoundID = new int[MAX_TRACKS_NUM];
-    private float[] mVolume = new float[MAX_TRACKS_NUM];
+    private static int[] mStreamID = new int[MAX_TRACKS_NUM];
+    private static int[] mSoundID = new int[MAX_TRACKS_NUM];
+    private static float[] mVolume = new float[MAX_TRACKS_NUM];
 
-    private SoundPool mSoundPool;
-    private boolean playing = false;
+    private static SoundPool mSoundPool;
+    private static boolean playing = false;
 
     /**
      * Singleton Mode
@@ -101,12 +101,18 @@ public final class PlayManager {
         }
     }
 
+    /**
+     * 卸载所有资源
+     */
     public void unload() {
         for (int i = 0; i < MAX_TRACKS_NUM; i++) {
             mSoundPool.unload(mSoundID[i]);
         }
     }
 
+    /**
+     * 停止播放
+     */
     public void stop() {
         try {
             for (int i = 0; i < MAX_TRACKS_NUM; i++) {
@@ -119,10 +125,14 @@ public final class PlayManager {
         }
     }
 
+    /**
+     * 开始播放
+     */
     public void play() {
         try {
             for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-                mStreamID[i] = mSoundPool.play(mSoundID[i], getVolume(i), getVolume(i), 0, -1, 1.0f);
+                float volume = getVolume(i);
+                mStreamID[i] = mSoundPool.play(mSoundID[i], volume, volume, 0, -1, 1.0f);
             }
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -145,9 +155,6 @@ public final class PlayManager {
         return mVolume[track];
     }
 
-    public int getMaxVolume() {
-        return mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-    }
 
     /**
      * 设置音轨的音量
