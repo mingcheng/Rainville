@@ -1,13 +1,15 @@
 package com.gracecode.android.rain.serivce;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.*;
 import android.media.AudioManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.gracecode.android.rain.R;
 import com.gracecode.android.rain.RainApplication;
@@ -28,7 +30,7 @@ public class PlayService extends Service {
     public static final String PREF_FOCUS_PLAY_WITHOUT_HEADSET = "pref_foucs_play_without_headset";
 
     private NotificationManager mNotificationManager;
-    private NotificationCompat.Builder mNotification;
+    private Notification.Builder mNotification;
     private SharedPreferences mPreferences;
     private AudioManager mAudioManager;
     private Timer mTimer;
@@ -56,7 +58,7 @@ public class PlayService extends Service {
             }
         }
 
-
+        @SuppressWarnings("deprecation")
         private boolean detectA2dpOrHeadset() {
             boolean state = mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn();
             boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
@@ -78,6 +80,7 @@ public class PlayService extends Service {
     /**
      * 显示通知信息
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void notifyRunning() {
         mNotificationManager.notify(NOTIFY_ID, mNotification.build());
     }
@@ -158,6 +161,7 @@ public class PlayService extends Service {
     };
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -170,7 +174,7 @@ public class PlayService extends Service {
                 new Intent(PlayService.this, MainActivity.class),
                 NOTIFY_ID);
 
-        mNotification = new NotificationCompat.Builder(PlayService.this)
+        mNotification = new Notification.Builder(PlayService.this)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.keep_running))
