@@ -12,6 +12,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.common.helper.DateHelper;
@@ -21,13 +24,16 @@ import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.SendBroadcastHelper;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
 import com.gracecode.android.rain.helper.TypefaceHelper;
+import com.gracecode.android.rain.helper.WeatherIconHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
+import com.gracecode.android.rain.request.WeatherRequest;
 import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FrontPanelFragment extends PlayerFragment
         implements SimplePanel.SimplePanelListener, View.OnClickListener, MenuItem.OnMenuItemClickListener {
-
 
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
@@ -44,6 +50,12 @@ public class FrontPanelFragment extends PlayerFragment
     private SharedPreferences mSharedPreferences;
     private SharedPreferences mPreferences;
 
+    private RequestQueue mRequestQueue;
+    private WeatherIconHelper mWeatherIconHelper;
+
+    /**
+     * 标记第一个打开应用
+     */
     private Runnable mShowMainIntroRunnable = new Runnable() {
         private static final String PREF_IS_FIRST_RUN = "PREF_IS_FIRST_RUN";
 
@@ -78,6 +90,10 @@ public class FrontPanelFragment extends PlayerFragment
         }
     };
 
+
+    /**
+     * 标记第一次打开滑动面板
+     */
     private Runnable mOpenPanelRunnable = new Runnable() {
         private static final String PREF_IS_FIRST_OPEN_PANEL = "PREF_IS_FIRST_OPEN_PANEL";
 
@@ -86,9 +102,7 @@ public class FrontPanelFragment extends PlayerFragment
         }
 
         private void markPanelOpened() {
-            SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putBoolean(PREF_IS_FIRST_OPEN_PANEL, false);
-            editor.apply();
+            mPreferences.edit().putBoolean(PREF_IS_FIRST_OPEN_PANEL, false).apply();
         }
 
         @Override
@@ -112,6 +126,10 @@ public class FrontPanelFragment extends PlayerFragment
         }
     };
 
+
+    /**
+     * 注册对应的广播事件
+     */
     private BroadcastReceiver mBroadcastReceiver = new PlayBroadcastReceiver() {
         @Override
         public void onPlay() {
@@ -169,6 +187,7 @@ public class FrontPanelFragment extends PlayerFragment
         super.onActivityCreated(savedInstanceState);
         mRainApplication = RainApplication.getInstance();
         mSharedPreferences = mRainApplication.getSharedPreferences();
+        mRequestQueue = mRainApplication.getRequestQueue();
         mPreferences = getActivity().getSharedPreferences(FrontPanelFragment.class.getName(), Context.MODE_PRIVATE);
     }
 
@@ -216,6 +235,41 @@ public class FrontPanelFragment extends PlayerFragment
 
         // 初始化界面
         setHeadsetNeeded();
+
+        mRequestQueue.start();
+        mRequestQueue.add(mWeatherRequest);
+    }
+
+
+    /**
+     * 请求当日的天气信息
+     */
+    private WeatherRequest mWeatherRequest = new WeatherRequest(new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            try {
+                JSONObject today = response.getJSONObject("today");
+                mWeatherIconHelper.setWeather(today.getString("condition"));
+                mWeatherIconHelper.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                mWeatherIconHelper.show();
+            }
+        }
+
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            mWeatherIconHelper.show();
+        }
+    });
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mRequestQueue.stop();
     }
 
     @Override
@@ -251,6 +305,7 @@ public class FrontPanelFragment extends PlayerFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_front_panel, null);
         mWeatherTextView = (TextView) view.findViewById(R.id.icon);
+        mWeatherIconHelper = new WeatherIconHelper(mWeatherTextView);
         mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
         mCountDownTextView = (TextView) view.findViewById(R.id.countdown);
         mPlayButton = (ToggleButton) view.findViewById(R.id.toggle_play);
@@ -340,9 +395,7 @@ public class FrontPanelFragment extends PlayerFragment
     }
 
     private void markAsPlayWithoutHeadset() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true);
-        editor.commit();
+        mSharedPreferences.edit().putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true).apply();
     }
 
     @Override

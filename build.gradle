@@ -20,6 +20,7 @@ dependencies {
     compile 'com.github.amlcurran.showcaseview:library:5.0.0'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.android:support-v4:r7'
+    compile 'eu.the4thfloor.volley:com.android.volley:2014.12.21'
     compile project(':libs:common')
 }
 
