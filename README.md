@@ -39,7 +39,8 @@
 
 - 感谢 [Stephane Pigeon](https://twitter.com/audiosampling) 提供音频文件，并允许将其打包进「聆雨」应用中
 - 使用 'Musket2' 字体，我爱它 http://bybu.es/portfolio/musket/
-- 使用 libvorbis 单独作为音频解码模块 https://github.com/vincentjames501/libvorbis-libogg-android
+- 天气图标使用 https://erikflowers.github.io/weather-icons/
+- <del>使用 libvorbis 单独作为音频解码模块 https://github.com/vincentjames501/libvorbis-libogg-android</del> （ 1.7.0 以后使用系统原生的解码模块）。
 
 
 ## 更新记录

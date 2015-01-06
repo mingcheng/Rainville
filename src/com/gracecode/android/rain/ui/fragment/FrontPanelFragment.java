@@ -34,6 +34,7 @@ public class FrontPanelFragment extends PlayerFragment
     private ToggleButton mPlayButton;
     private TextView mHeadsetNeeded;
     private TextView mCountDownTextView;
+    private TextView mWeatherTextView;
 
     private int mFocusPlayTime = 0;
     static private final int MAX_FOCUS_PLAY_TIMES = 12;
@@ -178,8 +179,7 @@ public class FrontPanelFragment extends PlayerFragment
     private void setCustomFonts() {
         UIHelper.setCustomTypeface((ViewGroup) getView(), TypefaceHelper.getTypefaceMusket2(getActivity()));
 
-        ((TextView) getView().findViewById(R.id.icon))
-                .setTypeface(TypefaceHelper.getTypefaceWeather(getActivity()));
+        mWeatherTextView.setTypeface(TypefaceHelper.getTypefaceWeather(getActivity()));
 
         if (mToggleButton != null) {
             mToggleButton.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
@@ -199,21 +199,17 @@ public class FrontPanelFragment extends PlayerFragment
     public void onStart() {
         super.onStart();
 
-        mToggleButton = (ToggleButton) getView().findViewById(R.id.toggle_panel);
         mToggleButton.setOnClickListener(this);
-        onClosed(); // The Panel is closed when initial launched.
-
-        mPlayButton = (ToggleButton) getView().findViewById(R.id.toggle_play);
         mPlayButton.setOnClickListener(this);
 
         if (mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.INVISIBLE);
         }
 
-        mHeadsetNeeded = (TextView) getView().findViewById(R.id.headset_needed);
         mHeadsetNeeded.setOnClickListener(this);
 
-        mCountDownTextView = (TextView) getView().findViewById(R.id.countdown);
+        // The Panel is closed when initial launched.
+        onClosed();
 
         // 设置自定义的字体
         setCustomFonts();
@@ -253,7 +249,13 @@ public class FrontPanelFragment extends PlayerFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_front_panel, null);
+        View view = inflater.inflate(R.layout.fragment_front_panel, null);
+        mWeatherTextView = (TextView) view.findViewById(R.id.icon);
+        mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
+        mCountDownTextView = (TextView) view.findViewById(R.id.countdown);
+        mPlayButton = (ToggleButton) view.findViewById(R.id.toggle_play);
+        mToggleButton = (ToggleButton) view.findViewById(R.id.toggle_panel);
+        return view;
     }
 
 
