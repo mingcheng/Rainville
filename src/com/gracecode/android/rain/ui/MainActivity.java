@@ -146,7 +146,7 @@ public class MainActivity extends FragmentActivity {
 
     private int getControlCenterHeight() {
         int height = mFrontPanel.getRootView().getMeasuredHeight();
-        return (int) (height * (1 - mFrontPanel.getSlideRatio()));
+        return (int) (height * (1 - mFrontPanel.getSlideRatio()) * .9);
     }
 
     @Override
