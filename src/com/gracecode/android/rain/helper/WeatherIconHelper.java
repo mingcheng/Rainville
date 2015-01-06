@@ -3,6 +3,8 @@ package com.gracecode.android.rain.helper;
 import android.animation.ObjectAnimator;
 import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
+import com.gracecode.android.common.Logger;
+import com.gracecode.android.rain.BuildConfig;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,6 +41,10 @@ public class WeatherIconHelper {
 
     public void setWeather(String condition) {
         mCondition = condition;
+        if (BuildConfig.DEBUG) {
+            Logger.i("Set weather status as " + condition);
+        }
+
         for (int i = mWeatherTitle.length - 1; i >= 0; i--) {
             if (condition.contains(mWeatherTitle[i])) {
                 mWeatherTextView.setText(mWeatherCharacter[i]);
