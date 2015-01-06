@@ -22,7 +22,7 @@ public class TypefaceHelper {
 
     public static Typeface getTypefaceWeather(Context context) {
         if (mTypefaceWeather == null) {
-            mTypefaceWeather = Typeface.createFromAsset(context.getAssets(), "weather.ttf");
+            mTypefaceWeather = Typeface.createFromAsset(context.getAssets(), "weather.otf");
         }
 
         return mTypefaceWeather;
