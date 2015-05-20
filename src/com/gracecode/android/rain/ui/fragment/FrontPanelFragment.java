@@ -15,8 +15,6 @@ import android.widget.ToggleButton;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.common.helper.DateHelper;
 import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
@@ -74,13 +72,7 @@ public class FrontPanelFragment extends PlayerFragment
             try {
                 // 如果是首次启动，则显示提示信息框
                 if (isFirstRun()) {
-                    new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(R.id.headset_needed, getActivity()))
-                            .setContentTitle(getString(R.string.welcome_use_rainville))
-                            .setContentText(getString(R.string.welcome_use_rainville_summary))
-                            .setStyle(R.style.RainShowcaseView)
-                            .hideOnTouchOutside()
-                            .build();
+                    // ?????
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -110,13 +102,7 @@ public class FrontPanelFragment extends PlayerFragment
             // 第一次打开面板的时候，显示功能介绍
             if (isFirstOpenPanel()) {
                 try {
-                    new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(android.R.id.list, getActivity()))
-                            .setContentTitle(getString(R.string.panel_intro))
-                            .setContentText(getString(R.string.panel_intro_summary))
-                            .setStyle(R.style.RainShowcaseView)
-                            .hideOnTouchOutside()
-                            .build();
+                    // ？？？？
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
