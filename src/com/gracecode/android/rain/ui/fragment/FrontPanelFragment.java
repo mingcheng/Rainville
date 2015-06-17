@@ -8,15 +8,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.gracecode.android.common.helper.DateHelper;
 import com.gracecode.android.common.helper.UIHelper;
 import com.gracecode.android.rain.R;
@@ -27,7 +23,6 @@ import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.helper.WeatherIconHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.request.WeatherRequest;
-import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +33,7 @@ public class FrontPanelFragment extends PlayerFragment
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
-    private TextView mHeadsetNeeded;
+//    private TextView mHeadsetNeeded;
     private TextView mCountDownTextView;
     private TextView mWeatherTextView;
 
@@ -74,13 +69,7 @@ public class FrontPanelFragment extends PlayerFragment
             try {
                 // 如果是首次启动，则显示提示信息框
                 if (isFirstRun()) {
-                    new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(R.id.headset_needed, getActivity()))
-                            .setContentTitle(getString(R.string.welcome_use_rainville))
-                            .setContentText(getString(R.string.welcome_use_rainville_summary))
-                            .setStyle(R.style.RainShowcaseView)
-                            .hideOnTouchOutside()
-                            .build();
+                    // @Todo
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -110,13 +99,7 @@ public class FrontPanelFragment extends PlayerFragment
             // 第一次打开面板的时候，显示功能介绍
             if (isFirstOpenPanel()) {
                 try {
-                    new ShowcaseView.Builder(getActivity())
-                            .setTarget(new ViewTarget(android.R.id.list, getActivity()))
-                            .setContentTitle(getString(R.string.panel_intro))
-                            .setContentText(getString(R.string.panel_intro_summary))
-                            .setStyle(R.style.RainShowcaseView)
-                            .hideOnTouchOutside()
-                            .build();
+                    // @TODO
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
@@ -151,16 +134,16 @@ public class FrontPanelFragment extends PlayerFragment
 
         }
 
-        @Override
-        public void onHeadsetPlugged() {
-            setAsNormal();
-        }
-
-        @Override
-        public void onHeadsetUnPlugged() {
-            setHeadsetNeeded();
-            setStopped();
-        }
+//        @Override
+//        public void onHeadsetPlugged() {
+//            setAsNormal();
+//        }
+//
+//        @Override
+//        public void onHeadsetUnPlugged() {
+//            setHeadsetNeeded();
+//            setStopped();
+//        }
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
@@ -204,9 +187,9 @@ public class FrontPanelFragment extends PlayerFragment
             mToggleButton.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
         }
 
-        if (mHeadsetNeeded != null) {
-            mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
-        }
+//        if (mHeadsetNeeded != null) {
+//            mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
+//        }
 
         if (mCountDownTextView != null) {
             mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceMusket2(getActivity()));
@@ -225,7 +208,7 @@ public class FrontPanelFragment extends PlayerFragment
             mPlayButton.setVisibility(View.INVISIBLE);
         }
 
-        mHeadsetNeeded.setOnClickListener(this);
+//        mHeadsetNeeded.setOnClickListener(this);
 
         // The Panel is closed when initial launched.
         onClosed();
@@ -234,7 +217,8 @@ public class FrontPanelFragment extends PlayerFragment
         setCustomFonts();
 
         // 初始化界面
-        setHeadsetNeeded();
+//        setHeadsetNeeded();
+        setAsNormal();
 
         mRequestQueue.start();
         mRequestQueue.add(mWeatherRequest);
@@ -282,20 +266,20 @@ public class FrontPanelFragment extends PlayerFragment
         this.mFrontPanel = panel;
     }
 
-    public void setHeadsetNeeded() {
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
-        if (animation != null) {
-            mHeadsetNeeded.startAnimation(animation);
-        }
-
-        mPlayButton.setVisibility(View.INVISIBLE);
-        mHeadsetNeeded.setVisibility(View.VISIBLE);
-    }
+//    public void setHeadsetNeeded() {
+//        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
+//        if (animation != null) {
+//            mHeadsetNeeded.startAnimation(animation);
+//        }
+//
+//        mPlayButton.setVisibility(View.INVISIBLE);
+//        mHeadsetNeeded.setVisibility(View.VISIBLE);
+//    }
 
 
     public void setAsNormal() {
-        mHeadsetNeeded.clearAnimation();
-        mHeadsetNeeded.setVisibility(View.INVISIBLE);
+//        mHeadsetNeeded.clearAnimation();
+//        mHeadsetNeeded.setVisibility(View.INVISIBLE);
         if (!mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.VISIBLE);
         }
@@ -306,7 +290,7 @@ public class FrontPanelFragment extends PlayerFragment
         View view = inflater.inflate(R.layout.fragment_front_panel, null);
         mWeatherTextView = (TextView) view.findViewById(R.id.icon);
         mWeatherIconHelper = new WeatherIconHelper(mWeatherTextView);
-        mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
+//        mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
         mCountDownTextView = (TextView) view.findViewById(R.id.countdown);
         mPlayButton = (ToggleButton) view.findViewById(R.id.toggle_play);
         mToggleButton = (ToggleButton) view.findViewById(R.id.toggle_panel);
@@ -373,30 +357,29 @@ public class FrontPanelFragment extends PlayerFragment
                 togglePlay();
                 break;
 
-            case R.id.headset_needed:
-
-                try {
-                    String message = getString(R.string.headset_needed);
-
-                    // 这里有个小的彩蛋，多点击耳机图标多次就可以解锁直接使用耳机外放播放
-                    if (mFocusPlayTime >= MAX_FOCUS_PLAY_TIMES) {
-                        markAsPlayWithoutHeadset();
-                        message = getString(R.string.play_wihout_headset);
-                    }
-
-                    UIHelper.showShortToast(getActivity(), message);
-                } finally {
-                    mFocusPlayTime++;
-                    setStopped();
-                }
-
-                break;
+//            case R.id.headset_needed:
+//                try {
+//                    String message = getString(R.string.headset_needed);
+//
+//                    // 这里有个小的彩蛋，多点击耳机图标多次就可以解锁直接使用耳机外放播放
+//                    if (mFocusPlayTime >= MAX_FOCUS_PLAY_TIMES) {
+//                        markAsPlayWithoutHeadset();
+//                        message = getString(R.string.play_wihout_headset);
+//                    }
+//
+//                    UIHelper.showShortToast(getActivity(), message);
+//                } finally {
+//                    mFocusPlayTime++;
+//                    setStopped();
+//                }
+//
+//                break;
         }
     }
 
-    private void markAsPlayWithoutHeadset() {
-        mSharedPreferences.edit().putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true).apply();
-    }
+//    private void markAsPlayWithoutHeadset() {
+//        mSharedPreferences.edit().putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true).apply();
+//    }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {

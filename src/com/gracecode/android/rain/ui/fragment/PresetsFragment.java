@@ -57,15 +57,15 @@ public class PresetsFragment extends PlayerFragment
 //            savePresets(presets);
         }
 
-        @Override
-        public void onHeadsetPlugged() {
-            setDisabled(false);
-        }
-
-        @Override
-        public void onHeadsetUnPlugged() {
-            setDisabled(true);
-        }
+//        @Override
+//        public void onHeadsetPlugged() {
+//            setDisabled(false);
+//        }
+//
+//        @Override
+//        public void onHeadsetUnPlugged() {
+//            setDisabled(true);
+//        }
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {

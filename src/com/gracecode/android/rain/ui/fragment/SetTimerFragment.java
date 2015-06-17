@@ -45,15 +45,15 @@ public class SetTimerFragment extends PlayerFragment {
 
         }
 
-        @Override
-        public void onHeadsetPlugged() {
-            mNumberPicker.setEnabled(true);
-        }
-
-        @Override
-        public void onHeadsetUnPlugged() {
-            mNumberPicker.setEnabled(false);
-        }
+//        @Override
+//        public void onHeadsetPlugged() {
+//            mNumberPicker.setEnabled(true);
+//        }
+//
+//        @Override
+//        public void onHeadsetUnPlugged() {
+//            mNumberPicker.setEnabled(false);
+//        }
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {

@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import com.gracecode.android.rain.RainApplication;
 import com.gracecode.android.rain.helper.StopPlayTimeoutHelper;
-import com.gracecode.android.rain.serivce.PlayService;
 
 
 public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
@@ -59,32 +57,32 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
                 long remain = intent.getLongExtra(StopPlayTimeoutHelper.FIELD_REMAIN, StopPlayTimeoutHelper.NO_REMAIN);
                 onPlayStopTimeout(timeout, remain, (command != CMD_NOP));
                 break;
-
-            case Intent.ACTION_HEADSET_PLUG:
-            case PlayService.ACTION_A2DP_HEADSET_PLUG:
-                // 是否强制打开使用扬声器？
-                boolean focus = mSharedPreferences.getBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, false)
-                        || intent.getBooleanExtra("focus", false);
-                if (focus) {
-                    onHeadsetPlugged();
-                    break;
-                }
-
-                int stat = intent.getIntExtra("state", -1);
-                switch (stat) {
-                    case 0:
-                        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                        if (manager != null && manager.isBluetoothA2dpOn()) {
-                            onHeadsetPlugged();
-                        } else {
-                            onHeadsetUnPlugged();
-                        }
-                        break;
-                    case 1:
-                        onHeadsetPlugged();
-                        break;
-                }
-                break;
+//
+//            case Intent.ACTION_HEADSET_PLUG:
+//            case PlayService.ACTION_A2DP_HEADSET_PLUG:
+//                // 是否强制打开使用扬声器？
+//                boolean focus = mSharedPreferences.getBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, false)
+//                        || intent.getBooleanExtra("focus", false);
+//                if (focus) {
+//                    onHeadsetPlugged();
+//                    break;
+//                }
+//
+//                int stat = intent.getIntExtra("state", -1);
+//                switch (stat) {
+//                    case 0:
+//                        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//                        if (manager != null && manager.isBluetoothA2dpOn()) {
+//                            onHeadsetPlugged();
+//                        } else {
+//                            onHeadsetUnPlugged();
+//                        }
+//                        break;
+//                    case 1:
+//                        onHeadsetPlugged();
+//                        break;
+//                }
+//                break;
         }
     }
 
@@ -96,9 +94,9 @@ public abstract class PlayBroadcastReceiver extends BroadcastReceiver {
 
     abstract public void onSetPresets(float[] presets);
 
-    abstract public void onHeadsetPlugged();
-
-    abstract public void onHeadsetUnPlugged();
+//    abstract public void onHeadsetPlugged();
+//
+//    abstract public void onHeadsetUnPlugged();
 
     abstract public void onPlayStopTimeout(long timeout, long remain, boolean byUser);
 }
