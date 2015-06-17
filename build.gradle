@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 
@@ -17,7 +17,6 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.github.amlcurran.showcaseview:library:5.0.0'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.android:support-v4:r7'
     compile 'eu.the4thfloor.volley:com.android.volley:2014.12.21'
@@ -25,18 +24,16 @@ dependencies {
 }
 
 def getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyyMMdd')
-    return formattedDate.toInteger()
+    (new Date().format('yyyyMMdd')).toInteger()
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
-        targetSdkVersion 21
-        minSdkVersion 16
+        targetSdkVersion 19
+        minSdkVersion 14
         versionCode getDate()
     }
 
@@ -101,22 +98,6 @@ android {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
-
-/*
-// @from http://blog.csdn.net/look_down/article/details/17557031
-task copyNativeLibs(type: Copy) {
-    from fileTree(dir: 'libs', include: 'armeabi/*.so') into 'build/lib'
-    from fileTree(dir: 'libs/libogg/libs', include: ['armeabi/*.so', 'armeabi-v7a/*.so', 'mips/*.so', 'x86/*.so']) into 'build/lib'
-}
-
-
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn copyNativeLibs
-}
-
-
-clean.dependsOn 'cleanCopyNativeLibs'
-    */
 
 tasks.withType(PackageApplication) { pkgTask ->
     pkgTask.jniFolders = [new File(buildDir, 'lib')]
