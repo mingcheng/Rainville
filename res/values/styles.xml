@@ -38,8 +38,4 @@
         <item name="android:lines">1</item>
     </style>
 
-    <style name="RainShowcaseView" parent="ShowcaseView">
-        <item name="sv_backgroundColor">#f0333333</item>
-        <item name="sv_buttonText">@android:string/ok</item>
-    </style>
 </resources>

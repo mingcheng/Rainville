@@ -22,7 +22,6 @@ import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.fragment.FrontPanelFragment;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
 import com.umeng.analytics.MobclickAgent;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
     private static final String SAVED_CURRENT_ITEM = "pref_saved_current_item";
@@ -63,7 +62,6 @@ public class MainActivity extends FragmentActivity {
                 .setTypeface(TypefaceHelper.getTypefaceMusket2(this));
 
         getActionBar().hide();
-        XiaomiUpdateAgent.update(this);
     }
 
 
