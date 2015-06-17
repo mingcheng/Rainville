@@ -57,7 +57,7 @@ public final class PlayManager {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void createNewSoundPool() {
         AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
 

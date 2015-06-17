@@ -26,8 +26,8 @@ import java.util.TimerTask;
 
 public class PlayService extends Service {
     private static final int NOTIFY_ID = 0;
-    public static final String ACTION_A2DP_HEADSET_PLUG = "action_d2dp_headset_plugin";
-    public static final String PREF_FOCUS_PLAY_WITHOUT_HEADSET = "pref_foucs_play_without_headset";
+//    public static final String ACTION_A2DP_HEADSET_PLUG = "action_d2dp_headset_plugin";
+//    public static final String PREF_FOCUS_PLAY_WITHOUT_HEADSET = "pref_foucs_play_without_headset";
 
     private NotificationManager mNotificationManager;
     private Notification.Builder mNotification;
@@ -48,7 +48,7 @@ public class PlayService extends Service {
         @Override
         public void run() {
             // https://developer.android.com/reference/android/media/AudioManager.html#isWiredHeadsetOn()
-            detectA2dpOrHeadset();
+//            detectA2dpOrHeadset();
 
             // 定时停止状态，避免同个重复发送
             long timeoutRemain = mStopPlayTimeoutHelper.getTimeoutRemain();
@@ -58,22 +58,22 @@ public class PlayService extends Service {
             }
         }
 
-        @SuppressWarnings("deprecation")
-        private boolean detectA2dpOrHeadset() {
-            boolean state = mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn();
-            boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
-            if (lastFocusState != focus || state != lastA2dpState) {
-                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
-                intent.putExtra("state", state ? 1 : 0);
-                intent.putExtra("focus", focus);
-                sendBroadcast(intent);
-
-                lastA2dpState = state;
-                lastFocusState = focus;
-            }
-
-            return state || focus;
-        }
+//        @SuppressWarnings("deprecation")
+//        private boolean detectA2dpOrHeadset() {
+//            boolean state = mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn();
+//            boolean focus = mSharedPreferences.getBoolean(PREF_FOCUS_PLAY_WITHOUT_HEADSET, false);
+//            if (lastFocusState != focus || state != lastA2dpState) {
+//                Intent intent = new Intent(ACTION_A2DP_HEADSET_PLUG);
+//                intent.putExtra("state", state ? 1 : 0);
+//                intent.putExtra("focus", focus);
+//                sendBroadcast(intent);
+//
+//                lastA2dpState = state;
+//                lastFocusState = focus;
+//            }
+//
+//            return state || focus;
+//        }
     }
 
 
@@ -112,7 +112,7 @@ public class PlayService extends Service {
             if (isDisabled) {
                 Toast.makeText(PlayService.this,
                         getString(R.string.headset_needed), Toast.LENGTH_SHORT).show();
-                onHeadsetUnPlugged();
+//                onHeadsetUnPlugged();
                 return;
             }
 
@@ -141,16 +141,16 @@ public class PlayService extends Service {
         }
 
 
-        @Override
-        public void onHeadsetPlugged() {
-            setDisabled(false);
-        }
-
-        @Override
-        public void onHeadsetUnPlugged() {
-            SendBroadcastHelper.sendStopBroadcast(PlayService.this);
-            setDisabled(true);
-        }
+//        @Override
+//        public void onHeadsetPlugged() {
+//            setDisabled(false);
+//        }
+//
+//        @Override
+//        public void onHeadsetUnPlugged() {
+//            SendBroadcastHelper.sendStopBroadcast(PlayService.this);
+//            setDisabled(true);
+//        }
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
@@ -201,9 +201,9 @@ public class PlayService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
         IntentFilter filter = new IntentFilter();
         for (String action : new String[]{
-                ACTION_A2DP_HEADSET_PLUG,
+//                ACTION_A2DP_HEADSET_PLUG,
                 StopPlayTimeoutHelper.ACTION_SET_STOP_TIMEOUT,
-                Intent.ACTION_HEADSET_PLUG,
+//                Intent.ACTION_HEADSET_PLUG,
                 PlayBroadcastReceiver.ACTION_PLAY_BROADCAST
         }) {
             filter.addAction(action);
@@ -231,6 +231,8 @@ public class PlayService extends Service {
 
         // 载入音频资源
         mPlayManager.load();
+        setDisabled(false);
+
         return super.onStartCommand(intent, flags, startId);
     }
 
