@@ -63,6 +63,7 @@ public final class PlayManager {
 
         mSoundPool =
                 new SoundPool.Builder()
+                        .setMaxStreams(MAX_TRACKS_NUM)
                         .setAudioAttributes(attributes)
                         .build();
     }
