@@ -1,5 +1,7 @@
 package com.gracecode.android.rain.player;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.media.AudioAttributes;
@@ -34,6 +36,7 @@ public final class PlayManager {
      * @return playerManager
      */
     private static PlayManager ourInstance = null;
+    private AnimatorSet mPresetsChangeAnimatorSet;
 
     /**
      * 播放控制器，使用单例模式
@@ -57,14 +60,14 @@ public final class PlayManager {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void createNewSoundPool() {
         AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
 
-        mSoundPool =
-                new SoundPool.Builder()
-                        .setAudioAttributes(attributes)
-                        .build();
+        mSoundPool = new SoundPool.Builder()
+                .setMaxStreams(MAX_TRACKS_NUM)
+                .setAudioAttributes(attributes)
+                .build();
     }
 
     /**
@@ -130,10 +133,31 @@ public final class PlayManager {
      */
     public void play() {
         try {
-            for (int i = 0; i < MAX_TRACKS_NUM; i++) {
-                float volume = getVolume(i);
-                mStreamID[i] = mSoundPool.play(mSoundID[i], volume, volume, 0, -1, 1.0f);
+            if (mPresetsChangeAnimatorSet != null) {
+                mPresetsChangeAnimatorSet.cancel();
             }
+            mPresetsChangeAnimatorSet = new AnimatorSet();
+
+            for (int i = 0; i < MAX_TRACKS_NUM; i++) {
+                final int track = i;
+
+                mStreamID[track] = mSoundPool.play(mSoundID[track], 0f, 0f, 0, -1, 1.0f);
+
+                ValueAnimator animator = ValueAnimator.ofFloat(0f, getVolume(i));
+                animator.setDuration(1000);
+                animator.setStartDelay((long) (3000 * Math.random()));
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        float value = (float) valueAnimator.getAnimatedValue();
+                        setVolume(track, value);
+                    }
+                });
+
+                mPresetsChangeAnimatorSet.playTogether(animator);
+            }
+
+            mPresetsChangeAnimatorSet.start();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.gracecode.android.rain"
-          android:versionName="1.7.2">
-
-    <uses-sdk
-            android:minSdkVersion="16"
-            android:targetSdkVersion="19"/>
+          android:versionName="1.8.0">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -63,10 +59,5 @@
                 android:name="UMENG_APPKEY"
                 android:value="5386854056240bb33e043bfc"/>
 
-        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>
