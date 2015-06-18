@@ -37,5 +37,4 @@
         <item name="android:textColor">@color/dark_blue</item>
         <item name="android:lines">1</item>
     </style>
-
 </resources>

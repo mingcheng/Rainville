@@ -1,9 +1,3 @@
 [submodule "libs/common"]
 	path = libs/common
 	url = git@bitbucket.org:feelinglucky/android-common.git
-[submodule "libs/libogg"]
-	path = libs/libogg
-	url = https://github.com/vincentjames501/libvorbis-libogg-android
-[submodule "libs/showcase-view"]
-	path = libs/showcase-view
-	url = git@github.com:amlcurran/ShowcaseView.git

@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +27,7 @@ import com.gracecode.android.rain.helper.WeatherIconHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.request.WeatherRequest;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +37,7 @@ public class FrontPanelFragment extends PlayerFragment
     private ToggleButton mToggleButton;
     private SimplePanel mFrontPanel;
     private ToggleButton mPlayButton;
-//    private TextView mHeadsetNeeded;
+    private TextView mHeadsetNeeded;
     private TextView mCountDownTextView;
     private TextView mWeatherTextView;
 
@@ -69,7 +73,7 @@ public class FrontPanelFragment extends PlayerFragment
             try {
                 // 如果是首次启动，则显示提示信息框
                 if (isFirstRun()) {
-                    // @Todo
+                    // ?????
                 }
             } catch (RuntimeException e) {
                 e.printStackTrace();
@@ -99,7 +103,7 @@ public class FrontPanelFragment extends PlayerFragment
             // 第一次打开面板的时候，显示功能介绍
             if (isFirstOpenPanel()) {
                 try {
-                    // @TODO
+                    // ？？？？
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 } finally {
@@ -187,9 +191,9 @@ public class FrontPanelFragment extends PlayerFragment
             mToggleButton.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
         }
 
-//        if (mHeadsetNeeded != null) {
-//            mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
-//        }
+        if (mHeadsetNeeded != null) {
+            mHeadsetNeeded.setTypeface(TypefaceHelper.getTypefaceElegant(getActivity()));
+        }
 
         if (mCountDownTextView != null) {
             mCountDownTextView.setTypeface(TypefaceHelper.getTypefaceMusket2(getActivity()));
@@ -208,7 +212,7 @@ public class FrontPanelFragment extends PlayerFragment
             mPlayButton.setVisibility(View.INVISIBLE);
         }
 
-//        mHeadsetNeeded.setOnClickListener(this);
+        mHeadsetNeeded.setOnClickListener(this);
 
         // The Panel is closed when initial launched.
         onClosed();
@@ -217,8 +221,7 @@ public class FrontPanelFragment extends PlayerFragment
         setCustomFonts();
 
         // 初始化界面
-//        setHeadsetNeeded();
-        setAsNormal();
+        setHeadsetNeeded();
 
         mRequestQueue.start();
         mRequestQueue.add(mWeatherRequest);
@@ -266,20 +269,20 @@ public class FrontPanelFragment extends PlayerFragment
         this.mFrontPanel = panel;
     }
 
-//    public void setHeadsetNeeded() {
-//        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
-//        if (animation != null) {
-//            mHeadsetNeeded.startAnimation(animation);
-//        }
-//
-//        mPlayButton.setVisibility(View.INVISIBLE);
-//        mHeadsetNeeded.setVisibility(View.VISIBLE);
-//    }
+    public void setHeadsetNeeded() {
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.headset_needed);
+        if (animation != null) {
+            mHeadsetNeeded.startAnimation(animation);
+        }
+
+        mPlayButton.setVisibility(View.INVISIBLE);
+        mHeadsetNeeded.setVisibility(View.VISIBLE);
+    }
 
 
     public void setAsNormal() {
-//        mHeadsetNeeded.clearAnimation();
-//        mHeadsetNeeded.setVisibility(View.INVISIBLE);
+        mHeadsetNeeded.clearAnimation();
+        mHeadsetNeeded.setVisibility(View.INVISIBLE);
         if (!mRainApplication.isMeizuDevice()) {
             mPlayButton.setVisibility(View.VISIBLE);
         }
@@ -290,7 +293,7 @@ public class FrontPanelFragment extends PlayerFragment
         View view = inflater.inflate(R.layout.fragment_front_panel, null);
         mWeatherTextView = (TextView) view.findViewById(R.id.icon);
         mWeatherIconHelper = new WeatherIconHelper(mWeatherTextView);
-//        mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
+        mHeadsetNeeded = (TextView) view.findViewById(R.id.headset_needed);
         mCountDownTextView = (TextView) view.findViewById(R.id.countdown);
         mPlayButton = (ToggleButton) view.findViewById(R.id.toggle_play);
         mToggleButton = (ToggleButton) view.findViewById(R.id.toggle_panel);
@@ -358,6 +361,7 @@ public class FrontPanelFragment extends PlayerFragment
                 break;
 
 //            case R.id.headset_needed:
+//
 //                try {
 //                    String message = getString(R.string.headset_needed);
 //
