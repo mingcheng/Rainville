@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,8 +26,8 @@ import com.gracecode.android.rain.helper.TypefaceHelper;
 import com.gracecode.android.rain.helper.WeatherIconHelper;
 import com.gracecode.android.rain.receiver.PlayBroadcastReceiver;
 import com.gracecode.android.rain.request.WeatherRequest;
-import com.gracecode.android.rain.serivce.PlayService;
 import com.gracecode.android.rain.ui.widget.SimplePanel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -137,16 +138,16 @@ public class FrontPanelFragment extends PlayerFragment
 
         }
 
-        @Override
-        public void onHeadsetPlugged() {
-            setAsNormal();
-        }
-
-        @Override
-        public void onHeadsetUnPlugged() {
-            setHeadsetNeeded();
-            setStopped();
-        }
+//        @Override
+//        public void onHeadsetPlugged() {
+//            setAsNormal();
+//        }
+//
+//        @Override
+//        public void onHeadsetUnPlugged() {
+//            setHeadsetNeeded();
+//            setStopped();
+//        }
 
         @Override
         public void onPlayStopTimeout(long timeout, long remain, boolean byUser) {
@@ -359,30 +360,30 @@ public class FrontPanelFragment extends PlayerFragment
                 togglePlay();
                 break;
 
-            case R.id.headset_needed:
-
-                try {
-                    String message = getString(R.string.headset_needed);
-
-                    // 这里有个小的彩蛋，多点击耳机图标多次就可以解锁直接使用耳机外放播放
-                    if (mFocusPlayTime >= MAX_FOCUS_PLAY_TIMES) {
-                        markAsPlayWithoutHeadset();
-                        message = getString(R.string.play_wihout_headset);
-                    }
-
-                    UIHelper.showShortToast(getActivity(), message);
-                } finally {
-                    mFocusPlayTime++;
-                    setStopped();
-                }
-
-                break;
+//            case R.id.headset_needed:
+//
+//                try {
+//                    String message = getString(R.string.headset_needed);
+//
+//                    // 这里有个小的彩蛋，多点击耳机图标多次就可以解锁直接使用耳机外放播放
+//                    if (mFocusPlayTime >= MAX_FOCUS_PLAY_TIMES) {
+//                        markAsPlayWithoutHeadset();
+//                        message = getString(R.string.play_wihout_headset);
+//                    }
+//
+//                    UIHelper.showShortToast(getActivity(), message);
+//                } finally {
+//                    mFocusPlayTime++;
+//                    setStopped();
+//                }
+//
+//                break;
         }
     }
 
-    private void markAsPlayWithoutHeadset() {
-        mSharedPreferences.edit().putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true).apply();
-    }
+//    private void markAsPlayWithoutHeadset() {
+//        mSharedPreferences.edit().putBoolean(PlayService.PREF_FOCUS_PLAY_WITHOUT_HEADSET, true).apply();
+//    }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
