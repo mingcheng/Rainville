@@ -1,5 +1,5 @@
 .DS_Store
-/*.iml
+*.iml
 /.idea
 /proguard_logs/
 /nbandroid/
